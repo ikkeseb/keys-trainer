@@ -9,7 +9,7 @@ import doctor
 from strings import START
 
 HERE = Path(__file__).resolve().parent
-ROWS = {name: json.loads((HERE / "test_data" / f"rigpage_{name}.json").read_text("utf-8")) for name in ("herdr", "yazi")}
+ROWS = {name: json.loads((HERE / "test_data" / f"rigpage_{name}.json").read_text("utf-8")) for name in ("herdr", "yazi", "strata")}
 DESKTOP_ROWS = [
     {"name": "super+1…0", "value": "Switch to workspace 1…10"},
     {"name": "super+ctrl+tab", "value": "Former workspace"},
@@ -52,12 +52,12 @@ class StartCheckTests(unittest.TestCase):
 
     def test_missing_yazi_turns_off_the_yazi_lessons_by_title(self):
         self.assertEqual(check(which=without("yazi")), [
-            "Yazi is missing, so lessons 6 “Yazi: get around” and 7 “Yazi: select and move” are off. "
-            "Install it with: sudo pacman -S yazi"])
+            "Yazi is missing, so lessons 6 “Yazi: get around”, 7 “Yazi: select and move”, 8 “Yazi: copy paths”, "
+            "9 “Yazi: file tricks” and 10 “Yazi: back, forward, tabs” are off. Install it with: sudo pacman -S yazi"])
 
     def test_hyprland_not_running_turns_off_the_live_lesson(self):
         self.assertEqual(check(desktop=False), [
-            "Hyprland is not running, so lesson 8 “Desktop (live)” is off. "
+            "Hyprland is not running, so lesson 13 “Desktop (live)” is off. "
             "Start the trainer from a terminal on your Omarchy desktop to practise it."])
 
     def test_missing_foot_matters_only_inside_herdr(self):
@@ -88,7 +88,7 @@ class StartCheckTests(unittest.TestCase):
         data = keys(drop=("zoom",))
         data["groups"] = [group for group in data["groups"] if group["id"] != "desktop"]
         self.assertEqual(check(data, desktop=False), [  # no desktop keys either, but Hyprland is the reason given
-            "Hyprland is not running, so lesson 8 “Desktop (live)” is off. "
+            "Hyprland is not running, so lesson 13 “Desktop (live)” is off. "
             "Start the trainer from a terminal on your Omarchy desktop to practise it.",
             "Lesson 2 “Move between panes”: you have no herdr key for zoom. "
             "Those steps show how to add the key, and s skips them."])

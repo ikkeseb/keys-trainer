@@ -37,8 +37,8 @@ from strings import DESKTOP, LESSON, START, SHELL as TEXT
 
 LAUNCHER = Path(__file__).resolve().with_name("keys-trainer")
 MODES = ("layouts", "check", "demo")
-EXECUTABLES = {"herdr": ("herdr",), "yazi": ("herdr", "yazi")}  # what a lesson's tool needs on PATH
-WARMUP_TOOLS = ("herdr", "yazi", "desktop")  # one session each, in this order: the live desktop last
+EXECUTABLES = {"herdr": ("herdr",), "yazi": ("herdr", "yazi"), "strata": ("strata",)}  # what a lesson's tool needs on PATH
+WARMUP_TOOLS = ("herdr", "yazi", "strata", "desktop")  # one session each, in this order: the live desktop last
 ROUND_CAP = 8  # «Today's round»: due cards, then the weakest, up to this many
 INTRO_KEYS = 30  # the intro's keys column, at most
 DEMO_PRESS = 1.2  # seconds of «the user's turn» before the demo presses the hint key
@@ -111,7 +111,7 @@ def check_lines(lessons, data, answer, env=None, *, layout=curriculum.DEFAULT_LA
     resolved = curriculum.resolve(lessons, data, ambiguous, desktop=desktop, layout=layout)
     lines = [TEXT["check_terminal"], *("  " + line for line in doctor.terminal_report(answer, env)), "",
              TEXT["check_tools"]]
-    for tool in ("herdr", "yazi", "foot"):
+    for tool in ("herdr", "yazi", "strata", "foot"):
         path = shutil.which(tool)
         if path:
             lines.append(TEXT["check_tool"].format(tool=tool, path=path))
@@ -373,19 +373,20 @@ def home_card(home, cursor, resolved, *, now, hint_key="?", inside_herdr=False, 
     lines.append(((TEXT["path"], MUTED),))
     path = (len(lines), len(lines) + len(rows))  # the rows that scroll on a short screen
     column = min(26, max((len(row.title) for row in rows), default=0) + 3)
+    digits = len(str(max((row.number for row in rows), default=0)))
     for index, row in enumerate(rows):
         here = index == cursor
         mark = ("› ", BOLD) if here else ("✓ ", MINT) if row.stars else ("  ", "")
         note, note_style = "", MUTED
         if not row.ready:
-            note = TEXT["note_tool"].format(tool=row.tool.capitalize() if row.tool == "yazi" else row.tool)
+            note = TEXT["note_tool"].format(tool=row.tool.capitalize() if row.tool in ("yazi", "strata") else row.tool)
         elif index == home.recommended:
             note, note_style = TEXT["note_start" if home.first_run else "note_next"], MINT
         elif row.stars == 2:
             note = TEXT["note_one_star"]
         elif row.stars == 1:
             note = TEXT["note_two_stars"]
-        lines.append((("  ", ""), mark, (f"{row.number}  ", BOLD if here else INK),
+        lines.append((("  ", ""), mark, (f"{row.number:>{digits}}  ", BOLD if here else INK),
                       (row.title.ljust(column), BOLD if here else INK), *_stars(row.stars),
                       ("   " + note if note else "", note_style)))
     if home.first_run and not inside_herdr:
@@ -617,6 +618,9 @@ def open_session(tool, data):
     if tool == "yazi":
         from yazi_backend import YaziSession
         return YaziSession(rows_for(data, "yazi"), rows_for(data, "herdr"))
+    if tool == "strata":
+        from strata_keys import KeysSession
+        return KeysSession(rows_for(data, "strata"))
     if tool == "desktop":  # the user's live Hyprland, read-only
         from desktop_session import open_live
         return open_live()

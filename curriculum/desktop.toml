@@ -1,4 +1,4 @@
-# Lesson 8: the user's live Hyprland (design § 2.3, lesson 8). Schema as herdr.toml.
+# The desktop lesson: the user's live Hyprland (design § 2.3). Schema as herdr.toml.
 #
 # The trainer only watches: socket2's events and the one active-workspace query, never a
 # key or a write. The fixture «live» is the user's desktop as it is, so a step cannot be set up
@@ -12,7 +12,7 @@
 
 [[lesson]]
 id = "desktop"
-order = 8
+order = 13
 title = "Desktop (live)"
 tool = "desktop"
 fixture = "live"

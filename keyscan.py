@@ -19,6 +19,7 @@ import tomllib
 from pathlib import Path
 
 import hypr
+import strata_keys
 
 # ── herdr ──
 # The user's config [keys] table wins; herdr's defaults (`herdr --default-config`, its [keys] table
@@ -423,6 +424,7 @@ def scan(env=None) -> dict:
     groups = [
         {"id": "herdr", "rows": scan_herdr(env, notes, herdr_defaults_), "defaults": herdr_defaults_},
         {"id": "yazi", "rows": scan_yazi(env, notes, yazi_defaults_), "defaults": yazi_defaults_},
+        {"id": "strata", "rows": strata_keys.scan(env, notes)},
         {"id": "desktop", "rows": scan_desktop(env, notes)},
     ]
     return {"groups": groups, "source": "scan", "notes": notes}
@@ -477,6 +479,10 @@ def bind_advice(data, card: str, env=None) -> dict:
         shown_run = json.dumps(runs[0]) if len(runs) == 1 else spell(runs)
         advice.update(path=_home_path(yazi_keymap_path(env), env), line=f"{{ on = {spell(on)}, run = {shown_run} }}",
                       default=default, taken=taken)
+    elif tool == "strata":
+        default = next(iter(strata_keys.ACTIONS.get(action, ("", ()))[1]), "")
+        advice.update(path=_home_path(strata_keys.config_path(env), env), line=f'{action} = ["<Control><Shift>c"]'
+                      if action == "copy_path" else f'{action} = ["<key>"]', default=default)
     elif tool == "desktop":
         import desktop_session
         advice["action"] = desktop_session.ACTIONS.get(action, advice["action"])

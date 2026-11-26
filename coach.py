@@ -164,6 +164,21 @@ def _tag(bar):
     return (tag.ljust(TAG_CELLS - 1) + " ") if tag else "", TAG_STYLES.get(tag, MINT)
 
 
+def _latest(line, space):
+    """«Show me» lists the keys as it presses them: too wide for `space`, the oldest give way,
+    so the key being pressed is always on screen."""
+    lead = LESSON["watch"].partition("{keys}")[0]
+    if not line.startswith(lead) or cells(line) <= space:
+        return line
+    keys = line[len(lead):].split(LESSON["list"])
+    while len(keys) > 1:
+        keys.pop(0)
+        line = lead + "… " + LESSON["list"].join(keys)
+        if cells(line) <= space:
+            break
+    return line if cells(line) <= space else keys[-1]
+
+
 def _split(line, space, below):
     """A line too wide for `space`, cut after the last move («…, then …», «…, …») that fits:
     (head, rest), the rest at most `below` cells. Rest is "" when the line fits, or when no
@@ -193,12 +208,14 @@ def render(bar, width, height):
     tag, tag_style = _tag(bar)
     goal, line = _clean(bar.goal), _clean(bar.line)
     chord = [(TEXT["press"] + "  ", MUTED), (_clean(bar.chord), GOLD)] if bar.chord else []
+    if count == 2 and line.startswith(LESSON["watch"].partition("{keys}")[0]):
+        chord = []  # the keys being pressed need the row
     dots, counted = _progress(bar)
     line_style = LINE_STYLES.get(bar.kind, MUTED)
     if count == 2:
         event = bool(line) and bar.kind in EVENT_KINDS
         space, below = room - cells(tag), room - _width(keys) - 2
-        first, rest = _split(_fit(line, space), space, below) if event else (goal, "")
+        first, rest = _split(_latest(_fit(line, space), space), space, below) if event else (goal, "")
         moved = bool(chord) and (bool(rest) or cells(tag) + cells(first) + 2 + _width(chord) > room)
         extra = _moved(rest, line_style, chord if moved else [])
         top = [] if moved else chord
@@ -221,7 +238,8 @@ def render(bar, width, height):
     beside = map_cells + MAP_GAP + 2 if target else 0  # a row's share for the target map
     space = room - TAG_CELLS - beside
     below = room - _width(keys) - 2 - beside
-    head, rest = _split(_fit(line, space), space, below) if bar.kind in EVENT_KINDS else (_fit(line, space), "")
+    head, rest = (_split(_latest(_fit(line, space), space), space, below) if bar.kind in EVENT_KINDS
+                  else (_fit(line, space), ""))
     moved = bool(chord) and TAG_CELLS + cells(goal) + _width(chord) + (beside or 2) > room
     extra = _moved(rest, line_style, chord if moved else [])
 

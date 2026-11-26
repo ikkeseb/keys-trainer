@@ -501,6 +501,11 @@ class Outer:
     def send(self, raw):
         os.write(self.master, raw)
 
+    def start(self):
+        """Past the start check: this terminal has no Hyprland, so it always says so first."""
+        self.wait("Press Enter to start")
+        self.send(b"\r")
+
     def finish(self, test):
         end = time.monotonic() + 10
         while self.proc.poll() is None and time.monotonic() < end:
@@ -517,6 +522,7 @@ class OuterTerminalTests(unittest.TestCase):
         outer = Outer(self)
         resolved = curriculum.resolve(curriculum.load(), outer.data)
         plan = plan_lesson(resolved, "split")
+        outer.start()
         outer.wait("Learn your shortcuts by using them")
         outer.wait("q  Quit")
         outer.send(b"\r")
@@ -542,6 +548,7 @@ class OuterTerminalTests(unittest.TestCase):
     def test_hint_key_and_a_miss_then_ctrl_c(self):
         outer = Outer(self, "--lesson", "split")
         resolved = curriculum.resolve(curriculum.load(), outer.data)
+        outer.start()
         outer.wait("LESSON 1 OF")
         outer.wait("Esc  Back")
         outer.send(b"t")  # test me: RECALL and BUILD only

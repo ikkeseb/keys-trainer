@@ -38,6 +38,9 @@ WORLD = {
     "yazi_hidden_on": "Hidden files are shown.",
     "yazi_hidden_off": "Hidden files are no longer shown.",
     "yazi_filter": "The filter changed.",
+    "yazi_copied": "That copied {text}.",
+    "yazi_tabs": "You are in tab {position} of {count}.",
+    "pressed": "That was {key}.",
     "desktop_workspace": "You are on workspace {number}.",
     "desktop_special_on": "{name} opened.",
     "desktop_special_off": "{name} closed.",
@@ -45,6 +48,9 @@ WORLD = {
     "special_qconsole": "The Quake console",
     "special_other": "The special workspace {name}",
 }
+
+# A key-press practice (Strata): the card the lesson shows in place of a terminal.
+KEYS_ONLY = {"header": "PRESS THE KEY", "note": "Press it here. Nothing in Strata is opened or changed."}
 
 # How a chord is spelled on screen: «Ctrl + Alt + ←», «Ctrl + Space → h».
 KEYS = {
@@ -85,6 +91,7 @@ LESSON = {
     "also": "Also bound to {keys}",
     "with_help": "Shown this time. It comes back soon for you to do yourself.",
     "shown": "Shown this time.",
+    "shown_keys": "Keys · {keys} · {remark}",
     "nudged": "{time} · with a nudge",
     "check_done": "✓",
     "check_todo": "○",
@@ -113,12 +120,13 @@ NOTICE = {
     "where_herdr": "To add one, put this line under [keys] in {path} (in place of any line for it already there):",
     "where_yazi": "To add one, put this in prepend_keymap under [mgr] in {path}:",
     "desktop": "To add one, add a bind for “{action}” to your Hyprland bindings.",
+    "where_strata": "To add one, put this line under [keymap.default] in {path} (or set it in Strata's Settings → Keyboard):",
     "taken": "{tool}'s own key for it, {chord}, is already used for {taken} here: pick a free key.",
     "placeholder": "Replace <key> with a free key.",
     "after": "The trainer reads your keys when it starts, so the step runs next time.",
     "skip": "{key}  Skip",
     "pause": "{key}  Pause",
-    "tools": {"herdr": "herdr", "yazi": "Yazi", "desktop": "Hyprland"},
+    "tools": {"herdr": "herdr", "yazi": "Yazi", "strata": "Strata", "desktop": "Hyprland"},
 }
 
 # BUILD next-move phrases, after “Next: ”. {where} names a pane, {text} typed text.
@@ -174,7 +182,8 @@ SHELL = {
     "first_right": "first time · ≈ {minutes} min",
     "first_title": "Learn your shortcuts by using them",
     "first_private": ("You practise in a private herdr and a private Yazi. Tabs and panes really change "
-                      "in there, but your own session and files are never touched."),
+                      "in there, but your own session and files are never touched. Strata keys are "
+                      "only pressed here."),
     "first_how_label": "How it works:",
     "first_how": ("I show a shortcut  →  you press it  →  you recall it unaided  →  "
                   "you build something real with it."),
@@ -260,7 +269,7 @@ SHELL = {
     "lessons": ("lesson", "lessons"),
     "list": "  ·  ",
     # Errors and the CLI.
-    "cli_description": "Learn your own shortcuts in private herdr and Yazi sessions: Home, lessons, warm-up.",
+    "cli_description": "Learn your own shortcuts, mostly in private herdr and Yazi sessions: Home, lessons, warm-up.",
     "cli_mode": ("layouts: the layout workshop; check: what this terminal and your keys allow; "
                  "demo: watch lesson 1 play itself (piped: one line per scenario)"),
     "cli_keys": "read your keys from a JSON export (rigpage keys format) instead of scanning",
@@ -358,6 +367,7 @@ START = {
     "herdr": ("herdr is missing. Every lesson runs in a private herdr session, so the trainer cannot "
               "start without it. Install it with: sudo pacman -S herdr"),
     "yazi": "Yazi is missing, so {lessons} {off}. Install it with: sudo pacman -S yazi",
+    "strata": "Strata is missing, so {lessons} {off}. Install it with: sudo pacman -S strata",
     "hyprland": ("Hyprland is not running, so {lessons} {off}. Start the trainer from a terminal on "
                  "your Omarchy desktop to practise it."),
     "foot": ("foot is missing. Started inside herdr, the trainer opens its own foot window, so start it "
@@ -374,7 +384,7 @@ START = {
                "and s skips them."),
     "or": " or ",
     "comma": ", ",
-    "tools": {"herdr": "herdr", "yazi": "Yazi", "desktop": "desktop"},
+    "tools": {"herdr": "herdr", "yazi": "Yazi", "strata": "Strata", "desktop": "desktop"},
     "source": "Your keys: {source}",
     "sources": {"scan": "read from your config files", "rigpage": "from rigpage keys",
                 "file": "from the file given with --keys"},

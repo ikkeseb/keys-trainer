@@ -1,4 +1,4 @@
-"""Yazi checks and needs for lessons 6 and 7, registered in `checks` with tool="yazi".
+"""Yazi checks and needs for the Yazi lessons, registered in `checks` with tool="yazi".
 
 They read `World.yazi`: a `YaziWorld` from the private Yazi's hook, and for the file
 checks the `tree` on disk that `yazi_backend.YaziState` adds. `cwd` is relative to the
@@ -7,7 +7,7 @@ private home ("Practice", "Practice/Projects"); a folder parameter names its las
 
 from __future__ import annotations
 
-from checks import _choice, _flag, _Param, _text, check, need
+from checks import _choice, _flag, _int, _Param, _text, check, need
 from world import World, YaziWorld
 from yazi_backend import PRACTICE_TREE
 
@@ -44,6 +44,15 @@ def _on_disk(yazi: YaziWorld, folder: str, file: str) -> bool | None:
 def cwd_is(context, folder):
     """Yazi shows this folder."""
     return _in(_yazi(context.now), folder)
+
+
+@check("back_then_forward", tool="yazi", folder=_folder)
+def back_then_forward(context, folder):
+    """Since the start the user went back from this folder and then forward, and is in it again."""
+    now, ref = _yazi(context.now), _yazi(context.ref)
+    used = now.history.removeprefix(ref.history).split()
+    return (_in(now, folder) and len(used) >= 2 and used[-2] == f"back:{FOLDERS[folder].rsplit('/', 1)[-1]}"
+            and used[-1].startswith("forward:"))
 
 
 @check("hovered_is", tool="yazi", entry=_text())
@@ -112,6 +121,19 @@ def file_gone(context, file, folder):
     return _on_disk(yazi, folder, file) is False and not (_in(yazi, folder) and file in yazi.entries)
 
 
+@check("file_trashed", tool="yazi", file=_text(), folder=_folder)
+def file_trashed(context, file, folder):
+    """Exactly this file left the tree (nothing else appeared or changed) and it is in the private trash."""
+    now, ref = _yazi(context.now), _yazi(context.ref)
+    target = f"{FOLDERS[folder]}/{file}"
+    ref_tree, now_tree = getattr(ref, "tree", None), getattr(now, "tree", None)
+    if not ref_tree or target not in ref_tree or now_tree != ref_tree - {target}:
+        return False
+    if _in(now, folder) and file in now.entries:
+        return False
+    return file in getattr(now, "trashed", frozenset())
+
+
 # Needs: can a scenario start in this world?
 
 @need("in_folder", tool="yazi", folder=_folder)
@@ -160,3 +182,26 @@ def clipboard_empty(world, earlier):
 def fresh_tree(world, earlier):
     """The practice tree on disk is as the fixture built it."""
     return getattr(_yazi(world), "tree", None) == frozenset(PRACTICE_TREE)
+
+
+@check("copied", tool="yazi", what=_choice("path", "filename", "dirpath"), text=_text())
+def copied(context, what, text):
+    """The latest copy was of this kind and gave this text (paths from the practice home)."""
+    return _yazi(context.now).copied == f"{what}:{text}"
+
+
+@check("tabs", tool="yazi", count=_int(1, 9), position=_int(1, 9), folder=_choice(*FOLDERS, default=None))
+def tabs(context, count, position, folder):
+    """This many tabs are open and the one at `position` (from 1) is in front (optionally in `folder`)."""
+    yazi = _yazi(context.now)
+    return yazi.tab_count == count and yazi.tab_index == position - 1 and (folder is None or _in(yazi, folder))
+
+
+@need("one_tab", tool="yazi")
+def one_tab(world, earlier):
+    return _yazi(world).tab_count == 1
+
+
+@need("nothing_copied", tool="yazi")
+def nothing_copied(world, earlier):
+    return not _yazi(world).copied

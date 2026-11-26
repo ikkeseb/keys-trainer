@@ -31,5 +31,7 @@
   {"name": "prefix+shift+p", "value": "previous workspace"},
   {"name": "alt+up", "value": "previous workspace"},
   {"name": "prefix+shift+n", "value": "next workspace"},
-  {"name": "alt+down", "value": "next workspace"}
+  {"name": "alt+down", "value": "next workspace"},
+  {"name": "prefix+w", "value": "workspace picker"},
+  {"name": "prefix+tab", "value": "cycle pane next"}
 ]

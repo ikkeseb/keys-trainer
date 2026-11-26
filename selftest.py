@@ -9,6 +9,7 @@ import checks
 from curriculum import Resolved
 from practice import rows_for
 from session import HerdrSession, perform
+from strata_keys import KeysSession
 from strings import SELFTEST as TEXT
 from world import describe
 from yazi_backend import YaziSession
@@ -34,6 +35,8 @@ class Result:
 
 def _session(tool, rows):
     herdr = rows_for(rows, "herdr")
+    if tool == "strata":
+        return KeysSession(rows_for(rows, "strata"))
     if tool == "yazi":
         return YaziSession(rows_for(rows, "yazi"), herdr)
     return HerdrSession(herdr)
@@ -130,7 +133,7 @@ def solve_all(resolved: Resolved, rows) -> list[Result]:
     tested = set()
     for state in resolved.lessons:
         lesson = state.lesson
-        if lesson.tool not in ("herdr", "yazi") or not state.steps:
+        if lesson.tool not in ("herdr", "yazi", "strata") or not state.steps:
             continue
         for step in state.steps:
             if step.scenario in tested:

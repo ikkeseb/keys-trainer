@@ -184,12 +184,18 @@ def _tab_layout(snapshot):
 # A rigpage keys export lists herdr's own defaults under this group. They are not in the
 # user's config, and a private [keys] built from them left every binding dead (M6).
 UNCONFIGURED_GROUP = "Mer å lære"
+# Except these: herdr's own moving-about keys, live whenever the config leaves them alone.
+UNCONFIGURED_NAVIGATION = frozenset({"workspace picker", "cycle pane next"})
+
+
+def _unconfigured(row):
+    return str(row.get("group", "")).startswith(UNCONFIGURED_GROUP)
 
 
 def _bindable(row):
     chord = row.get("name", "")
     return (
-        not str(row.get("group", "")).startswith(UNCONFIGURED_GROUP)
+        (not _unconfigured(row) or str(row.get("value", "")) in UNCONFIGURED_NAVIGATION)
         and isinstance(chord, str) and 0 < len(chord) <= 80
         and chord.isascii() and chord.isprintable()
         # Sequences such as "prefix+w, up" are navigate-mode notes, not bindings.
@@ -200,9 +206,12 @@ def _bindable(row):
 def selected_bindings(rows, actions):
     """Map each allowed herdr action, and the prefix, to its configured chords."""
     selected = {}
+    rows = tuple(rows)
+    own = {row.get("name") for row in rows if not _unconfigured(row)}
     for row in rows:
         action = row.get("value", "").replace(" ", "_")
-        if (action in actions or action == "prefix") and _bindable(row):
+        if ((action in actions or action == "prefix") and _bindable(row)
+                and not (_unconfigured(row) and row.get("name") in own)):
             chords = selected.setdefault(action, [])
             if row["name"] not in chords:
                 chords.append(row["name"])

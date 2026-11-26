@@ -1,4 +1,4 @@
-"""Lesson 8 on the user's live Hyprland: the Session protocol over socket2, read-only, and its checks.
+"""The desktop lesson on the user's live Hyprland: the Session protocol over socket2, read-only, and its checks.
 
 `DesktopSession` never sends a key and never writes to a Hyprland socket: it reads event
 lines (`hypr.WorkspaceEvents`) and makes the one existing query, the active workspace,

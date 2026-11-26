@@ -161,7 +161,7 @@ class HerdrWorld:
 
 @dataclass(frozen=True)
 class YaziWorld:
-    """The private Yazi's state as its hook reports it. A later stage fills it."""
+    """The private Yazi's state as its hook reports it."""
 
     cwd: str = ""
     hovered: str | None = None
@@ -175,6 +175,8 @@ class YaziWorld:
     yanked: int = 0
     cut: bool = False
     visual: bool = False
+    copied: str = ""  # «what:text» of the latest copy-to-clipboard key, paths from the practice home
+    history: str = ""  # the history keys used, oldest first: «back:Projects forward:Practice »
 
     @classmethod
     def from_event(cls, event: Mapping) -> YaziWorld:
@@ -191,12 +193,14 @@ class YaziWorld:
             yanked=int(event.get("yanked", 0)),
             cut=bool(event.get("cut", False)),
             visual=bool(event.get("visual", False)),
+            copied=str(event.get("copied") or ""),
+            history=str(event.get("history") or ""),
         )
 
 
 @dataclass(frozen=True)
 class DesktopWorld:
-    """The user's live Hyprland as its event socket reports it (lesson 8; `hypr.fold` builds it).
+    """The user's live Hyprland as its event socket reports it (`hypr.fold` builds it).
 
     `workspace` is the focused workspace; `special` the special workspaces shown, as
     sorted (monitor, name) pairs («quake» for `special:quake`). `seq` counts the changes
@@ -222,6 +226,7 @@ class World:
     herdr: HerdrWorld | None = None
     yazi: YaziWorld | None = None
     desktop: DesktopWorld | None = None
+    strata: tuple[str, ...] | None = None  # a key-press practice: actions done, or keys that did none
 
 
 EMPTY = World()
@@ -277,6 +282,8 @@ def describe(before: World, after: World) -> str | None:
             return text
     if before.yazi and after.yazi:
         return _describe_yazi(before.yazi, after.yazi)
+    if before.strata is not None and after.strata and len(after.strata) > len(before.strata):
+        return TEXT["pressed"].format(key=after.strata[-1].replace("_", " "))
     if before.desktop and after.desktop:
         return _describe_desktop(before.desktop, after.desktop)
     return None
@@ -334,6 +341,10 @@ def _describe_herdr(before: HerdrWorld, after: HerdrWorld) -> str | None:
 
 
 def _describe_yazi(before: YaziWorld, after: YaziWorld) -> str | None:
+    if after.copied != before.copied and after.copied:
+        return TEXT["yazi_copied"].format(text=after.copied.partition(":")[2])
+    if after.tab_count != before.tab_count or after.tab_index != before.tab_index:
+        return TEXT["yazi_tabs"].format(position=after.tab_index + 1, count=after.tab_count)
     if after.cwd != before.cwd:
         return TEXT["yazi_folder"].format(name=after.cwd.rstrip("/").rsplit("/", 1)[-1] or after.cwd)
     if after.show_hidden != before.show_hidden:

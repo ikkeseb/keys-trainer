@@ -1,4 +1,4 @@
-# Lessons 6 and 7: Yazi in the private herdr (design § 2.3). Schema: seams-phase2.md.
+# Lessons 6 to 10: Yazi in the private herdr (design § 2.3). Schema: seams-phase2.md.
 # Fixtures (yazi_backend.FIXTURES) are a fresh practice tree,
 # Practice/{Projects/{planning.txt, timeline.txt}, .env, draft.txt, notes.txt, report.md},
 # with the cursor on Projects («practice_tree») or on the named file («practice_tree@notes.txt»).
@@ -138,3 +138,150 @@ checks = [{ check = "file_in", file = "draft.txt", folder = "Projects", mode = "
           { check = "file_gone", file = "notes.txt", folder = "Practice", mode = "hold" }]
 solution = ["yazi:mark_one", "yazi:mark_one", "yazi:cut", "yazi:top", "yazi:enter_folder", "yazi:paste"]
 decoy = "yazi:paste"
+
+[[lesson]]
+id = "yazi-paths"
+order = 8
+title = "Yazi: copy paths"
+tool = "yazi"
+fixture = "practice_tree@notes.txt"
+intro = "Copy a file's path or name to paste elsewhere. Here the practice Yazi only reports what it would copy: your clipboard is left alone."
+pattern = "c for copy, then what: c the full path, f only the file name, d the folder it is in."
+steps = ["learn:yazi-copy-path", "learn:yazi-copy-filename", "recall:yazi-copy-path", "learn:yazi-copy-dirpath",
+         "recall:yazi-copy-filename", "recall:yazi-copy-dirpath"]
+
+[[scenario]]
+id = "yazi-copy-path"
+goal = "Copy the full path of notes.txt"
+why = "Paste it into a terminal, a chat or a file dialog."
+nudge = "Two keys: c for copy, then the same letter again."
+done = "The full path is copied"
+cards = ["yazi:copy_path"]
+needs = [{ check = "cursor_on", entry = "notes.txt", folder = "Practice" }, { check = "nothing_copied" }]
+checks = [{ check = "copied", what = "path", text = "Practice/notes.txt" }]
+solution = ["yazi:copy_path"]
+decoy = "yazi:next_file"
+
+[[scenario]]
+id = "yazi-copy-filename"
+goal = "Copy only the file name of report.md"
+why = "The name without any folders in front."
+nudge = "c for copy, then f for file name."
+done = "report.md is copied"
+cards = ["yazi:copy_filename"]
+fixture = "practice_tree@report.md"
+needs = [{ check = "cursor_on", entry = "report.md", folder = "Practice" }, { check = "nothing_copied" }]
+checks = [{ check = "copied", what = "filename", text = "report.md" }]
+solution = ["yazi:copy_filename"]
+decoy = "yazi:prev_file"
+
+[[scenario]]
+id = "yazi-copy-dirpath"
+goal = "Copy the path of the folder notes.txt is in"
+why = "For cd, or to point something at the folder."
+nudge = "c for copy, then d for directory."
+done = "The folder path is copied"
+cards = ["yazi:copy_dirpath"]
+needs = [{ check = "cursor_on", entry = "notes.txt", folder = "Practice" }, { check = "nothing_copied" }]
+checks = [{ check = "copied", what = "dirpath", text = "Practice" }]
+solution = ["yazi:copy_dirpath"]
+decoy = "yazi:next_file"
+
+[[lesson]]
+id = "yazi-files"
+order = 9
+title = "Yazi: file tricks"
+tool = "yazi"
+fixture = "practice_tree@notes.txt"
+intro = "Make, rename, trash and select files without leaving Yazi. Everything happens in the practice folder."
+pattern = "One letter each: a adds, r renames, d trashes. Ctrl + a takes everything."
+steps = ["learn:yazi-create", "learn:yazi-rename", "recall:yazi-create", "learn:yazi-trash",
+         "recall:yazi-rename", "learn:yazi-select-all", "recall:yazi-trash", "recall:yazi-select-all"]
+
+[[scenario]]
+id = "yazi-create"
+goal = "Create a file called todo.txt"
+why = "A new file without opening an editor."
+nudge = "a for add. Type the name, then Enter. A name ending in / makes a folder."
+done = "todo.txt exists"
+cards = ["yazi:create"]
+needs = [{ check = "in_folder", folder = "Practice" }, { check = "fresh_tree" }]
+checks = [{ check = "file_in", file = "todo.txt", folder = "Practice" }]
+solution = ["yazi:create", { type = "todo.txt" }, { press = "enter" }]
+decoy = "yazi:next_file"
+typing = true
+
+[[scenario]]
+id = "yazi-rename"
+goal = "Rename notes.txt to notes-old.txt"
+why = "The cursor starts before the ending, so you only add to the name."
+nudge = "r for rename. Type -old and press Enter."
+done = "Renamed"
+cards = ["yazi:rename"]
+needs = [{ check = "cursor_on", entry = "notes.txt", folder = "Practice" }, { check = "fresh_tree" },
+         { check = "nothing_marked" }]
+checks = [{ check = "file_in", file = "notes-old.txt", folder = "Practice", mode = "hold" },
+          { check = "file_gone", file = "notes.txt", folder = "Practice", mode = "hold" }]
+solution = ["yazi:rename", { type = "-old" }, { press = "enter" }]
+decoy = "yazi:next_file"
+typing = true
+
+[[scenario]]
+id = "yazi-trash"
+goal = "Move notes.txt to the trash"
+why = "Gone from the folder, still recoverable."
+nudge = "d, then confirm with Enter."
+done = "notes.txt is in the trash"
+cards = ["yazi:trash"]
+needs = [{ check = "cursor_on", entry = "notes.txt", folder = "Practice" }, { check = "fresh_tree" },
+         { check = "nothing_marked" }]
+checks = [{ check = "file_trashed", file = "notes.txt", folder = "Practice" }]
+solution = ["yazi:trash", { press = "enter" }]
+decoy = "yazi:next_file"
+
+[[scenario]]
+id = "yazi-select-all"
+goal = "Select everything in the folder"
+why = "Copy or move the lot in one go."
+nudge = "The usual select-all chord."
+done = "Everything is selected"
+cards = ["yazi:select_all"]
+needs = [{ check = "in_folder", folder = "Practice" }, { check = "nothing_marked" }, { check = "hidden_off" },
+         { check = "fresh_tree" }]
+checks = [{ check = "selection_is", names = ["Projects", "draft.txt", "notes.txt", "report.md"] }]
+solution = ["yazi:select_all"]
+decoy = "yazi:next_file"
+
+[[lesson]]
+id = "yazi-navigate"
+order = 10
+title = "Yazi: back, forward, tabs"
+tool = "yazi"
+fixture = "practice_tree"
+intro = "Retrace your steps and keep two places open at once."
+pattern = "H and L go back and forward, like a browser. t t opens a new tab."
+steps = ["learn:yazi-history", "learn:yazi-new-tab", "recall:yazi-history", "recall:yazi-new-tab"]
+
+[[scenario]]
+id = "yazi-history"
+goal = "Go into Projects, jump back, then forward again"
+why = "Return to where you were, wherever that was."
+nudge = "Back and forward are the uppercase versions of the left and right keys."
+done = "Back and forward"
+cards = ["yazi:back", "yazi:forward"]
+needs = [{ check = "cursor_on", entry = "Projects", folder = "Practice" }, { check = "one_tab" }]
+checks = [{ check = "cwd_is", folder = "Projects" }, { check = "back_then_forward", folder = "Projects" }]
+solution = ["yazi:enter_folder", "yazi:back", "yazi:forward"]
+decoy = "yazi:enter_folder"
+
+[[scenario]]
+id = "yazi-new-tab"
+goal = "Open a second tab in this folder"
+why = "Keep this place while you look somewhere else."
+nudge = "t for tab, twice."
+done = "Two tabs open"
+cards = ["yazi:new_tab"]
+needs = [{ check = "in_folder", folder = "Practice" }, { check = "one_tab" }]
+checks = [{ check = "tabs", count = 2, position = 2, folder = "Practice" }]
+solution = ["yazi:new_tab"]
+decoy = "yazi:next_file"

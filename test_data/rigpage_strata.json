@@ -1,0 +1,9 @@
+[
+  {"name": "alt+up", "value": "parent_folder"},
+  {"name": "alt+left", "value": "history_back"},
+  {"name": "alt+right", "value": "history_forward"},
+  {"name": "ctrl+l", "value": "location"},
+  {"name": "ctrl+k", "value": "search"},
+  {"name": "space", "value": "preview"},
+  {"name": "ctrl+shift+c", "value": "copy_path"}
+]

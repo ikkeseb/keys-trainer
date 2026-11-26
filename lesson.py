@@ -35,8 +35,10 @@ BEAT_SECONDS = 0.9
 BUILD_BEAT = 1.4
 WARMUP_DONE = 1.2
 OFFER_AFTER = 10.0   # «? Hint» turns gold after this long without progress
-SHOW_GAP = 0.45      # between chords while «Show me» plays (herdr drops keys < 20 ms apart)
-SHOW_PAUSE = 1.0     # after playback, before the user's turn
+SHOW_LEAD = 1.2      # «Show me»: a key is on screen this long before it is pressed
+SHOW_GAP = 0.9       # after a press, to see what it did before the next key shows
+SHOW_PAUSE = 1.6     # after the last press
+SHOWN_BEAT = 3.0     # then the result, with all the keys still up
 TRAIL = 64
 WARMUP_CAP = 6
 DOTS = {"met": "done", "clean": "clean", "nudged": "nudged", "shown": "shown", "skipped": "shown"}
@@ -239,6 +241,7 @@ class Engine:
         self.results: list[StepResult | None] = [None] * len(self.queue)
         self.index = 0
         self.state = RUNNING
+        self._seen = None
         self.offer = False  # «? Hint» should turn gold (10 s without progress)
         self.rebuilds = 0
         self.now = 0.0
@@ -248,7 +251,7 @@ class Engine:
         self._result = None
         self._prefix = canonical(next((b.prefix for b in plan.bindings.values() if b.prefix), ""))
         self._after_prefix = False
-        # The user's live desktop (lesson 8): the trainer only watches, so there is no «Show me».
+        # The user's live desktop: the trainer only watches, so there is no «Show me».
         self.live = bool(getattr(session, "live", False))
 
     # Driving.
@@ -303,6 +306,7 @@ class Engine:
         if self.state != RUNNING or self.notice:
             return False
         self.session.feed(raw)
+        self._touched = True
         name = key_name(raw)
         if self._after_prefix:
             self._after_prefix = False
@@ -438,7 +442,9 @@ class Engine:
             line, kind = self._line or warning or (self._live_line(), "reason")
         else:
             line, kind = self._line or warning or self._checklist() or (scenario.why, "reason")
-        controls = TEXT["typing"] if typing or self._typing else ""
+        # Yazi's menu of next keys («which») waits for a key, not for text.
+        waiting = self._seen is not None and self._seen.yazi is not None and self._seen.yazi.layer == "which"
+        controls = TEXT["typing"] if (typing or self._typing) and not waiting else ""
         return Bar(tag, scenario.goal, chord=chord, line=line, kind=kind, hint=self._hint_label(),
                    controls=controls, skip_key=self.skip_key if layout else "", **common)
 
@@ -507,6 +513,7 @@ class Engine:
         self._attempt_at = self._progress_at = now
         self._keys: list[str] = []
         self._after_prefix = False
+        self._touched = False  # a key reached the session, seen in the world or not
         self._typed_from = None  # the settled world when a prompt opened, judged once it closes
         self.offer = False
 
@@ -570,8 +577,17 @@ class Engine:
                 self._progressed(now)
         elif keys and self._on_track(keys[-1]):
             self._progressed(now)  # a first resize press, a move towards a build
-        elif keys:
+        elif keys and not self._moving_about(previous, world):
             self._miss(previous, world, now)
+
+    def _moving_about(self, previous, world):
+        """In a Yazi step of several moves, moving the cursor or changing folder is never a miss:
+        there is more than one way there, and the checks judge where it ends."""
+        before, after = previous.yazi, world.yazi
+        if before is None or after is None or sum(1 for m in self.step.scenario.solution if m.card) < 2:
+            return False
+        return before == replace(after, cwd=before.cwd, hovered=before.hovered, entries=before.entries,
+                                 layer=before.layer)
 
     def _returned(self, now):
         """The world moved and settled back where it was (a round trip faster than the settle):
@@ -630,10 +646,13 @@ class Engine:
         seconds = max(0.0, self._seen_at - self._attempt_at)
         outcome = "met" if step.kind == "learn" else self._outcome()
         self._beat_line = self._remark(step, outcome, seconds)
+        if self.showed:
+            self._beat_line = TEXT["shown_keys"].format(keys=self._keys_line(step.scenario), remark=self._beat_line)
         self._record(outcome, seconds if outcome == "clean" else None)
         self.state = BEAT
         self.offer = False
-        self._beat_until = now + (BUILD_BEAT if step.kind == "build" else BEAT_SECONDS)
+        beat = SHOWN_BEAT if self.showed else BUILD_BEAT if step.kind == "build" else BEAT_SECONDS
+        self._beat_until = now + beat
 
     def _outcome(self):
         if self.showed or self.max_level >= 2:
@@ -686,7 +705,7 @@ class Engine:
         moves = step.scenario.solution
         if not moves or self.live:
             return False
-        if (step.kind == "build" or self._latched or self._seen != self._start
+        if (step.kind == "build" or self._latched or self._touched or self._seen != self._start
                 or checks.unmet(step.scenario.needs, self._seen, self._trail)):
             self._start_attempt(self._rebuild(step), now)
         self.showed = True
@@ -694,21 +713,34 @@ class Engine:
         self.state = SHOWING
         self._pending = list(moves)
         self._played: list[str] = []
-        self._play_at, self._show_end = now, None
+        self._play_at, self._show_end, self._announced = now, None, None
         return True
 
     def _play(self, now):
-        if self._pending and now >= self._play_at:
-            move = self._pending.pop(0)
+        """One move at a time: its key shows, then it is pressed, then its effect stays a moment."""
+        if now < self._play_at:
+            return
+        if self._announced is not None:
+            move, self._announced = self._announced, None
             perform(self.session, move, self._taught(move), self.sleep)
+            self._pressed(now, SHOW_GAP + move.wait)
+        elif self._pending:
+            move = self._pending.pop(0)
             label = self._move_label(move)
             if label:
                 self._played.append(label)
-            self._play_at = now + (SHOW_GAP if (move.card or move.press) else 0.15) + move.wait
-            if not self._pending:
-                self._show_end = now + SHOW_PAUSE
-        elif not self._pending and self._show_end is not None and now >= self._show_end:
+                self._announced, self._play_at = move, now + SHOW_LEAD
+            else:  # a pause: nothing to show
+                perform(self.session, move, self._taught(move), self.sleep)
+                self._pressed(now, move.wait)
+        elif self._show_end is not None and now >= self._show_end:
             self._after_show(now)
+
+    def _pressed(self, now, gap):
+        self._play_at = now + gap
+        if not self._pending:
+            self._show_end = now + SHOW_PAUSE
+            self._play_at = now
 
     def _after_show(self, now):
         """The solution has played: the step completes as shown and the lesson moves on;
@@ -837,6 +869,9 @@ class Engine:
         for card in dict.fromkeys(m.card for m in solution if m.card):
             binding = self.plan.bindings.get(card)
             for chord in (*binding.chords, *binding.ambiguous) if binding else ():
+                # A sequence («g, g») arrives one key at a time: each of its keys is on track.
+                if pressed in map(canonical, chord.split(", ")):
+                    return True
                 name = canonical(chord)
                 if name == pressed or ("1..9" in name and any(name.replace("1..9", d) == pressed
                                                                for d in "123456789")):

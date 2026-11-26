@@ -1,11 +1,22 @@
+import errno
+import io
 import json
 import os
 import shutil
+import subprocess
+import sys
+import tempfile
 import time
 import tomllib
 import unittest
+from contextlib import redirect_stderr
 from pathlib import Path
+from unittest.mock import patch
 
+import checks
+import curriculum
+import keyscan
+import landlock
 from world import YaziWorld
 from yazi_backend import (
     FIXTURES,
@@ -63,6 +74,8 @@ class YaziSessionUnitTests(unittest.TestCase):
             "prev_file": ["k", "up"], "top": ["g, g", "home"], "bottom": ["G", "end"],
             "toggle_hidden": ["."], "filter": ["f"], "mark_one": ["space"], "visual": ["v"],
             "escape": ["esc"], "yank": ["y"], "cut": ["x"], "paste": ["p"],
+            "copy_path": ["c, c"], "copy_filename": ["c, f"], "copy_dirpath": ["c, d"], "select_all": ["ctrl+a"],
+            "create": ["a"], "rename": ["r"], "trash": ["d"], "back": ["H"], "forward": ["L"], "new_tab": ["t, t"],
         })
         self.assertEqual(bindings["top"][0], ("g, g", ("g", "g")))
         self.assertEqual(bindings["mark_one"][0], ("space", ("<Space>",)))
@@ -150,6 +163,107 @@ class YaziSessionUnitTests(unittest.TestCase):
             self.assertIn(f"{name} = ", OBSERVE)
         self.assertNotIn("is_visual", OBSERVE)  # M9: a deprecation toast; visual is not is_normal
 
+    def test_private_keymap_overrides_input_without_clipboard_commands(self):
+        parsed = tomllib.loads(session_keymap(session_bindings(YAZI_ROWS, KEYMAP)))
+        inp = parsed["input"]["keymap"]
+        runs = [cmd for entry in inp for cmd in (entry["run"] if isinstance(entry["run"], list) else [entry["run"]])]
+        for forbidden in ("delete", "kill", "yank", "paste", "copy", "help"):
+            self.assertFalse(any(cmd == forbidden or cmd.startswith(forbidden + " ") for cmd in runs), forbidden)
+        for required in ("close", "close --submit", "escape", "backspace", "move -1", "move 1"):
+            self.assertIn(required, runs)
+        # Measure the installed Yazi binary's built-in keymap for other reachable layers.
+        if binary := shutil.which("yazi"):
+            builtin = keyscan.yazi_builtin(Path(binary).read_bytes())
+            for layer in ("confirm", "cmp", "help"):
+                layer_runs = [
+                    cmd for entry in builtin.get(layer, {}).get("keymap", ())
+                    for cmd in (entry["run"] if isinstance(entry["run"], list) else [entry["run"]])
+                ]
+                for forbidden in ("copy", "yank", "paste", "delete"):
+                    self.assertFalse(
+                        any(cmd == forbidden or cmd.startswith(forbidden + " ") for cmd in layer_runs),
+                        f"{layer} has {forbidden}",
+                    )
+
+    def test_landlock_write_rights_follow_abi(self):
+        abi1 = landlock.write_rights(1)
+        self.assertTrue(abi1 & landlock.FS_WRITE_FILE)
+        self.assertFalse(abi1 & (landlock.FS_REFER | landlock.FS_TRUNCATE))
+        self.assertFalse(abi1 & ((1 << 0) | (1 << 2) | (1 << 3)))  # execute, read_file, read_dir unhandled
+        self.assertTrue(landlock.write_rights(2) & landlock.FS_REFER)
+        self.assertFalse(landlock.write_rights(2) & landlock.FS_TRUNCATE)
+        self.assertTrue(landlock.write_rights(3) & landlock.FS_TRUNCATE)
+
+    def test_landlock_unavailable_fails_closed(self):
+        with patch.object(landlock, "abi_version", side_effect=OSError(errno.ENOSYS, "Landlock unavailable")):
+            with self.assertRaisesRegex(YaziUnavailable, "did not start"):
+                YaziSession(YAZI_ROWS).start(["yazi:top"])
+        with tempfile.TemporaryDirectory(prefix="keys-landlock-") as tmp:
+            err_file = Path(tmp) / "err"
+            stderr = io.StringIO()
+            with patch.object(landlock, "restrict_writes", side_effect=OSError(errno.ENOSYS, "no landlock")), \
+                 patch.object(os, "execv") as execv, redirect_stderr(stderr):
+                with self.assertRaises(SystemExit) as exited:
+                    landlock.main(["--root", tmp, "--error-file", str(err_file), "--", "/bin/true"])
+                self.assertEqual(exited.exception.code, 126)
+                execv.assert_not_called()
+            self.assertIn("no landlock", err_file.read_text())
+            self.assertIn("no landlock", stderr.getvalue())
+
+    def test_landlock_launcher_blocks_writes_outside_root_and_allows_inside(self):
+        launcher = Path(__file__).with_name("landlock.py")
+        probe = (
+            "import os, sys\n"
+            "from pathlib import Path\n"
+            "root, outside = Path(sys.argv[1]), Path(sys.argv[2])\n"
+            "# Inside root: create, write, truncate, cross-dir rename, remove all succeed.\n"
+            "(root / 'sub').mkdir()\n"
+            "f = root / 'a.txt'\n"
+            "f.write_text('hello')\n"
+            "f.write_text('hi')\n"
+            "moved = root / 'sub' / 'b.txt'\n"
+            "f.rename(moved)\n"
+            "assert moved.read_text() == 'hi'\n"
+            "moved.unlink()\n"
+            "# /dev/null write and outside read stay allowed.\n"
+            "with open('/dev/null', 'w') as devnull: devnull.write('ok')\n"
+            "assert (outside / 'existing.txt').read_text() == 'keep'\n"
+            "# Outside root: create, overwrite, truncate, remove, rename all fail.\n"
+            "for op in (\n"
+            "    lambda: (outside / 'new.txt').write_text('x'),\n"
+            "    lambda: (outside / 'existing.txt').write_text('overwrite'),\n"
+            "    lambda: os.truncate(outside / 'existing.txt', 0),\n"
+            "    lambda: (outside / 'existing.txt').unlink(),\n"
+            "    lambda: (outside / 'existing.txt').rename(root / 'stolen.txt'),\n"
+            "):\n"
+            "    try:\n"
+            "        op()\n"
+            "    except PermissionError:\n"
+            "        pass\n"
+            "    else:\n"
+            "        raise AssertionError('outside write was not blocked')\n"
+            "inside = root / 'stay.txt'\n"
+            "inside.write_text('ok')\n"
+            "try:\n"
+            "    inside.rename(outside / 'escaped.txt')\n"
+            "except PermissionError:\n"
+            "    pass\n"
+            "else:\n"
+            "    raise AssertionError('rename out of root was not blocked')\n"
+        )
+        with tempfile.TemporaryDirectory(prefix="keys-ll-root-", dir="/tmp") as root, \
+             tempfile.TemporaryDirectory(prefix="keys-ll-out-", dir="/tmp") as outside:
+            (Path(outside) / "existing.txt").write_text("keep")
+            result = subprocess.run(
+                [sys.executable, "-IS", str(launcher), "--root", root, "--",
+                 sys.executable, "-c", probe, root, outside],
+                capture_output=True, text=True, timeout=10,
+            )
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual((Path(outside) / "existing.txt").read_text(), "keep")
+            self.assertFalse((Path(outside) / "new.txt").exists())
+            self.assertFalse((Path(outside) / "escaped.txt").exists())
+
     def test_unknown_cards_and_fixtures_are_refused_before_starting(self):
         session = YaziSession(YAZI_ROWS)
         with self.assertRaises(ValueError):
@@ -186,11 +300,6 @@ def _running_in(root):
     return found
 
 
-@unittest.skipUnless(
-    os.environ.get("KEYS_TRAINER_TEST_YAZI") == "1" and os.environ.get("KEYS_TRAINER_TEST_HERDR") == "1"
-    and shutil.which("yazi") and shutil.which("herdr"),
-    "set KEYS_TRAINER_TEST_YAZI=1 and KEYS_TRAINER_TEST_HERDR=1 to test Yazi inside a private herdr",
-)
 def settled(session):
     """The newest world: world() hands out one hook event per call, so drain what is queued."""
     world = session.world()
@@ -199,7 +308,29 @@ def settled(session):
     return world
 
 
+@unittest.skipUnless(
+    os.environ.get("KEYS_TRAINER_TEST_YAZI") == "1" and os.environ.get("KEYS_TRAINER_TEST_HERDR") == "1"
+    and shutil.which("yazi") and shutil.which("herdr"),
+    "set KEYS_TRAINER_TEST_YAZI=1 and KEYS_TRAINER_TEST_HERDR=1 to test Yazi inside a private herdr",
+)
 class YaziSessionTests(unittest.TestCase):
+    def test_back_and_forward_typed_with_no_gap_still_count(self):
+        scenario = curriculum.load().scenarios["yazi-history"]
+        cards = ["yazi:enter_folder", "yazi:back", "yazi:forward"]
+        for attempt in range(5):
+            with self.subTest(attempt=attempt), YaziSession(YAZI_ROWS, HERDR_ROWS) as session:
+                start = session.start(cards, "practice_tree")
+                session.play("yazi:enter_folder")
+                history = [settled(session)]
+                for card in cards[1:]:
+                    for raw in chord_keys(session.chords(card)[0]):
+                        session.feed(raw)
+                deadline = time.monotonic() + 3
+                while time.monotonic() < deadline and not checks.evaluate(scenario.checks, start, history).done:
+                    history.append(session.world())
+                    time.sleep(0.02)
+                self.assertTrue(checks.evaluate(scenario.checks, start, history).done, history[-1].yazi)
+
     def test_yazi_runs_in_the_one_pane_and_close_leaves_nothing(self):
         before = _yazi_pids()
         with YaziSession(YAZI_ROWS, HERDR_ROWS) as session:
@@ -254,6 +385,24 @@ class YaziSessionTests(unittest.TestCase):
             self.assertEqual(settled(session).yazi.hovered, "Projects")
             with self.assertRaises(ValueError):
                 YaziSession([]).chords("yazi:nothing")
+
+    def test_yazi_cannot_write_outside_private_root(self):
+        with tempfile.TemporaryDirectory(prefix="keys-yazi-outside-", dir="/tmp") as outside:
+            target = Path(outside) / "escape.txt"
+            with YaziSession(YAZI_ROWS, HERDR_ROWS) as session:
+                session.start(["yazi:create", "yazi:rename"], "practice_tree@notes.txt")
+                session.play("yazi:create")
+                session.type_text(str(target))
+                session.press("enter")
+                time.sleep(0.4)
+                self.assertFalse(target.exists())
+                # Creating inside Practice still works under the jail.
+                session.apply_fixture("practice_tree@notes.txt")
+                session.play("yazi:create")
+                session.type_text("inside.txt")
+                session.press("enter")
+                time.sleep(0.4)
+                self.assertIn("Practice/inside.txt", settled(session).yazi.tree)
 
 
 if __name__ == "__main__":

@@ -9,6 +9,7 @@ import json
 import os
 import shutil
 import signal
+import sys
 import tempfile
 import time
 from collections import deque
@@ -17,6 +18,7 @@ from contextlib import ExitStack, suppress
 from dataclasses import dataclass, field, replace
 from pathlib import Path
 
+import landlock
 from herdr_backend import HerdrBackend, HerdrUnavailable, demo_keys, kitty_keys
 from strings import YAZI as TEXT
 from world import World, YaziWorld
@@ -41,6 +43,17 @@ KEYMAP = {
     "yank": ("kopier det markerte", "yank", "yank"),
     "cut": ("klipp ut det markerte", "yank --cut", "yank --cut"),
     "paste": ("lim inn her", "paste", "paste"),
+    "copy_path": ("kopier stien til fila", "copy path", "plugin trainer-copy path"),
+    "copy_filename": ("kopier filnavnet", "copy filename", "plugin trainer-copy filename"),
+    "copy_dirpath": ("kopier stien til mappa", "copy dirpath", "plugin trainer-copy dirpath"),
+    "select_all": ("marker alle", "toggle_all --state=on", "toggle_all --state=on"),
+    "create": ("ny fil (avslutt navnet med / for en mappe)", "create", "create"),
+    "rename": ("gi nytt navn (med flere markert: alle samtidig i editoren)", "rename --cursor=before_ext",
+               "rename --cursor=before_ext"),
+    "trash": ("flytt til papirkurven", "remove", "remove"),
+    "back": ("tilbake til forrige mappe", "back", "plugin trainer-history back"),
+    "forward": ("fram igjen", "forward", "plugin trainer-history forward"),
+    "new_tab": ("ny fane i samme mappe", "tab_create --current", "tab_create --current"),
 }
 # Bound in every session so the user can always move about, whatever the lesson teaches.
 BASE_ACTIONS = ("enter_folder", "leave_folder", "next_file", "prev_file", "escape")
@@ -55,6 +68,12 @@ STEP_GAP = 0.1    # between the keys of a sequence such as "g, g"
 # M9: `mode.is_visual` raises a deprecation toast, so visual is `not is_normal`.
 OBSERVE = """
 local previous = ""
+trainer_history = ""
+trainer_copied = ""
+ps.sub("keys-trainer-copy", function(body)
+    trainer_copied = body.what .. ":" .. body.text
+    ui.render()
+end)
 Status:children_add(function(self)
     local tab = cx.active
     local current = tab.current
@@ -73,6 +92,7 @@ Status:children_add(function(self)
         entries = entries,
         selected = selected,
         show_hidden = tab.pref.show_hidden,
+        copied = trainer_copied or "",
         filter = filter and tostring(filter) or "",
         layer = tostring(cx.layer),
         tab_count = #cx.tabs,
@@ -80,11 +100,12 @@ Status:children_add(function(self)
         yanked = #cx.yanked,
         cut = cx.yanked.is_cut,
         visual = not tab.mode.is_normal,
+        history = trainer_history,
     }
     local signature = table.concat({
         state.cwd, state.hovered, table.concat(entries, "|"), table.concat(selected, "|"),
         tostring(state.show_hidden), state.filter, state.layer, state.tab_count, state.tab_index,
-        state.yanked, tostring(state.cut), tostring(state.visual),
+        state.yanked, tostring(state.cut), tostring(state.visual), state.copied, state.history,
     }, "\\n")
     if signature ~= previous then
         previous = signature
@@ -111,6 +132,78 @@ return { entry = function()
   end
 end }
 """
+# History jumps are logged as they are asked for («back:Projects», the folder they left), so
+# checks tell them from leave/enter however fast they are typed: no screen in between is needed.
+_HISTORY_PLUGIN = """--- @sync entry
+return { entry = function(_, job)
+  local dir = job.args[1]
+  if dir ~= "back" and dir ~= "forward" then return end
+  local from = tostring(cx.active.current.cwd):match("[^/]+$") or ""
+  trainer_history = trainer_history .. dir .. ":" .. from .. " "
+  ya.emit(dir, {})
+  ui.render()
+end }
+"""
+# «copy» writes the system clipboard. The practice Yazi must never touch the user's, so its copy
+# keys run this instead: it works out the same text and only reports it.
+_COPY_PLUGIN = """--- @sync entry
+return { entry = function(_, job)
+  local current = cx.active.current
+  local file = current.hovered
+  if not file then return end
+  local what, url = job.args[1], tostring(file.url)
+  local name = file.name
+  local text = ({
+    path = url,
+    filename = name,
+    dirpath = tostring(current.cwd),
+  })[what]
+  ps.pub("keys-trainer-copy", { what = what, text = text })
+end }
+"""
+# Safe [input] editing keys (measured from Yazi 26.9.1's built-in keymap): typing, submit,
+# cancel, cursor motion, backspace/delete and undo/redo. Everything that touches the clipboard
+# (delete --cut, kill, yank, paste) or opens help is omitted.
+_INPUT_KEYMAP = (
+    ("<C-c>", "close"),
+    ("<Enter>", "close --submit"),
+    ("<Esc>", "escape"),
+    ("<C-[>", "escape"),
+    ("i", "insert"),
+    ("I", ["move first-char", "insert"]),
+    ("a", "insert --append"),
+    ("A", ["move eol", "insert --append"]),
+    ("h", "move -1"),
+    ("l", "move 1"),
+    ("<Left>", "move -1"),
+    ("<Right>", "move 1"),
+    ("<C-b>", "move -1"),
+    ("<C-f>", "move 1"),
+    ("b", "backward"),
+    ("B", "backward wide"),
+    ("w", "forward"),
+    ("W", "forward wide"),
+    ("e", "forward --end-of-word"),
+    ("E", "forward wide --end-of-word"),
+    ("<A-b>", "backward lean"),
+    ("<A-f>", "forward lean --end-of-word"),
+    ("<C-Left>", "backward lean"),
+    ("<C-Right>", "forward lean --end-of-word"),
+    ("0", "move bol"),
+    ("$", "move eol"),
+    ("_", "move first-char"),
+    ("^", "move first-char"),
+    ("<C-a>", "move bol"),
+    ("<C-e>", "move eol"),
+    ("<Home>", "move bol"),
+    ("<End>", "move eol"),
+    ("<Backspace>", "backspace"),
+    ("<Delete>", "backspace --under"),
+    ("<C-h>", "backspace"),
+    ("<C-d>", "backspace --under"),
+    ("u", "undo"),
+    ("<C-r>", "redo"),
+)
 _YAZI_CONFIG = (
     '[mgr]\nsort_by = "alphabetical"\nsort_dir_first = true\nshow_hidden = false\nmouse_events = []\n'
     '[plugin]\npreloaders = []\npreviewers = []\nfetchers = []\n'
@@ -132,7 +225,9 @@ def _private_yazi(root: Path, keymap: str) -> tuple[dict[str, Path], Path]:
         path.mkdir(mode=0o700)
     config = private["XDG_CONFIG_HOME"] / "yazi"
     practice = private["HOME"] / "Practice"
-    for name, source in (("trainer-enter", _ENTER_PLUGIN), ("trainer-leave", _LEAVE_PLUGIN)):
+    plugins = {"trainer-enter": _ENTER_PLUGIN, "trainer-leave": _LEAVE_PLUGIN,
+               "trainer-history": _HISTORY_PLUGIN, "trainer-copy": _COPY_PLUGIN}
+    for name, source in plugins.items():
         plugin = config / "plugins" / f"{name}.yazi"
         plugin.mkdir(parents=True)
         (plugin / "main.lua").write_text(
@@ -140,7 +235,9 @@ def _private_yazi(root: Path, keymap: str) -> tuple[dict[str, Path], Path]:
             .replace("@PROJECTS@", json.dumps(str(practice / "Projects")))
         )
     (config / "keymap.toml").write_text(keymap)
-    (config / "init.lua").write_text(OBSERVE)
+    # A plugin loads on its first key unless required here, and keys typed meanwhile overtake it.
+    preload = "".join(f'require("{name}")\n' for name in plugins)
+    (config / "init.lua").write_text(OBSERVE + preload)
     (config / "yazi.toml").write_text(_YAZI_CONFIG)
     return private, config
 
@@ -210,7 +307,7 @@ def _names(value):
     return tuple(value)
 
 
-# The lesson tree (design lessons 6 and 7). Paths are relative to the private home.
+# The lesson tree (Yazi lessons). Paths are relative to the private home.
 PRACTICE_TREE = (
     "Practice/.env", "Practice/draft.txt", "Practice/notes.txt", "Practice/report.md",
     "Practice/Projects/planning.txt", "Practice/Projects/timeline.txt",
@@ -223,13 +320,15 @@ FIXTURES = ("practice_tree", "practice_tree@draft.txt", "practice_tree@notes.txt
 
 @dataclass(frozen=True)
 class YaziState(YaziWorld):
-    """YaziWorld plus the practice tree on disk, so checks can see what a paste did.
+    """YaziWorld plus the practice tree and private trash on disk, so checks can see file changes.
 
     `cwd` is relative to the private home ("Practice", "Practice/Projects").
     `tree` holds the file paths under the private home ("Practice/Projects/notes.txt").
+    `trashed` holds the file names currently in the private XDG trash.
     """
 
     tree: frozenset[str] = field(default_factory=frozenset)
+    trashed: frozenset[str] = field(default_factory=frozenset)
 
 
 def _tree(home: Path) -> frozenset[str]:
@@ -237,6 +336,11 @@ def _tree(home: Path) -> frozenset[str]:
     return frozenset(
         str(path.relative_to(home)) for path in practice.rglob("*") if path.is_file()
     ) if practice.is_dir() else frozenset()
+
+
+def _trashed(data: Path | None) -> frozenset[str]:
+    files = data / "Trash" / "files" if data is not None else None
+    return frozenset(path.name for path in files.iterdir()) if files and files.is_dir() else frozenset()
 
 
 def _card_action(card: str) -> str:
@@ -270,11 +374,15 @@ def session_bindings(rows: Iterable[Mapping], actions: Iterable[str]) -> dict[st
 
 
 def session_keymap(bindings: Mapping[str, list[tuple[str, tuple[str, ...]]]]) -> str:
-    lines = [
+    mgr = [
         f'  {{ on = {json.dumps(list(keys))}, run = {json.dumps(KEYMAP[action][2])} }},'
         for action, pairs in bindings.items() for _, keys in pairs
     ]
-    return "\n".join(["[mgr]", "keymap = [", *lines, "]", ""])
+    inp = [
+        f'  {{ on = {json.dumps(on)}, run = {json.dumps(run)} }},'
+        for on, run in _INPUT_KEYMAP
+    ]
+    return "\n".join(["[mgr]", "keymap = [", *mgr, "]", "", "[input]", "keymap = [", *inp, "]", ""])
 
 
 class YaziSession:
@@ -289,7 +397,7 @@ class YaziSession:
         self.rows = tuple(rows)
         self.herdr = HerdrBackend(herdr_rows)
         self._resources = ExitStack()
-        self._root = self._home = self._config = self._env = None
+        self._root = self._home = self._data = self._config = self._env = None
         self._bindings = {}
         self._binary = None
         self._events = None
@@ -315,12 +423,14 @@ class YaziSession:
         if self._binary is None:
             raise YaziUnavailable(TEXT["missing"])
         try:
+            landlock.abi_version()  # fail closed before starting if kernel lacks Landlock
             self.herdr.start_session((), "one_pane")
             self._root = Path(self._resources.enter_context(
                 tempfile.TemporaryDirectory(prefix="keys-yazi-", dir="/tmp")))
             self._bindings = session_bindings(self.rows, wanted | set(BASE_ACTIONS))
             private, self._config = _private_yazi(self._root, session_keymap(self._bindings))
             self._home = private["HOME"]
+            self._data = private["XDG_DATA_HOME"]
             # No inherited YAZI ids, display sessions, shell settings or credentials.
             self._env = {name: str(path) for name, path in private.items()} | {
                 "YAZI_CONFIG_HOME": str(self._config), "PATH": os.defpath,
@@ -344,20 +454,26 @@ class YaziSession:
         try:
             self._stop_yazi()
             shutil.rmtree(practice, ignore_errors=True)
+            if self._data is not None:
+                shutil.rmtree(self._data / "Trash", ignore_errors=True)
             for path in PRACTICE_TREE:
                 (self._home / path).parent.mkdir(parents=True, exist_ok=True)
                 (self._home / path).write_text("Practice file.\n")
             self._generation += 1
             events = self._root / f"events-{self._generation}"
             pid = self._root / f"pid-{self._generation}"
+            error = self._root / f"error-{self._generation}"
             events.touch(mode=0o600)
             entry = practice if hovered == "Projects" else practice / hovered
             script = self._root / "yazi.sh"
+            launcher = Path(__file__).with_name("landlock.py")
             exports = " ".join(f"{key}={_sh(value)}" for key, value in sorted(self._env.items()))
             script.write_text(
                 "#!/bin/sh\n"
                 f"echo $$ > {_sh(pid)}\n"
                 f'exec /usr/bin/env -i TERM="${{TERM:-xterm-256color}}" {exports} '
+                f"{_sh(sys.executable)} -IS {_sh(launcher)} --root {_sh(self._root)} "
+                f"--error-file {_sh(error)} -- "
                 f"{_sh(self._binary)} --local-events=keys-trainer-state {_sh(entry)} >> {_sh(events)}\n"
             )
             if self._events is not None:
@@ -372,7 +488,7 @@ class YaziSession:
                 root={"type": "pane", "command": ["/bin/sh", str(script)], "cwd": str(practice)},
             )
             pane = result["layout"]["root"]["pane_id"]
-            self._wait_for(lambda state: (state.cwd, state.hovered) == ("Practice", hovered), pid)
+            self._wait_for(lambda state: (state.cwd, state.hovered) == ("Practice", hovered), pid, error)
             # M8: layout.apply moves the server's focus, not the client's view. Focus the
             # pane and wait for its painted frame (plus 50 ms quiet) before any key.
             self.herdr._focus_and_paint(pane)
@@ -381,10 +497,12 @@ class YaziSession:
             raise YaziUnavailable(TEXT["no_start"].format(detail=exc)) from exc
         return self.world()
 
-    def _wait_for(self, ready, pid_file):
+    def _wait_for(self, ready, pid_file, error_file=None):
         end = time.monotonic() + STARTUP_TIMEOUT
         while time.monotonic() < end:
             self.herdr.world(max_age=60)  # drains the client so herdr keeps painting
+            if error_file is not None and error_file.exists() and (detail := error_file.read_text().strip()):
+                raise YaziUnavailable(TEXT["no_start"].format(detail=detail))
             if self._pid is None and pid_file.exists() and (text := pid_file.read_text().strip()):
                 self._pid = int(text)
             if (state := self._pump()) is not None and ready(state) and state.entries:
@@ -406,8 +524,9 @@ class YaziSession:
                     self._queue.append(self._state)
         if self._state is not None:
             tree = _tree(self._home)
-            if tree != self._state.tree:
-                self._state = replace(self._state, tree=tree)
+            trashed = _trashed(self._data)
+            if tree != self._state.tree or trashed != self._state.trashed:
+                self._state = replace(self._state, tree=tree, trashed=trashed)
         return self._state
 
     def _as_state(self, body: Mapping) -> YaziState:
@@ -416,10 +535,11 @@ class YaziSession:
         relative = cwd[len(home) + 1:] if cwd.startswith(home + "/") else ""
         if relative not in PRACTICE_FOLDERS:
             raise YaziUnavailable(TEXT["left_tree"])
-        world = YaziWorld.from_event({**body, "cwd": relative, "entries": _names(body.get("entries", [])),
+        copied = str(body.get("copied", "")).replace(home + "/", "")  # paths as the practice home sees them
+        world = YaziWorld.from_event({**body, "cwd": relative, "copied": copied, "entries": _names(body.get("entries", [])),
                                       "selected": _names(body.get("selected", []))})
         return YaziState(**{name: getattr(world, name) for name in world.__dataclass_fields__},
-                         tree=_tree(self._home))
+                         tree=_tree(self._home), trashed=_trashed(self._data))
 
     def world(self) -> World:
         if self._home is None:
@@ -508,7 +628,7 @@ class YaziSession:
                     cleanup.callback(self._events.close)
         finally:
             self._resources = ExitStack()
-            self._root = self._home = self._config = self._env = self._events = None
+            self._root = self._home = self._data = self._config = self._env = self._events = None
             self._state = None
             self._queue.clear()
             self._bindings = {}

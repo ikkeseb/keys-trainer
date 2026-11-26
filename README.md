@@ -1,8 +1,9 @@
 # Keys Trainer
 
-A terminal trainer that teaches the shortcuts from your own setup (herdr, Yazi, Hyprland) as short
-guided lessons. Everything you practise happens in private herdr and Yazi sessions that the trainer
-starts and stops itself, so your own sessions are never touched.
+A terminal trainer that teaches the shortcuts from your own setup (herdr, Yazi, Strata, Hyprland)
+as short guided lessons. herdr and Yazi are practised in private sessions that the trainer starts
+and stops itself, so your own sessions are never touched. Strata is practised as key presses in the
+trainer, and the desktop lesson only watches your real Hyprland.
 
 ## Get started on Omarchy
 
@@ -16,16 +17,20 @@ Start it from a plain terminal (Super + Enter), not from inside herdr: herdr wou
 chords before the trainer sees them. Started inside herdr, it says so and offers to open itself in
 its own `foot` window.
 
-It needs Python 3.11+ (Omarchy has it), `herdr`, and `yazi` for the Yazi lessons. Standard library
-only, nothing to install with pip.
+It needs Python 3.11+ (Omarchy has it) and `herdr`; `yazi` and `strata` are needed for their own
+lessons. Standard library only, nothing to install with pip.
+
+The private Yazi can only write inside its own temporary folder (Linux Landlock, which Omarchy's
+kernel has); on a kernel without it the Yazi lessons do not start.
 
 **Your own keys.** At every launch the trainer reads the shortcuts you actually have: herdr's
 config (`~/.config/herdr/config.toml`) plus herdr's defaults for what it leaves alone, Yazi's
-keymap (`~/.config/yazi/keymap.toml`) plus Yazi's built-in one, and Hyprland's live binds. Change
+keymap (`~/.config/yazi/keymap.toml`) plus Yazi's built-in one, Strata's `[keymap.default]`
+(`~/.config/strata/settings.toml`) over its default keys, and Hyprland's live binds. Change
 a binding and the next launch teaches the new one. A step whose action you have no key for shows a
 short notice with how to add one, and `s` skips it.
 
-**The start check.** Before Home it checks Python, herdr, yazi, Hyprland and foot. Anything
+**The start check.** Before Home it checks Python, herdr, yazi, Strata, Hyprland and foot. Anything
 missing gets one line: what it means, the `pacman` command that installs it, and which lessons are
 off because of it. herdr missing stops the trainer; everything else only turns lessons off. With
 nothing missing it goes straight in. `./keys-trainer check` prints the full report any time.
@@ -35,7 +40,7 @@ nothing missing it goes straight in. `./keys-trainer check` prints the full repo
 Point your coding agent at this paragraph: clone `https://github.com/ikkeseb/keys-trainer.git`,
 run `./keys-trainer check` in the clone and read its Tools section. For each missing tool, install
 it with the `sudo pacman -S <package>` line it prints (ask the user before any `sudo`). Do not
-edit the user's herdr, Yazi or Hyprland config unless they ask; a missing key is shown inside the
+edit the user's herdr, Yazi, Strata or Hyprland config unless they ask; a missing key is shown inside the
 trainer with the line to add. Then tell the user to run `./keys-trainer` from a terminal outside
 herdr. The trainer never touches the user's own herdr sessions: it starts private ones and stops
 them itself.
@@ -46,8 +51,8 @@ them itself.
    `l` opens the layout workshop, `q` ends the day.
 2. **Warm-up.** If shortcuts you have met are due for review, a short warm-up runs first, one
    private session per tool.
-3. **Lesson.** An intro card, then the lesson in the private herdr's own terminal with a coach bar
-   underneath. Each step is one of three kinds:
+3. **Lesson.** An intro card, then the lesson in the private herdr's own terminal (for Strata, a
+   key card) with a coach bar underneath. Each step is one of three kinds:
    - **LEARN**: the goal and your keys are shown; do it once.
    - **RECALL**: the goal only; do it from memory.
    - **BUILD**: reach a target shape with several moves.
@@ -62,7 +67,14 @@ them itself.
 4. **Lesson complete** shows how each step went and the stars. Enter goes to the next lesson, `r`
    replays, `q` ends the session with a summary of what you practised and what comes back when.
 
-Lesson 8, “Desktop (live)”, is the exception: it runs on your real Hyprland desktop, marked
+The lessons cover herdr panes, tabs and jumping around; Yazi moving, selecting, copying paths, file
+tricks and tabs; Strata navigation; and the desktop.
+
+**Strata** is a window, so the trainer cannot look inside it: a step is done when you press your
+key for it. A terminal usually keeps Ctrl + Shift + C for itself, so Enter counts for that chord.
+With Strata's type-to-search on (its default), a plain letter such as `y` is no shortcut there.
+
+Lesson 13, “Desktop (live)”, is the exception: it runs on your real Hyprland desktop, marked
 `LIVE`. The trainer only watches Hyprland's events there and never sends a key, so `?` shows the
 keys but cannot do the step for you. It is hidden when Hyprland is not running.
 

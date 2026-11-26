@@ -1,4 +1,4 @@
-"""Read the user's live Hyprland, never write to it (lesson 8 «Desktop (live)»).
+"""Read the user's live Hyprland, never write to it (the «Desktop (live)» lesson).
 
 The trainer reads socket2's event lines and makes read-only queries on the control socket:
 `j/activeworkspace` here, `j/binds` and `binds` from keyscan.py; no command that changes

@@ -1,0 +1,75 @@
+# Strata, the file manager window. The trainer cannot look inside it, so a step is done when
+# the user presses the right key here. Cards are «strata:<Strata's config id>»; the keys come
+# from strata_keys.py. Checks: «pressed».
+
+[[lesson]]
+id = "strata"
+order = 12
+title = "Strata: get around"
+tool = "strata"
+fixture = "keys"
+intro = "Strata is a window, so you practise its keys right here: press the key for each task. Nothing in Strata is opened or changed."
+pattern = "Alt + arrows move between folders. Ctrl + a letter opens a box to type in."
+steps = ["learn:strata-up", "learn:strata-back", "recall:strata-up", "learn:strata-location",
+         "recall:strata-back", "learn:strata-search", "recall:strata-location", "learn:strata-preview",
+         "learn:strata-copy-path", "recall:strata-search", "recall:strata-preview"]
+
+[[scenario]]
+id = "strata-up"
+goal = "Go up to the folder above"
+why = "Out of a folder without reaching for the mouse."
+nudge = "Hold Alt and point where you want to go."
+done = "Up one folder"
+cards = ["strata:parent_folder"]
+checks = [{ check = "pressed", action = "parent_folder" }]
+solution = ["strata:parent_folder"]
+
+[[scenario]]
+id = "strata-back"
+goal = "Go back, then forward again"
+why = "Retrace your steps, as in a browser."
+nudge = "The same modifier as going up, with the arrows that point back and on."
+done = "Back and forward"
+cards = ["strata:history_back", "strata:history_forward"]
+checks = [{ check = "pressed", action = "history_back" }, { check = "pressed", action = "history_forward" }]
+solution = ["strata:history_back", "strata:history_forward"]
+
+[[scenario]]
+id = "strata-location"
+goal = "Type or paste a path to jump to"
+why = "Go straight to a path you copied somewhere else."
+nudge = "The same chord as the address bar in a browser."
+done = "The path box"
+cards = ["strata:location"]
+checks = [{ check = "pressed", action = "location" }]
+solution = ["strata:location"]
+
+[[scenario]]
+id = "strata-search"
+goal = "Search for a file everywhere"
+why = "Find it by name without knowing the folder."
+nudge = "Ctrl and the letter many apps use for a quick search."
+done = "Search everywhere"
+cards = ["strata:search"]
+checks = [{ check = "pressed", action = "search" }]
+solution = ["strata:search"]
+
+[[scenario]]
+id = "strata-preview"
+goal = "Preview the selected file"
+why = "Look inside without opening an app."
+nudge = "The biggest key."
+done = "Preview"
+cards = ["strata:preview"]
+checks = [{ check = "pressed", action = "preview" }]
+solution = ["strata:preview"]
+
+[[scenario]]
+id = "strata-copy-path"
+goal = "Copy the path of the selected file"
+why = "A terminal may keep this key: press Enter here if nothing happens."
+nudge = "Like copy in a terminal."
+done = "Copy path"
+cards = ["strata:copy_path"]
+checks = [{ check = "pressed", action = "copy_path" }]
+solution = ["strata:copy_path"]

@@ -48,8 +48,9 @@ class LoaderTest(unittest.TestCase):
         loaded = curriculum.load()
         herdr = [lesson for lesson in loaded.lessons if lesson.tool == "herdr"]
         self.assertEqual([lesson.title for lesson in herdr],
-                         ["Split the screen", "Move between panes", "Tabs", "Workspaces", "Resize and build"])
-        self.assertEqual([len(lesson.steps) for lesson in herdr], [7, 9, 9, 7, 4])
+                         ["Split the screen", "Move between panes", "Tabs", "Workspaces", "Resize and build",
+                          "herdr: jump around"])
+        self.assertEqual([len(lesson.steps) for lesson in herdr], [7, 9, 9, 7, 4, 4])
         self.assertEqual([f"{s.kind[0].upper()}:{s.scenario}" for s in herdr[0].steps],
                          ["L:split-rows", "L:split-cols", "R:split-rows", "L:close-pane", "R:split-cols",
                           "R:close-pane", "B:build-split-bottom"])
@@ -122,7 +123,7 @@ class ResolveTest(unittest.TestCase):
     def test_every_herdr_scenario_is_active_with_the_export(self):
         resolved = resolve(self.herdr, DATA)
         self.assertTrue(all(state.active for state in resolved.scenarios.values()))
-        self.assertEqual(len(resolved.visible), 5)
+        self.assertEqual(len(resolved.visible), 6)
         self.assertEqual(resolved.bindings["herdr:split_horizontal"].taught, "alt+enter")
         self.assertEqual(resolved.bindings["herdr:split_horizontal"].label(), "Alt + Enter")
 
@@ -176,6 +177,12 @@ class ResolveTest(unittest.TestCase):
         resolved = resolve(self.herdr, {"groups": [{"id": "herdr", "rows": rows}]}, ambiguous_in_legacy)
         self.assertFalse(resolved.active("close-pane"))
         self.assertIn("alt+esc", resolved.scenarios["close-pane"].reason)
+
+    def test_legacy_mode_keeps_the_strata_chord_that_enter_stands_in_for(self):
+        from router import ambiguous_in_legacy
+        data = {"groups": [{"id": "strata", "rows": [{"name": "ctrl+shift+c", "value": "copy_path"}]}]}
+        resolved = resolve(curriculum.load(), data, ambiguous_in_legacy)
+        self.assertEqual(resolved.bindings["strata:copy_path"].taught, "ctrl+shift+c")
 
     def test_legacy_mode_keeps_the_desktop_lesson(self):
         # Hyprland reads Super chords itself, not through the terminal: a legacy terminal

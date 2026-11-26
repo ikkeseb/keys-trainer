@@ -20,18 +20,20 @@ from pathlib import Path
 import checks
 import desktop_session  # registers the desktop checks
 import herdr_backend
+import strata_keys  # registers the strata check
 from practice import Card, rows_for, shortcut_text
 from router import canonical
 from strings import DESKTOP, KEYS, REPORT
 
 
 FOLDER = Path(__file__).with_name("curriculum")
-TOOLS = ("herdr", "yazi", "desktop")
-TRACKS = {"herdr": "herdr", "yazi": "Yazi", "desktop": "Hyprland"}  # history's track names
+TOOLS = ("herdr", "yazi", "strata", "desktop")
+TRACKS = {"herdr": "herdr", "yazi": "Yazi", "strata": "Strata", "desktop": "Hyprland"}  # history's track names
 KINDS = ("learn", "recall", "build")
-FIXTURES = {"herdr": frozenset(herdr_backend.FIXTURES), "desktop": frozenset(desktop_session.FIXTURES)}
+FIXTURES = {"herdr": frozenset(herdr_backend.FIXTURES), "desktop": frozenset(desktop_session.FIXTURES),
+            "strata": frozenset({"keys"})}
 # (Yazi names its own fixtures; yazi_backend.FIXTURES checks them when a session starts.)
-CARD = re.compile(r"(herdr|yazi|desktop):[a-z0-9_]+")
+CARD = re.compile(r"(herdr|yazi|strata|desktop):[a-z0-9_]+")
 LIMITS = {"goal": 66, "why": 70, "nudge": 80, "done": 66, "title": 40, "intro": 220, "pattern": 110,
           "checklist": 32, "builds": 24}
 LESSON_KEYS = {"id": True, "order": True, "title": True, "tool": True, "fixture": True, "intro": True,
@@ -86,7 +88,7 @@ class Scenario:
     setup: tuple[Move, ...] = ()  # played after the fixture when a rebuild must meet `needs`
     typing: bool = False
     source: str = ""
-    template: str = ""  # the goal with «{number}» when the session picks the number (lesson 8)
+    template: str = ""  # the goal with «{number}» when the session picks the number (desktop)
 
     def with_number(self, number: int) -> Scenario:
         """This scenario aimed at `number`: the goal, every numbered move and `number` check."""
@@ -151,6 +153,12 @@ def _tab_label_not(world, earlier, label):
     """The focused tab does not already carry the label a rename step asks for."""
     herdr = checks._herdr(world)
     return herdr.tab is not None and herdr.tab.label != label
+
+
+@checks.need("workspace_focused", label=checks._text())
+def _workspace_focused(world, earlier, label):
+    workspace = checks._herdr(world).workspace
+    return workspace is not None and workspace.label == label
 
 
 @checks.need("workspace_label_not", label=checks._text())
@@ -524,7 +532,12 @@ def _desktop_chords(data, action):
     return desktop_session.desktop_chords(data, action), ""
 
 
-RESOLVERS: dict[str, Callable] = {"herdr": _herdr_chords, "yazi": _yazi_chords, "desktop": _desktop_chords}
+def _strata_chords(data, action):
+    return strata_keys.chords(rows_for(data, "strata"), action), ""
+
+
+RESOLVERS: dict[str, Callable] = {"herdr": _herdr_chords, "yazi": _yazi_chords, "strata": _strata_chords,
+                                  "desktop": _desktop_chords}
 
 
 def _bind(data, card, ambiguous, layout):
@@ -536,7 +549,10 @@ def _bind(data, card, ambiguous, layout):
     if not chords:
         return None, REPORT["unbound"].format(card=card)
     # Hyprland reads desktop chords itself, never through the terminal: no terminal limit applies.
-    usable = list(chords) if tool == "desktop" else [chord for chord in chords if not ambiguous(chord)]
+    # Strata counts Enter for a chord the terminal keeps, so such a chord needs no terminal either.
+    kept = strata_keys.TERMINAL_KEEPS if tool == "strata" else frozenset()
+    usable = (list(chords) if tool == "desktop"
+              else [chord for chord in chords if chord in kept or not ambiguous(chord)])
     if not usable:
         return None, REPORT["ambiguous"].format(card=card, chords=", ".join(chords))
     # Teach a chord that is easy on the user's layout, then the direct one (no prefix), as

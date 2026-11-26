@@ -22,7 +22,7 @@ import lesson
 from native_view import NativeView
 from router import HINT, PAUSE, PROMPT_ACTIONS, QUIT, SKIP, Click, Input, Router, canonical, key_name
 from screen import BOLD, GOLD, MINT, MUTED, Card, Text, render_card
-from strings import DESKTOP
+from strings import DESKTOP, KEYS_ONLY
 
 FRAME = 0.05  # one read and one tick: about 20 Hz
 PROMPT_WAIT, PROMPT_POLL = 0.15, 0.01  # how long a forwarded key may take to open a prompt
@@ -61,7 +61,12 @@ def run_lesson(ui, session, engine: lesson.Engine, router: Router, mode, *, hist
     inputs = inputs or Input()
     pending, mode.pending = getattr(mode, "pending", b""), b""
     if view is None:
-        view = HerdrView(ui, session.herdr) if getattr(session, "herdr", None) is not None else LiveView(ui)
+        if getattr(session, "herdr", None) is not None:
+            view = HerdrView(ui, session.herdr)
+        elif getattr(session, "tool", None) == "strata":
+            view = LiveView(ui, header=KEYS_ONLY["header"], note=KEYS_ONLY["note"])
+        else:
+            view = LiveView(ui)
     native = view
     with native:
         engine.begin(clock())
@@ -219,9 +224,10 @@ class LiveView:
     another workspace is in front, so the card is there when the user comes back.
     """
 
-    def __init__(self, ui, out=None):
+    def __init__(self, ui, out=None, *, header=DESKTOP["header"], note=DESKTOP["watching"]):
         self.ui = ui
         self.out = out or sys.stdout
+        self.header, self.note = header, note
         self.drawn = None
 
     def __enter__(self):
@@ -251,8 +257,8 @@ class LiveView:
                 lines += ["", ((bar.chord, GOLD),)]
             if bar.line:
                 lines += ["", Text(bar.line, LINE_STYLES.get(bar.kind, MUTED))]
-            lines += ["", Text(DESKTOP["watching"], MUTED)]
-            card = Card(DESKTOP["header"], bar.title, tuple(lines), header_style=GOLD)
+            lines += ["", Text(self.note, MUTED)]
+            card = Card(self.header, bar.title, tuple(lines), header_style=GOLD)
             painted, margin = render_card(card, width, height - count)
             self.ui.paint(painted, margin, (width, height))
         else:

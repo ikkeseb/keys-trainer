@@ -42,6 +42,15 @@ NEAR_MISSES = {
     "yazi-copy": ["yazi:cut", "yazi:top", "yazi:enter_folder", "yazi:paste"],   # moved, not copied
     "yazi-move-two": ["yazi:mark_one", "yazi:mark_one", "yazi:yank", "yazi:top",
                       "yazi:enter_folder", "yazi:paste"],                # copied, not moved
+    "yazi-copy-path": ["yazi:copy_filename"],                            # the name, not the path
+    "yazi-copy-filename": ["yazi:copy_path"],
+    "yazi-copy-dirpath": ["yazi:copy_path"],
+    "yazi-create": ["yazi:create", {"type": "todo.txt"}],               # typed, never confirmed
+    "yazi-rename": ["yazi:rename", {"type": "-old"}],
+    "yazi-trash": ["yazi:rename", {"type": "-old"}, {"press": "enter"}],  # renamed, not trashed
+    "yazi-select-all": ["yazi:next_file"],                              # nothing selected
+    "yazi-history": ["yazi:enter_folder", "yazi:leave_folder", "yazi:enter_folder"],  # plain leave/enter
+    "yazi-new-tab": ["yazi:enter_folder", "yazi:new_tab"],              # tab opened in Projects, not Practice
 }
 
 
@@ -104,8 +113,9 @@ def from_json(data):
     data = dict(data)
     for key in ("entries",):
         data[key] = tuple(data[key])
-    for key in ("selected", "tree"):
-        data[key] = frozenset(data[key])
+    for key in ("selected", "tree", "trashed"):
+        if key in data:
+            data[key] = frozenset(data[key])
     return World(yazi=YaziState(**data))
 
 
@@ -133,7 +143,7 @@ def load_recorded():
 
 class CurriculumTests(unittest.TestCase):
     def test_lessons_scenarios_and_copy_follow_the_schema(self):
-        self.assertEqual([lesson["order"] for lesson in LESSONS.values()], [6, 7])
+        self.assertEqual([lesson["order"] for lesson in LESSONS.values()], [6, 7, 8, 9, 10])
         for lesson in LESSONS.values():
             self.assertEqual(lesson["tool"], "yazi")
             self.assertIn(lesson["fixture"], FIXTURES)
@@ -153,7 +163,7 @@ class CurriculumTests(unittest.TestCase):
                          scenario.get("decoy", "yazi:top")]
                 for card in cards:
                     self.assertIn(card.removeprefix("yazi:"), KEYMAP)
-        self.assertEqual([scenario_id for scenario_id, s in SCENARIOS.items() if s.get("typing")], ["yazi-filter"])
+        self.assertEqual([scenario_id for scenario_id, s in SCENARIOS.items() if s.get("typing")], ["yazi-filter", "yazi-create", "yazi-rename"])
 
     def test_the_export_binds_every_card_the_lessons_use(self):
         bindings = session_bindings(YAZI_ROWS, KEYMAP)
@@ -232,6 +242,55 @@ class RecordedYaziTests(unittest.TestCase):
         self.assertEqual([world.yazi.layer for world in history][0], "input")
         self.assertEqual(history[-1].yazi.layer, "mgr")
         self.assertEqual(history[-1].yazi.entries, ("notes.txt",))
+
+    def test_yazi_history_rejects_plain_leave_or_enter_and_accepts_back_then_forward(self):
+        from dataclasses import replace
+
+        start, *history = self.recorded["yazi-history:solution"]
+        self.assertTrue(checks.evaluate(SCENARIOS["yazi-history"]["checks"], start, history).done)
+        near_start, *near_history = self.recorded["yazi-history:near"]
+        self.assertFalse(checks.evaluate(SCENARIOS["yazi-history"]["checks"], near_start, near_history).done)
+        # Using back, then plain enter instead of forward, must also fail.
+        back_then_enter = [
+            World(yazi=replace(start.yazi, cwd="Practice/Projects", history="")),
+            World(yazi=replace(start.yazi, cwd="Practice", history="back:Projects ")),
+            World(yazi=replace(start.yazi, cwd="Practice/Projects", history="back:Projects ")),
+        ]
+        self.assertFalse(checks.evaluate(SCENARIOS["yazi-history"]["checks"], start, back_then_enter).done)
+        # Typed so fast that Practice is never drawn: the end alone still counts.
+        unseen = [back_then_enter[0], World(yazi=replace(
+            start.yazi, cwd="Practice/Projects", history="back:Projects forward:Practice "))]
+        self.assertTrue(checks.evaluate(SCENARIOS["yazi-history"]["checks"], start, unseen).done)
+
+    def test_yazi_new_tab_requires_the_second_tab_in_practice(self):
+        start, *history = self.recorded["yazi-new-tab:solution"]
+        self.assertTrue(checks.evaluate(SCENARIOS["yazi-new-tab"]["checks"], start, history).done)
+        near_start, *near_history = self.recorded["yazi-new-tab:near"]
+        self.assertFalse(checks.evaluate(SCENARIOS["yazi-new-tab"]["checks"], near_start, near_history).done)
+
+    def test_yazi_trash_rejects_rename_and_non_trash_changes(self):
+        from dataclasses import replace
+
+        trash_checks = SCENARIOS["yazi-trash"]["checks"]
+        start, *history = self.recorded["yazi-trash:solution"]
+        self.assertTrue(checks.evaluate(trash_checks, start, history).done)
+        near_start, *near_history = self.recorded["yazi-trash:near"]
+        self.assertFalse(checks.evaluate(trash_checks, near_start, near_history).done)
+        # Disappearing without landing in the private trash fails.
+        gone_only = World(yazi=replace(
+            start.yazi,
+            entries=("Projects", "draft.txt", "report.md"),
+            tree=start.yazi.tree - {"Practice/notes.txt"},
+            trashed=frozenset(),
+        ))
+        self.assertFalse(checks.evaluate(trash_checks, start, [gone_only]).done)
+        # Trashing notes.txt while adding or removing another file also fails.
+        extra_file = World(yazi=replace(
+            gone_only.yazi,
+            tree=gone_only.yazi.tree | {"Practice/extra.txt"},
+            trashed=frozenset({"notes.txt"}),
+        ))
+        self.assertFalse(checks.evaluate(trash_checks, start, [extra_file]).done)
 
 
 LIVE = (os.environ.get("KEYS_TRAINER_TEST_YAZI") == "1" and os.environ.get("KEYS_TRAINER_TEST_HERDR") == "1"

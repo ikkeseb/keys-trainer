@@ -44,6 +44,9 @@ def start_check(data, resolved, env=None, which=shutil.which):
     if not which("yazi") and _lessons_of(resolved, "yazi"):
         lines.append(START["yazi"].format(**_named(_lessons_of(resolved, "yazi"))))
         off.add("yazi")
+    if not which("strata") and _lessons_of(resolved, "strata"):
+        lines.append(START["strata"].format(**_named(_lessons_of(resolved, "strata"))))
+        off.add("strata")
     if _no_hyprland(resolved) and _lessons_of(resolved, "desktop"):
         lines.append(START["hyprland"].format(**_named(_lessons_of(resolved, "desktop"))))
         off.add("desktop")

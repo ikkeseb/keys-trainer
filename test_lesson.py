@@ -10,6 +10,7 @@ from herdr_backend import kitty_keys
 from lesson import BEAT, DONE, PAUSED, RUNNING, SHOWING, Engine, plan_lesson, plan_warmup
 from router import canonical, key_name
 from strings import LESSON as TEXT
+from yazi_backend import PRACTICE_TREE, YaziState
 from world import HerdrWorld, PaneState, Rect, TabState, World, WorkspaceState
 
 ROWS = json.loads(Path(__file__).with_name("test_data").joinpath("rigpage_herdr.json").read_text("utf-8"))
@@ -277,6 +278,11 @@ class Run:
     def bar(self):
         return self.engine.bar()
 
+    def watch(self):
+        """Let «Show me» play to its end."""
+        while self.engine.state == SHOWING:
+            self.tick(0.05)
+
 
 class RecordedYazi:
     """A Yazi that steps through recorded worlds, one per key typed. `typing()` follows
@@ -357,6 +363,52 @@ class TypingInAPromptTest(unittest.TestCase):
         for raw in (b"f", b"n", kitty_keys("esc")):
             self.key(raw)
         self.assertEqual((engine.state, engine.misses, engine.rebuilds), (RUNNING, 0, 0))
+
+
+class SlowTypingTest(unittest.TestCase):
+    """A right answer counts at any pace: every settled world between two keys is judged here,
+    which a lightning-fast typist never lets happen."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.resolved = curriculum.resolve(BOTH, YAZI_DATA)
+
+    def run_keys(self, keys_and_worlds, start):
+        self.session = RecordedYazi([start, *(world for _, world in keys_and_worlds)])
+        self.engine = Engine(only("yazi-select", "yazi-copy", "recall")(self.resolved), self.session,
+                             sleep=lambda seconds: None)
+        now = 100.0
+        self.engine.begin(now)
+        for raw, _ in keys_and_worlds:
+            self.assertTrue(self.engine.forwarded(raw), raw)
+            for _ in range(6):
+                now += 0.05
+                self.engine.tick(now)
+            self.assertEqual((self.engine.misses, self.engine.rebuilds), (0, 0), raw)
+        return self.engine
+
+    def worlds(self):
+        files = ("Projects", "draft.txt", "notes.txt", "report.md")
+        tree = frozenset(PRACTICE_TREE)
+        start = YaziState(cwd="Practice", hovered="notes.txt", entries=files, tree=tree)
+        yanked = replace(start, yanked=1)
+        which = replace(yanked, layer="which")
+        top = replace(yanked, hovered="Projects")
+        inside = replace(top, cwd="Practice/Projects", hovered=None, entries=())
+        pasted = replace(inside, hovered="notes.txt", entries=("notes.txt",),
+                         tree=tree | {"Practice/Projects/notes.txt"})
+        return [World(yazi=item) for item in (start, yanked, which, top, inside, pasted)]
+
+    def test_a_key_sequence_typed_slowly(self):
+        start, yanked, which, top, inside, pasted = self.worlds()
+        engine = self.run_keys([(b"y", yanked), (b"g", which), (b"g", top), (b"l", inside), (b"p", pasted)], start)
+        self.assertEqual((engine.state, engine.results[0].outcome), (BEAT, "clean"))
+
+    def test_another_way_to_the_folder_typed_slowly(self):
+        start, yanked, _, top, inside, pasted = self.worlds()
+        middle = World(yazi=replace(yanked.yazi, hovered="draft.txt"))
+        engine = self.run_keys([(b"y", yanked), (b"k", middle), (b"k", top), (b"l", inside), (b"p", pasted)], start)
+        self.assertEqual((engine.state, engine.results[0].outcome), (BEAT, "clean"))
 
 
 class RoundTripTest(unittest.TestCase):
@@ -528,10 +580,10 @@ class LadderTest(unittest.TestCase):
         self.assertFalse(run.engine.forwarded(kitty_keys("ctrl+alt+up")))  # the user's keys wait while it plays
         run.tick(0.0)
         self.assertEqual(run.bar().line, "Watch: Ctrl + Alt + ←")
+        run.watch()
         self.assertIn(("herdr:focus_pane_left", None), run.session.played)
-        run.wait(lesson.SHOW_PAUSE + 0.1)
         self.assertEqual(run.engine.state, BEAT)
-        self.assertEqual(run.bar().line, "Shown this time. It comes back soon for you to do yourself.")
+        self.assertEqual(run.bar().line, "Keys · Ctrl + Alt + ← · Shown this time. It comes back soon for you to do yourself.")
         result = run.engine.results[2]
         self.assertEqual((result.outcome, result.hint_level), ("shown", 3))
         # Back once after two other steps, then before the build.
@@ -552,7 +604,7 @@ class LadderTest(unittest.TestCase):
         run.engine.hint()
         run.engine.hint()  # four panes, split-rows needs at most three: set up again, then play
         self.assertEqual(run.session.fixtures, ["one_pane", "one_pane"])
-        run.wait(2.0)
+        run.watch()
         self.assertEqual(run.engine.results[2].outcome, "shown")
 
     def test_show_me_after_partial_progress_plays_the_whole_solution_from_the_start(self):
@@ -567,7 +619,7 @@ class LadderTest(unittest.TestCase):
         run.card("herdr:next_tab")
         self.assertEqual(run.bar().line, "✓ next tab    ○ previous tab")
         self.assertTrue(run.engine.hint())  # LEARN: straight to «Show me»
-        run.wait(2.0)
+        run.watch()
         self.assertEqual(positions, [3, 2, 3, 2])
         self.assertEqual(session.fixtures, ["four_tabs", "four_tabs"])
         self.assertEqual(session.played[-2:], [("herdr:next_tab", None), ("herdr:previous_tab", None)])
@@ -576,8 +628,37 @@ class LadderTest(unittest.TestCase):
     def test_show_me_from_the_untouched_start_plays_from_there(self):
         run = Run(plan=only("tabs", "tab-step"))
         run.engine.hint()
-        run.wait(2.0)
+        run.watch()
         self.assertEqual(run.session.fixtures, ["four_tabs"])
+        self.assertEqual(run.engine.state, BEAT)
+
+    def test_show_me_rebuilds_after_a_key_whose_effect_has_not_been_seen_yet(self):
+        run = Run(plan=only("tabs", "tab-step"))
+        run.engine.forwarded(kitty_keys(run.resolved.bindings["herdr:next_tab"].taught))  # no tick: unseen
+        run.engine.hint()
+        self.assertEqual(run.session.fixtures, ["four_tabs", "four_tabs"])
+
+    def test_show_me_goes_at_a_pace_a_person_can_follow(self):
+        run = Run(plan=only("tabs", "tab-step"))
+        pressed, shown = [], []
+        act = run.session._act
+        run.session._act = lambda *args: (pressed.append(run.now), act(*args))
+        began = run.now
+        run.engine.hint()
+        while run.engine.state == SHOWING:
+            run.tick(0.05)
+            keys = run.bar().line.count("Alt")
+            if keys > len(shown):
+                shown.append(run.now)
+        ended = run.now
+        self.assertEqual((len(pressed), len(shown)), (2, 2))
+        for seen, sent in zip(shown, pressed):
+            self.assertGreaterEqual(sent - seen, 0.9)  # the key is on screen before it is pressed
+        self.assertGreaterEqual(pressed[0] - began, 0.9)
+        self.assertGreaterEqual(pressed[1] - pressed[0], 1.8)
+        self.assertGreaterEqual(ended - pressed[1], 1.4)
+        self.assertIn("Alt", run.bar().line)  # the keys stay up while the result shows
+        run.wait(2.5)
         self.assertEqual(run.engine.state, BEAT)
 
     def test_learn_hint_goes_straight_to_show_me(self):
@@ -587,7 +668,7 @@ class LadderTest(unittest.TestCase):
         self.assertEqual(run.engine.state, SHOWING)
         run.tick(0)
         self.assertEqual(run.bar().line, "Watch: Ctrl + Alt + ←")
-        run.wait(1.2)
+        run.watch()
         self.assertEqual(run.engine.state, BEAT)
         self.assertEqual(run.engine.results[0].outcome, "met")
         self.assertEqual(run.engine.bar().steps[0], "shown")
@@ -605,7 +686,7 @@ class LadderTest(unittest.TestCase):
         run.engine.hint()
         self.assertEqual(run.bar().line, "Keys · Next: Alt + Shift + Enter")
         run.engine.hint()
-        run.wait(3.0)
+        run.watch()
         self.assertEqual(run.engine.results[6].outcome, "shown")
         self.assertEqual(run.session.fixtures[-1], "one_pane")
         self.assertEqual(run.session.played[-2:], [("herdr:split_horizontal", None), ("herdr:split_vertical", None)])

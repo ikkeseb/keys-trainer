@@ -19,5 +19,17 @@
   {"name": "end", "value": "arrow bot"},
   {"name": ".", "value": "hidden toggle"},
   {"name": "v", "value": "visual_mode"},
-  {"name": "esc", "value": "escape"}
+  {"name": "esc", "value": "escape"},
+  {"name": "c, c", "value": "copy path"},
+  {"name": "c, f", "value": "copy filename"},
+  {"name": "c, d", "value": "copy dirpath"},
+  {"name": "ctrl+a", "value": "toggle_all --state=on"},
+  {"name": "a", "value": "create"},
+  {"name": "r", "value": "rename --cursor=before_ext"},
+  {"name": "d", "value": "remove"},
+  {"name": "H", "value": "back"},
+  {"name": "L", "value": "forward"},
+  {"name": "t, t", "value": "tab_create --current"},
+  {"name": "[", "value": "tab_switch -1 --relative"},
+  {"name": "]", "value": "tab_switch 1 --relative"}
 ]

@@ -18,6 +18,7 @@ from herdr_backend import (
     NATIVE_FRAME_CLOSE,
     NATIVE_FRAME_OPEN,
     UNCONFIGURED_GROUP,
+    UNCONFIGURED_NAVIGATION,
     _key_config,
     _tab_layout,
     demo_keys,
@@ -212,7 +213,7 @@ class HerdrBackendTests(unittest.TestCase):
         default = "[keys]\n" + "".join(f'# {name} = "prefix+f1"\n' for name in names) + "[ui]"
         keys = tomllib.loads(_key_config(default, FULL_EXPORT, set(names)))["keys"]
         bound = {chord for value in keys.values() for chord in ([value] if isinstance(value, str) else value)}
-        for row in UNCONFIGURED:
+        for row in (row for row in UNCONFIGURED if row["value"] not in UNCONFIGURED_NAVIGATION):
             with self.subTest(row=row["name"]):
                 self.assertNotIn(row["name"], bound)
                 self.assertFalse(keys.get(row["value"].replace(" ", "_")))
@@ -222,7 +223,8 @@ class HerdrBackendTests(unittest.TestCase):
 
     def test_session_bindings_name_only_the_requested_actions(self):
         bindings = selected_bindings(RIGPAGE_ROWS, {"zoom", "last_pane", "cycle_pane_next"})
-        self.assertEqual(bindings, {"prefix": ["ctrl+space"], "zoom": ["prefix+z"], "last_pane": ["prefix+l", "prefix+;"]})
+        self.assertEqual(bindings, {"prefix": ["ctrl+space"], "zoom": ["prefix+z"], "last_pane": ["prefix+l", "prefix+;"],
+                                    "cycle_pane_next": ["prefix+tab"]})
         self.assertEqual(herdr_actions('[keys]\n# prefix = "ctrl+b"\n# zoom = "prefix+z"\n[ui]'), {"zoom"})
 
     def test_session_api_needs_a_session(self):
@@ -408,7 +410,8 @@ class PrivateHerdrTests(unittest.TestCase):
                                                     "remote_image_paste", "resize_mode", "rename_pane",
                                                     "move_tab_previous", "move_tab_next"})
             backend.start_session(known)
-            self.assertEqual(backend.chords("cycle_pane_next"), ())
+            self.assertEqual(backend.chords("settings"), ())
+            self.assertEqual(backend.chords("cycle_pane_next"), ("prefix+tab",))  # moving about stays
             self.assertEqual(backend.chords("close_pane"), ("prefix+x", "alt+esc"))
 
     def test_unknown_action_and_dead_bindings_raise_clearly(self):

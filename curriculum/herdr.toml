@@ -393,3 +393,38 @@ checks = [{ check = "blueprint", blueprint = "console", mode = "hold" }]
 solution = ["herdr:split_vertical", "herdr:split_horizontal", "herdr:focus_pane_left", "herdr:split_horizontal",
             "herdr:focus_pane_up", "herdr:split_vertical"]
 decoy = ["herdr:split_horizontal", "herdr:split_vertical", "herdr:focus_pane_up", "herdr:split_vertical"]
+
+[[lesson]]
+id = "navigate"
+order = 11
+title = "herdr: jump around"
+tool = "herdr"
+fixture = "three_workspaces"
+intro = "Get anywhere from the list of workspaces, or walk the panes with one key."
+pattern = "The workspace list: arrows to choose, Enter to go. Cycling visits every pane in turn."
+steps = ["learn:picker", "learn:cycle", "recall:picker", "recall:cycle"]
+
+[[scenario]]
+id = "picker"
+goal = "From the workspace list, go to Practice"
+why = "See every workspace and pick one, however many there are."
+nudge = "Prefix, then the first letter of workspace. Move up the list, then Enter."
+done = "You are in Practice"
+cards = ["herdr:workspace_picker"]
+needs = [{ check = "workspace_focused", label = "docs" }]
+checks = [{ check = "workspace_label", label = "Practice" }]
+solution = ["herdr:workspace_picker", { press = "up" }, { press = "up" }, { press = "enter" }]
+decoy = "herdr:workspace_picker"
+
+[[scenario]]
+id = "cycle"
+goal = "Cycle round to the left pane"
+why = "One key for the next pane, without thinking about direction."
+nudge = "Prefix, then the key that moves between fields in a form."
+done = "On the left"
+cards = ["herdr:cycle_pane_next"]
+fixture = "right_stack"
+needs = [{ check = "has_neighbour", side = "horizontal" }, { check = "focus_at", position = "bottom-right" }]
+checks = [{ check = "focus_at", position = "left" }]
+solution = ["herdr:cycle_pane_next"]
+decoy = [{ press = "down" }]

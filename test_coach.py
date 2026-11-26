@@ -90,6 +90,24 @@ class CoachBarTests(unittest.TestCase):
                         self.assertFalse(re.search(r"\x1b(?!\[[0-9;]*m)", row), "only SGR in a row")
                     self.assertTrue(SGR.sub("", rows[-1]).startswith(f"{bar.hint_key} {bar.hint}"))
 
+    def test_a_long_show_me_line_keeps_the_newest_keys(self):
+        keys = [f"Ctrl + Alt + {letter}" for letter in "ABCDEFGH"]
+        bar = Bar("BUILD", "Build the console", line="Watch: " + ", ".join(keys), kind="hint", hint=None)
+        for width, height in ((50, 15), (100, 30)):
+            with self.subTest(size=(width, height)):
+                shown = "\n".join(plain(render(bar, width, height)))
+                self.assertIn("Watch: … ", shown)
+                self.assertIn(keys[-1], shown)
+                self.assertNotIn(keys[0], shown)
+
+    def test_show_me_in_a_small_window_shows_the_key_being_pressed_in_full(self):
+        for key, chord in (("Enter", "Ctrl + Space → Shift + w"), ("Ctrl + Space → Shift + t", "")):
+            bar = Bar("LEARN", "Rename the workspace", chord=chord, line=f"Watch: Ctrl + Space → Shift + w, {key}",
+                      kind="hint", hint=None, title="Workspaces", steps=("current", "todo"))
+            for width in (40, 50):
+                with self.subTest(key=key, width=width):
+                    self.assertIn(key, plain(render(bar, width, 15))[0])
+
     def test_states_without_keys(self):
         beat = Bar("✓", "Focus is on the left", line="1.2 s · first time without a hint", kind="success",
                    hint=None, title="Move between panes", steps=("clean",) * 3 + ("current",) + ("todo",) * 5)

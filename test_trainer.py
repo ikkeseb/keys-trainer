@@ -23,7 +23,7 @@ from screen import render_card
 from strings import START
 
 HERE = Path(__file__).resolve().parent
-ROWS = {name: json.loads((HERE / "test_data" / f"rigpage_{name}.json").read_text("utf-8")) for name in ("herdr", "yazi")}
+ROWS = {name: json.loads((HERE / "test_data" / f"rigpage_{name}.json").read_text("utf-8")) for name in ("herdr", "yazi", "strata")}
 DATA = {"groups": [{"id": name, "rows": rows} for name, rows in ROWS.items()]}
 LESSONS = curriculum.load()
 SGR = re.compile(r"\x1b\[[0-9;]*m")
@@ -159,7 +159,7 @@ class HomeModelTests(unittest.TestCase):
         self.assertEqual([row.lesson for row in home.rows], self.ids)
         self.assertTrue(all(row.stars is None for row in home.rows))
         shown = text(trainer.home_card(home, home.recommended, self.resolved, now=NOW))
-        for line in ("Learn your shortcuts by using them", "› 1  Split the screen", "start here",
+        for line in ("Learn your shortcuts by using them", "›  1  Split the screen", "start here",
                      "Enter  Start lesson 1", "l  Layout workshop", "Press ? to see the keys"):
             self.assertIn(line, shown)
         self.assertNotIn("Today", shown)
@@ -173,8 +173,8 @@ class HomeModelTests(unittest.TestCase):
         self.assertEqual([row.stars for row in home.rows[:3]], [3, 2, None])
         shown = text(trainer.home_card(home, home.recommended, self.resolved, now=NOW))
         for line in ("Welcome back", "last practised yesterday", "1  Warm-up        4 shortcuts due for review",
-                     "2  Lesson 3       Tabs", "✓ 1  Split the screen", "★★★", "★★☆   one to go for three stars",
-                     "› 3  Tabs", "○○○   next", "↑ ↓  Choose lesson"):
+                     "2  Lesson 3       Tabs", "✓  1  Split the screen", "★★★", "★★☆   one to go for three stars",
+                     "›  3  Tabs", "○○○   next", "↑ ↓  Choose lesson"):
             self.assertIn(line, shown)
         moved = text(trainer.home_card(home, 4, self.resolved, now=NOW))
         self.assertIn("2  Lesson 5       Resize and build", moved)  # the plan follows the cursor
@@ -185,8 +185,8 @@ class HomeModelTests(unittest.TestCase):
         home = trainer.home_model(self.resolved, records, practised=True)
         self.assertEqual(home.rows[home.recommended].lesson, "workspaces")
         shown = text(trainer.home_card(home, home.recommended, self.resolved, now=NOW))
-        self.assertIn("› 4  Workspaces              ★★☆   next", shown)
-        self.assertIn("✓ 5  Resize and build        ★☆☆   two to go for three stars", shown)
+        self.assertIn("›  4  Workspaces                ★★☆   next", shown)
+        self.assertIn("✓  5  Resize and build          ★☆☆   two to go for three stars", shown)
         records["shape"] = LessonRecord(3, 90.0, NOW)
         records["workspaces"] = LessonRecord(3, 90.0, NOW)
         self.assertEqual(trainer.home_model(self.resolved, records, practised=True).recommended, 0)
@@ -200,7 +200,7 @@ class HomeModelTests(unittest.TestCase):
         herdr_only = {"groups": [{"id": "herdr", "rows": ROWS["herdr"]}]}
         resolved = curriculum.resolve(LESSONS, herdr_only)
         home = trainer.home_model(resolved, {}, practised=False)
-        self.assertEqual([row.tool for row in home.rows], ["herdr"] * 5)  # Yazi lessons are hidden
+        self.assertEqual([row.tool for row in home.rows], ["herdr"] * 6)  # Yazi lessons are hidden
         home = trainer.home_model(self.resolved, {}, ready=lambda tool: tool == "herdr")
         self.assertFalse(home.rows[-1].ready)
         self.assertIn("needs Yazi", text(trainer.home_card(home, 0, self.resolved, now=NOW)))
@@ -210,20 +210,20 @@ class FlowTests(unittest.TestCase):
     def test_first_run_enter_enter_plays_lesson_one_then_q_ends_the_day(self):
         shell = ScriptedShell("enter", "enter", "q", "enter")
         shell.run()
-        self.assertEqual(shell.ui.headers, ["KEYS TRAINER", "LESSON 1 OF 7", "LESSON 1 COMPLETE", "DONE FOR TODAY"])
+        self.assertEqual(shell.ui.headers, ["KEYS TRAINER", "LESSON 1 OF 12", "LESSON 1 COMPLETE", "DONE FOR TODAY"])
         self.assertEqual(shell.played, [("herdr", "split", False, 7)])
         complete, end = text(shell.ui.cards[2]), text(shell.ui.cards[3])
         self.assertIn("Enter  Next: Move between panes (≈ 4 min)", complete)
         self.assertIn("Three stars", complete)
         self.assertIn("3 shortcuts · 3 without a hint · 1 lesson complete", end)
         self.assertIn("Alt + Enter  ·  Alt + Shift + Enter  ·  Alt + Esc", end)  # new today
-        self.assertIn("1 of 7 lessons", end)
+        self.assertIn("1 of 12 lessons", end)
         self.assertIn("Warm-up (3), then lesson 2 · Move between panes", end)  # all three due tomorrow
 
     def test_complete_enter_opens_the_next_intro_and_t_tests_out(self):
         shell = ScriptedShell("enter", "enter", "enter", "t", "q", "enter")
         shell.run()
-        self.assertEqual(shell.ui.headers[3], "LESSON 2 OF 7")
+        self.assertEqual(shell.ui.headers[3], "LESSON 2 OF 12")
         learn = sum(step.kind == "learn" for step in lesson.plan_lesson(shell.resolved, "panes-move").steps)
         self.assertEqual(shell.played[1], ("herdr", "panes-move", False, 9 - learn))
 
@@ -238,7 +238,7 @@ class FlowTests(unittest.TestCase):
         home = text(shell.ui.cards[0])
         self.assertIn("1  Warm-up        4 shortcuts due for review", home)
         self.assertEqual([(tool, warm) for tool, _, warm, _ in shell.played], [("herdr", True), ("yazi", True)])
-        self.assertEqual(shell.ui.headers[1], "LESSON 2 OF 7")
+        self.assertEqual(shell.ui.headers[1], "LESSON 2 OF 12")
         self.assertNotIn("Warm-up", text(shell.ui.cards[2]))  # once a session
         self.assertEqual(shell.ui.headers[-1], "DONE FOR TODAY")
 
@@ -256,14 +256,14 @@ class FlowTests(unittest.TestCase):
     def test_lesson_flag_starts_at_its_intro_and_esc_goes_home(self):
         shell = ScriptedShell("esc", "q")
         shell.run("tabs")
-        self.assertEqual(shell.ui.headers, ["LESSON 3 OF 7", "KEYS TRAINER"])
+        self.assertEqual(shell.ui.headers, ["LESSON 3 OF 12", "KEYS TRAINER"])
         self.assertEqual(shell.played, [])
 
     def test_a_session_that_cannot_start_shows_why_and_goes_home(self):
         shell = ScriptedShell("enter", "enter", "enter", "q")
         shell.play = lambda plan, tool, autoplay=None: RuntimeError("Private Herdr server did not start.")
         shell.run()
-        self.assertEqual(shell.ui.headers, ["KEYS TRAINER", "LESSON 1 OF 7", "THE SESSION DID NOT START", "KEYS TRAINER"])
+        self.assertEqual(shell.ui.headers, ["KEYS TRAINER", "LESSON 1 OF 12", "THE SESSION DID NOT START", "KEYS TRAINER"])
         self.assertIn("Private Herdr server did not start.", text(shell.ui.cards[2]))
 
     def test_error_card_puts_a_plain_headline_over_the_muted_detail(self):
@@ -505,16 +505,16 @@ class CardTests(unittest.TestCase):
                 with self.subTest(size=size, cursor=cursor):
                     row = home.rows[cursor]
                     shown = text(trainer.home_card(home, cursor, self.resolved, now=NOW), size)
-                    self.assertIn(f"› {row.number}  {row.title}"[:size[0] - 6], shown)
+                    self.assertIn(f"› {row.number:>2}  {row.title}"[:size[0] - 6], shown)
                     self.assertIn("q  Quit", shown)
         # The text above the path stays; only the path scrolls.
         shown = text(trainer.home_card(home, last, self.resolved, now=NOW), (60, 15))
         self.assertIn("Learn your shortcuts by using them", shown)
         self.assertNotIn("1  Split the screen", shown)
         # With room for the whole path nothing scrolls, as before.
-        shown = text(trainer.home_card(home, last, self.resolved, now=NOW), (80, 20))
-        for line in ("The path", "  1  Split the screen        ○○○   start here", "› 7  Yazi: select and move   ○○○",
-                     "Stuck? Press ? to see the keys.", "Enter  Start lesson 7", "q  Quit"):
+        shown = text(trainer.home_card(home, last, self.resolved, now=NOW), (80, 30))
+        for line in ("The path", "   1  Split the screen          ○○○   start here", "› 12  Strata: get around        ○○○",
+                     "Stuck? Press ? to see the keys.", "Enter  Start lesson 12", "q  Quit"):
             self.assertIn(line, shown)
 
 
