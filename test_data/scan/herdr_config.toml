@@ -1,0 +1,21 @@
+# A made-up herdr config: a new prefix, a rebind, an unbind and a custom command.
+[ui]
+sidebar = true
+
+[keys]
+prefix = "ctrl+a"
+# Rebind: two chords for one action.
+split_vertical = ["prefix+backslash", "alt+v"]
+# Unbind: herdr's prefix+x default must not come back.
+close_pane = ""
+# Takes herdr's zoom default chord, so that default is dropped.
+toggle_sidebar = "prefix+z"
+switch_tab = "alt+1..9"
+
+[keys.indexed]
+tabs = ""
+
+[[keys.command]]
+key = "prefix+g"
+type = "popup"
+command = "lazygit"

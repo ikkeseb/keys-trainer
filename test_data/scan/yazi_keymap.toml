@@ -1,0 +1,11 @@
+# A made-up yazi keymap.toml: a prepend that takes a built-in chord, and appends.
+[mgr]
+prepend_keymap = [
+	{ on = "f", run = "find --smart", desc = "Find next file" },
+	{ on = "<C-n>", run = "arrow next" },
+]
+append_keymap = [
+	{ on = "j", run = "noop" },
+	{ on = [ "g", "h" ], run = "cd ~" },
+	{ on = "<A-x>", run = "noop" },
+]

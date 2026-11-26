@@ -1,0 +1,25 @@
+#!/usr/bin/env python3
+import signal
+import sys
+
+if sys.version_info < (3, 11):  # before the trainer loads: an older Python fails on its imports
+    from strings import START
+    sys.stderr.write(START["old_python"].format(version=sys.version.split()[0]) + "\n")
+    raise SystemExit(1)
+
+from trainer import main  # noqa: E402
+
+
+exit_signals = (signal.SIGHUP, signal.SIGTERM, signal.SIGINT, signal.SIGQUIT)
+
+
+def leave_terminal(signum, _frame):
+    # Let the context managers stop the private server even if the terminal closes.
+    for sig in exit_signals:
+        signal.signal(sig, signal.SIG_IGN)
+    raise KeyboardInterrupt
+
+
+for sig in exit_signals:
+    signal.signal(sig, leave_terminal)
+raise SystemExit(main())

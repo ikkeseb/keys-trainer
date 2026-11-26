@@ -1,0 +1,30 @@
+#:schema https://yazi-rs.github.io/schemas/keymap.json
+
+[mgr]
+
+keymap = [
+	{ on = "<Esc>",   run = "escape",            desc = "Exit visual mode, clear selection, or cancel search" },
+	{ on = "<C-[>",   run = "escape",            desc = "Exit visual mode, clear selection, or cancel search" },
+	{ on = "q",       run = "quit",              desc = "Quit the process" },
+	{ on = "k",       run = "arrow prev",        desc = "Previous file" },
+	{ on = "j",       run = "arrow next",        desc = "Next file" },
+	{ on = "<C-u>",   run = "arrow -50%",        desc = "Move cursor up half page" },
+	{ on = [ "g", "g" ], run = "arrow top",      desc = "Go to top" },
+	{ on = "G",       run = "arrow bot",         desc = "Go to bottom" },
+	{ on = "h",       run = "leave",             desc = "Back to the parent directory" },
+	{ on = "l",       run = "enter",             desc = "Enter the child directory" },
+	{ on = "<Space>", run = [ "toggle", "arrow 1" ], desc = "Toggle the current selection state" },
+	{ on = "v",       run = "visual_mode",       desc = "Enter visual mode (selection mode)" },
+	{ on = "y",       run = "yank",              desc = "Yank selected files (copy)" },
+	{ on = "x",       run = "yank --cut",        desc = "Yank selected files (cut)" },
+	{ on = "p",       run = "paste",             desc = "Paste yanked files" },
+	{ on = ".",       run = "hidden toggle",     desc = "Toggle the visibility of hidden files" },
+	{ on = "f",       run = "filter --smart",    desc = "Filter files" },
+	{ on = "<C-z>",   run = "suspend",           desc = "Suspend the process", for = "windows" },
+]
+
+[tasks]
+
+keymap = [
+	{ on = "<Esc>", run = "close", desc = "Close task manager" },
+]

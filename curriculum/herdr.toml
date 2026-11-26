@@ -1,0 +1,395 @@
+# herdr lessons 1 to 5 (design § 2.3), read by curriculum.py.
+#
+# Shown copy is English, terms as herdr names them (pane, tab, workspace, prefix). Limits: goal 66, why 70,
+# nudge 80, done 66, checklist 32 characters. A nudge names the pattern (which key
+# family, which idea), never the chord: the chord is hint level 2.
+#
+# Solution, setup and decoy items: a card id, or a table with one of
+#   card = "herdr:switch_tab", number = 4   (an indexed chord: alt+1..9)
+#   press = "backspace", repeat = 8         (rename prompts are prefilled: M3)
+#   type = "logs"
+#   wait = 0.4
+# `setup` is played after the fixture when a rebuild has to meet `needs`.
+
+# ── Lesson 1 · Split the screen ───────────────────────────────────────────
+
+[[lesson]]
+id = "split"
+order = 1
+title = "Split the screen"
+tool = "herdr"
+fixture = "one_pane"
+intro = "One terminal is rarely enough. Split the pane, and the agent, the tests and the log each get their own place."
+pattern = "Alt is the direct layer, no prefix needed. The prefix plus a letter does the same."
+builds = ["┌─────────────┐", "├──────┬──────┤", "└──────┴──────┘"]
+steps = ["learn:split-rows", "learn:split-cols", "recall:split-rows", "learn:close-pane",
+         "recall:split-cols", "recall:close-pane", "build:build-split-bottom"]
+
+[[scenario]]
+id = "split-rows"
+goal = "Split the pane into two rows"
+why = "Run a command below and keep the agent above."
+nudge = "The Alt layer, no prefix: the same key that sends a command."
+done = "Split into two rows"
+cards = ["herdr:split_horizontal"]
+needs = [{ check = "max_panes", count = 3 }]
+checks = [{ check = "split", direction = "down" }]
+solution = ["herdr:split_horizontal"]
+decoy = "herdr:split_vertical"
+
+[[scenario]]
+id = "split-cols"
+goal = "Split the pane into two columns"
+why = "Code and output side by side."
+nudge = "As for rows, plus Shift. That puts them side by side."
+done = "Split into two columns"
+cards = ["herdr:split_vertical"]
+needs = [{ check = "max_panes", count = 3 }]
+checks = [{ check = "split", direction = "right" }]
+solution = ["herdr:split_vertical"]
+decoy = "herdr:split_horizontal"
+
+[[scenario]]
+id = "close-pane"
+goal = "Close the focused pane"
+why = "Done with a command? Clear it away."
+nudge = "The Alt layer again, with the key you use to cancel things."
+done = "Pane closed"
+cards = ["herdr:close_pane"]
+fixture = "right_stack"
+needs = [{ check = "min_panes", count = 2 }]
+checks = [{ check = "pane_closed" }]
+solution = ["herdr:close_pane"]
+decoy = "herdr:focus_pane_left"
+
+[[scenario]]
+id = "build-split-bottom"
+goal = "A wide pane on top, two panes below"
+why = "The agent on top, tests and log below."
+nudge = "Two splits: rows first, then the bottom pane into columns."
+done = "Layout ready"
+cards = ["herdr:split_horizontal", "herdr:split_vertical"]
+needs = [{ check = "max_panes", count = 1 }]
+checks = [{ check = "blueprint", blueprint = "split-bottom", mode = "hold" }]
+solution = ["herdr:split_horizontal", "herdr:split_vertical"]
+decoy = ["herdr:split_vertical", "herdr:split_horizontal"]
+
+# ── Lesson 2 · Move between panes ─────────────────────────────────────────
+
+[[lesson]]
+id = "panes-move"
+order = 2
+title = "Move between panes"
+tool = "herdr"
+fixture = "right_stack"
+intro = "Once the screen is split, you want to jump where you need to be without touching the mouse."
+pattern = "Ctrl + Alt + arrow key moves focus the way the arrow points."
+builds = ["┌───────┬──────┐", "│   ●   ├──────┤", "└───────┴──────┘"]
+steps = ["learn:focus-left", "learn:walk", "recall:focus-left", "learn:last-pane", "recall:walk-back",
+         "learn:zoom", "recall:last-pane", "recall:zoom", "build:build-editor-stack"]
+
+[[scenario]]
+id = "focus-left"
+goal = "Move focus to the left pane"
+why = "Type in the editor while the agent works on the right."
+nudge = "A direct shortcut, no prefix. The arrow points where you want to go."
+done = "Focus is on the left"
+cards = ["herdr:focus_pane_left"]
+needs = [{ check = "has_neighbour", side = "left" }]
+checks = [{ check = "focus_moved", side = "left" }]
+solution = ["herdr:focus_pane_left"]
+decoy = "herdr:focus_pane_up"
+
+[[scenario]]
+id = "walk"
+goal = "Go right, then down"
+why = "Hop between panes without touching the mouse."
+nudge = "The same shortcut as for left, twice. Only the arrow changes."
+done = "Right, then down"
+cards = ["herdr:focus_pane_right", "herdr:focus_pane_down"]
+needs = [{ check = "focus_at", position = "left" }]
+setup = ["herdr:focus_pane_left"]
+checks = [{ check = "focus_moved", side = "right", checklist = "right" },
+          { check = "focus_moved", side = "down", checklist = "down" }]
+solution = ["herdr:focus_pane_right", "herdr:focus_pane_down"]
+decoy = ["herdr:focus_pane_down", "herdr:focus_pane_right"]
+
+[[scenario]]
+id = "walk-back"
+goal = "Go up, then left"
+why = "The same way back, in reverse order."
+nudge = "The focus shortcut again, twice. Up first, then left."
+done = "Up, then left"
+cards = ["herdr:focus_pane_up", "herdr:focus_pane_left"]
+needs = [{ check = "focus_at", position = "bottom-right" }]
+checks = [{ check = "focus_moved", side = "up", checklist = "up" },
+          { check = "focus_moved", side = "left", checklist = "left" }]
+solution = ["herdr:focus_pane_up", "herdr:focus_pane_left"]
+decoy = ["herdr:focus_pane_left", "herdr:focus_pane_up"]
+
+[[scenario]]
+id = "last-pane"
+goal = "Jump back to the pane you were just in"
+why = "Flip between two panes with one shortcut."
+nudge = "The prefix first, then one more key. No arrow: it remembers the way."
+done = "Back where you were"
+cards = ["herdr:last_pane"]
+needs = [{ check = "has_focus_history" }]
+setup = ["herdr:focus_pane_up"]
+checks = [{ check = "last_pane" }]
+solution = ["herdr:last_pane"]
+decoy = "herdr:focus_pane_left"
+
+[[scenario]]
+id = "zoom"
+goal = "Zoom the pane to full size, and back"
+why = "Read a long answer without the panes around it."
+nudge = "The prefix, then the letter the word starts with. The same again turns it off."
+done = "Zoomed in and out"
+cards = ["herdr:zoom"]
+needs = [{ check = "min_panes", count = 2 }, { check = "not_zoomed" }]
+checks = [{ check = "zoomed", on = true, checklist = "zoom on" },
+          { check = "zoomed", on = false, checklist = "zoom off" }]
+solution = ["herdr:zoom", "herdr:zoom"]
+decoy = ["herdr:zoom", "herdr:focus_pane_left"]
+
+[[scenario]]
+id = "build-editor-stack"
+goal = "Editor on the left, two stacked on the right, focus left"
+why = "The layout for coding with an agent beside you."
+nudge = "Two columns first, then rows in the right one, then focus back."
+done = "Coding layout ready"
+cards = ["herdr:split_vertical", "herdr:split_horizontal", "herdr:focus_pane_left"]
+fixture = "one_pane"
+needs = [{ check = "max_panes", count = 1 }]
+checks = [{ check = "blueprint", blueprint = "right-stack", mode = "hold", checklist = "two stacked on the right" },
+          { check = "focus_at", position = "left", mode = "hold", checklist = "focus on the left" }]
+solution = ["herdr:split_vertical", "herdr:split_horizontal", "herdr:focus_pane_left"]
+decoy = ["herdr:split_vertical", "herdr:split_horizontal"]
+
+# ── Lesson 3 · Tabs ───────────────────────────────────────────────────────
+
+[[lesson]]
+id = "tabs"
+order = 3
+title = "Tabs"
+tool = "herdr"
+fixture = "four_tabs"
+intro = "One tab per task keeps things apart. Here you create, find and name them."
+pattern = "Alt + arrow steps through tabs, Alt + number jumps straight there. The prefix creates and names."
+steps = ["learn:new-tab", "learn:tab-step", "recall:new-tab", "learn:jump-tab", "recall:tab-step",
+         "learn:rename-tab", "recall:jump-tab", "recall:rename-tab", "build:build-tab"]
+
+[[scenario]]
+id = "new-tab"
+goal = "Open a new tab"
+why = "One tab per task, so nothing gets mixed up."
+nudge = "The prefix first, then the letter for making something new."
+done = "New tab open"
+cards = ["herdr:new_tab"]
+needs = [{ check = "max_tabs", count = 6 }]
+checks = [{ check = "new_tab" }]
+solution = ["herdr:new_tab"]
+decoy = "herdr:next_tab"
+
+[[scenario]]
+id = "tab-step"
+goal = "Go to the next tab, and back to the previous one"
+why = "Step between tasks without counting tabs."
+nudge = "A direct shortcut with Alt. The sideways arrows step."
+done = "There and back"
+cards = ["herdr:next_tab", "herdr:previous_tab"]
+needs = [{ check = "min_tabs", count = 3 }]
+checks = [{ check = "tab_step", step = 1, checklist = "next tab" },
+          { check = "tab_step", step = -1, checklist = "previous tab" }]
+solution = ["herdr:next_tab", "herdr:previous_tab"]
+decoy = ["herdr:next_tab", "herdr:next_tab"]
+
+[[scenario]]
+id = "jump-tab"
+goal = "Jump straight to tab 4"
+why = "Fastest when you know where to go."
+nudge = "The Alt layer again, with the tab's number. No stepping."
+done = "On tab 4"
+cards = ["herdr:switch_tab"]
+# Two away: from next door, «tab 4» and «next tab» leave the same state (M8).
+needs = [{ check = "tab_away", position = 4, distance = 2 }]
+checks = [{ check = "tab_at", position = 4 }]
+solution = [{ card = "herdr:switch_tab", number = 4 }]
+decoy = [{ card = "herdr:switch_tab", number = 3 }]
+
+[[scenario]]
+id = "rename-tab"
+goal = "Name the tab logs"
+why = "Names make tabs easy to find again."
+nudge = "The prefix, then the letter for renaming. Clear the old name first."
+done = "The tab is called logs"
+cards = ["herdr:rename_tab"]
+typing = true
+needs = [{ check = "tab_label_not", label = "logs" }]
+checks = [{ check = "tab_label", label = "logs" }]
+solution = ["herdr:rename_tab", { press = "backspace", repeat = 8 }, { type = "logs" }, { press = "enter" }]
+decoy = ["herdr:rename_tab", { type = "logs" }, { press = "enter" }]
+
+[[scenario]]
+id = "build-tab"
+goal = "A new tab called build in two columns, back on tab 1"
+why = "A new task set up in ten seconds."
+nudge = "Create the tab, name it, split it, and jump home to the first one."
+done = "build is ready"
+cards = ["herdr:new_tab", "herdr:rename_tab", "herdr:split_vertical", "herdr:switch_tab"]
+typing = true
+needs = [{ check = "max_tabs", count = 5 }]
+# A new tab: renaming and splitting one of the four that were there does not count.
+checks = [{ check = "tab_added", label = "build", mode = "hold", checklist = "tab called build" },
+          { check = "blueprint", blueprint = "twin-columns", tab_label = "build", new = true, mode = "hold", checklist = "two columns" },
+          { check = "tab_at", position = 1, mode = "hold", checklist = "back on tab 1" }]
+solution = ["herdr:new_tab", "herdr:rename_tab", { press = "backspace", repeat = 8 }, { type = "build" },
+            { press = "enter" }, "herdr:split_vertical", { card = "herdr:switch_tab", number = 1 }]
+# Two wrong ways in one run, and it must never pass on the way: first tab 1 renamed build
+# and split (no new tab), then the real new tab built without the jump back to tab 1.
+decoy = [{ card = "herdr:switch_tab", number = 1 }, "herdr:rename_tab", { press = "backspace", repeat = 8 },
+         { type = "build" }, { press = "enter" }, "herdr:split_vertical",
+         "herdr:new_tab", "herdr:rename_tab", { press = "backspace", repeat = 8 }, { type = "build" },
+         { press = "enter" }, "herdr:split_vertical"]
+
+# ── Lesson 4 · Workspaces ─────────────────────────────────────────────────
+
+[[lesson]]
+id = "workspaces"
+order = 4
+title = "Workspaces"
+tool = "herdr"
+# Two to start with: one new workspace makes three, and with three «previous» and
+# «next» land on different ones (M7), so lesson 4.2 needs no rebuild.
+fixture = "two_workspaces"
+intro = "A workspace is a project with its own tabs. The sidebar shows the ones you have."
+pattern = "Shift turns a tab shortcut into its workspace version. Alt + up and down arrows switch."
+steps = ["learn:new-workspace", "learn:workspace-step", "recall:new-workspace", "learn:rename-workspace",
+         "recall:workspace-step", "recall:rename-workspace", "build:build-workspace"]
+
+[[scenario]]
+id = "new-workspace"
+goal = "Create a new workspace"
+why = "One workspace per project, with its own tabs."
+nudge = "Like a new tab, but with Shift: that makes it the workspace version."
+done = "New workspace"
+cards = ["herdr:new_workspace"]
+needs = [{ check = "max_workspaces", count = 3 }]
+checks = [{ check = "new_workspace" }]
+solution = ["herdr:new_workspace"]
+decoy = "herdr:new_tab"
+
+[[scenario]]
+id = "workspace-step"
+goal = "Go to the previous workspace, and back"
+why = "Switch projects without searching."
+nudge = "A direct shortcut with Alt. Up and down move between workspaces."
+done = "There and back"
+cards = ["herdr:previous_workspace", "herdr:next_workspace"]
+fixture = "three_workspaces"
+needs = [{ check = "min_workspaces", count = 3 }, { check = "on_last_workspace" }]
+checks = [{ check = "workspace_step", step = -1, checklist = "previous" },
+          { check = "workspace_step", step = 1, checklist = "back" }]
+solution = ["herdr:previous_workspace", "herdr:next_workspace"]
+decoy = ["herdr:previous_workspace", "herdr:previous_workspace"]
+
+[[scenario]]
+id = "rename-workspace"
+goal = "Name the workspace web"
+why = "See at a glance which project you are in."
+nudge = "Like naming a tab, but with Shift. Clear the old name first."
+done = "The workspace is called web"
+cards = ["herdr:rename_workspace"]
+typing = true
+needs = [{ check = "not_first_workspace" }, { check = "workspace_label_not", label = "web" }]
+checks = [{ check = "workspace_label", label = "web" }]
+solution = ["herdr:rename_workspace", { press = "backspace", repeat = 8 }, { type = "web" }, { press = "enter" }]
+decoy = ["herdr:rename_workspace", { type = "web" }, { press = "enter" }]
+
+[[scenario]]
+id = "build-workspace"
+goal = "Create a workspace web with two tabs, then close it"
+why = "Open a project, work, clear it away."
+nudge = "Create, name, add a tab, and close the workspace. Confirm with Enter."
+done = "Created and cleared away"
+cards = ["herdr:new_workspace", "herdr:rename_workspace", "herdr:new_tab", "herdr:close_workspace"]
+fixture = "two_tabs"
+typing = true
+needs = [{ check = "max_workspaces", count = 1 }]
+checks = [{ check = "workspace_exists", label = "web", min_tabs = 2, checklist = "web with two tabs" },
+          { check = "workspace_gone", label = "web", focused_label = "Practice", checklist = "closed, back in Practice" }]
+solution = ["herdr:new_workspace", "herdr:rename_workspace", { press = "backspace", repeat = 8 }, { type = "web" },
+            { press = "enter" }, "herdr:new_tab", "herdr:close_workspace", { press = "enter" }]
+# The confirm box takes Enter; y does nothing (M4).
+decoy = ["herdr:new_workspace", "herdr:rename_workspace", { press = "backspace", repeat = 8 }, { type = "web" },
+         { press = "enter" }, "herdr:new_tab", "herdr:close_workspace", { type = "y" }]
+
+# ── Lesson 5 · Resize and build ───────────────────────────────────────────
+
+[[lesson]]
+id = "shape"
+order = 5
+title = "Resize and build"
+tool = "herdr"
+fixture = "right_stack"
+intro = "Last: give the panes the room they need, and build the two biggest layouts by hand."
+pattern = "Shift on the focus shortcut resizes. The arrow moves the divider the way it points."
+builds = ["┌──┬──┐ ┌──┬──┐", "├──┼──┤ ├┬─┼──┤", "└──┴──┘ └┴─┴──┘"]
+steps = ["learn:resize", "recall:resize-back", "build:build-grid", "build:build-console"]
+
+# Resize moves the divider the arrow's way, whatever pane is focused (M5). In right_stack
+# focus is bottom right: ← moves the middle line left (wider), ↓ moves its top down (lower).
+[[scenario]]
+id = "resize"
+goal = "Make the pane wider, then shorter"
+why = "Give the log width, and let the pane above grow taller."
+nudge = "The focus shortcut plus Shift. The arrow moves the divider: two presses each."
+done = "Wider, then shorter"
+cards = ["herdr:resize_pane_left", "herdr:resize_pane_down"]
+needs = [{ check = "has_neighbour", side = "horizontal" }, { check = "has_neighbour", side = "vertical" }]
+checks = [{ check = "resized", side = "left", checklist = "wider" },
+          { check = "resized", side = "down", checklist = "shorter" }]
+solution = ["herdr:resize_pane_left", "herdr:resize_pane_left", "herdr:resize_pane_down", "herdr:resize_pane_down"]
+decoy = ["herdr:resize_pane_left", "herdr:resize_pane_down", "herdr:resize_pane_down"]
+
+[[scenario]]
+id = "resize-back"
+goal = "Make the pane narrower, then taller"
+why = "The same dividers, the other way."
+nudge = "Shift and the arrows again, now the other way. Two presses each."
+done = "Narrower, then taller"
+cards = ["herdr:resize_pane_right", "herdr:resize_pane_up"]
+needs = [{ check = "has_neighbour", side = "horizontal" }, { check = "has_neighbour", side = "vertical" }]
+checks = [{ check = "resized", side = "right", checklist = "narrower" },
+          { check = "resized", side = "up", checklist = "taller" }]
+solution = ["herdr:resize_pane_right", "herdr:resize_pane_right", "herdr:resize_pane_up", "herdr:resize_pane_up"]
+decoy = ["herdr:resize_pane_left", "herdr:resize_pane_left", "herdr:resize_pane_up", "herdr:resize_pane_up"]
+
+[[scenario]]
+id = "build-grid"
+goal = "A grid of four panes"
+why = "Four equal panes: all you learned about splitting and moving."
+nudge = "Split into rows, then split each row into columns."
+done = "Grid ready"
+cards = ["herdr:split_horizontal", "herdr:split_vertical", "herdr:focus_pane_up"]
+fixture = "one_pane"
+needs = [{ check = "max_panes", count = 1 }]
+checks = [{ check = "blueprint", blueprint = "grid", mode = "hold" }]
+solution = ["herdr:split_horizontal", "herdr:split_vertical", "herdr:focus_pane_up", "herdr:split_vertical"]
+# Columns first, then each split in two, is also a grid: stop one short.
+decoy = ["herdr:split_vertical", "herdr:split_horizontal", "herdr:focus_pane_left"]
+
+[[scenario]]
+id = "build-console"
+goal = "A console of five panes"
+why = "The biggest layout, built by hand."
+nudge = "Two columns first. Stack the right one, then split the left one further."
+done = "Console ready"
+cards = ["herdr:split_vertical", "herdr:split_horizontal", "herdr:focus_pane_left", "herdr:focus_pane_up"]
+fixture = "one_pane"
+needs = [{ check = "max_panes", count = 1 }]
+checks = [{ check = "blueprint", blueprint = "console", mode = "hold" }]
+solution = ["herdr:split_vertical", "herdr:split_horizontal", "herdr:focus_pane_left", "herdr:split_horizontal",
+            "herdr:focus_pane_up", "herdr:split_vertical"]
+decoy = ["herdr:split_horizontal", "herdr:split_vertical", "herdr:focus_pane_up", "herdr:split_vertical"]

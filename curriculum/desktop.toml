@@ -1,0 +1,41 @@
+# Lesson 8: the user's live Hyprland (design § 2.3, lesson 8). Schema as herdr.toml.
+#
+# The trainer only watches: socket2's events and the one active-workspace query, never a
+# key or a write. The fixture «live» is the user's desktop as it is, so a step cannot be set up
+# and «Show me» does not exist; every scenario is a round trip that ends where the
+# trainer's window is, and the bar names the way back (the last solution move) before
+# the user leaves. A goal with {number} gets a workspace the user is not on when the step starts.
+#
+# Cards: desktop:switch_workspace (the export's «Switch to workspace 1…10» row, as super+1..9),
+# desktop:former_workspace («Former workspace»), desktop:toggle_quake («Toggle Quake
+# terminal», special workspace «quake»). Checks: desktop_session.py.
+
+[[lesson]]
+id = "desktop"
+order = 8
+title = "Desktop (live)"
+tool = "desktop"
+fixture = "live"
+intro = "The desktop's own shortcuts: switch workspace and bring up the Quake terminal. Each task is a round trip, so you end up back here."
+pattern = "Super runs the desktop. Super + number goes to a workspace, and the way back brings you here."
+steps = ["learn:desktop-workspace", "recall:desktop-workspace", "learn:desktop-quake", "recall:desktop-quake"]
+
+[[scenario]]
+id = "desktop-workspace"
+goal = "Go to workspace {number}, then come back here"
+why = "Switch workspace and find your way back without searching."
+nudge = "Super and the number take you there. Back is “former workspace”, with Super."
+done = "There and back again"
+cards = ["desktop:switch_workspace", "desktop:former_workspace"]
+checks = [{ check = "workspace_is", number = 4 }, { check = "workspace_origin" }]
+solution = [{ card = "desktop:switch_workspace", number = 4 }, "desktop:former_workspace"]
+
+[[scenario]]
+id = "desktop-quake"
+goal = "Open the Quake terminal, then close it again"
+why = "A quick command without leaving what you are doing."
+nudge = "One key opens and closes it: where the console key sat in Quake, with Super."
+done = "Opened and closed"
+cards = ["desktop:toggle_quake"]
+checks = [{ check = "special_shown", special = "quake" }, { check = "special_hidden", special = "quake" }]
+solution = ["desktop:toggle_quake", "desktop:toggle_quake"]

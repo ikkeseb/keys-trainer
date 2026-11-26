@@ -1,0 +1,23 @@
+[
+  {"name": "k", "value": "arrow prev"},
+  {"name": "up", "value": "arrow prev"},
+  {"name": "j", "value": "arrow next"},
+  {"name": "down", "value": "arrow next"},
+  {"name": "h", "value": "leave"},
+  {"name": "left", "value": "leave"},
+  {"name": "l", "value": "enter"},
+  {"name": "right", "value": "enter"},
+  {"name": "f", "value": "filter --smart"},
+  {"name": "space", "value": "toggle; arrow 1"},
+  {"name": "y", "value": "yank"},
+  {"name": "x", "value": "yank --cut"},
+  {"name": "p", "value": "paste"},
+  {"name": "q", "value": "quit"},
+  {"name": "g, g", "value": "arrow top"},
+  {"name": "home", "value": "arrow top"},
+  {"name": "G", "value": "arrow bot"},
+  {"name": "end", "value": "arrow bot"},
+  {"name": ".", "value": "hidden toggle"},
+  {"name": "v", "value": "visual_mode"},
+  {"name": "esc", "value": "escape"}
+]

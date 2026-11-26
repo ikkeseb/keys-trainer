@@ -1,0 +1,140 @@
+# Lessons 6 and 7: Yazi in the private herdr (design § 2.3). Schema: seams-phase2.md.
+# Fixtures (yazi_backend.FIXTURES) are a fresh practice tree,
+# Practice/{Projects/{planning.txt, timeline.txt}, .env, draft.txt, notes.txt, report.md},
+# with the cursor on Projects («practice_tree») or on the named file («practice_tree@notes.txt»).
+# Card ids are «yazi:<action>», the keys of yazi_backend.KEYMAP. Shown copy is English, terms
+# as Yazi names them (folder, filter, selection, hovered file, hidden files).
+
+[[lesson]]
+id = "yazi-find"
+order = 6
+title = "Yazi: get around"
+tool = "yazi"
+fixture = "practice_tree"
+intro = "Yazi is the file manager in your terminal. You practise in a folder of practice files of its own, so nothing real is touched."
+pattern = "h, j, k and l are left, down, up and right: out of the folder, down, up and in."
+steps = ["learn:yazi-in-out", "learn:yazi-bottom-top", "recall:yazi-in-out", "learn:yazi-hidden",
+         "recall:yazi-bottom-top", "learn:yazi-filter", "recall:yazi-hidden", "recall:yazi-filter"]
+
+[[scenario]]
+id = "yazi-in-out"
+goal = "Go into Projects, down to timeline.txt, and back out"
+why = "The basic moves: in, down, out."
+nudge = "Think in directions: right goes into the folder, down goes down, left goes out."
+done = "In, down and back out"
+cards = ["yazi:enter_folder", "yazi:next_file", "yazi:leave_folder"]
+needs = [{ check = "cursor_on", entry = "Projects", folder = "Practice" }, { check = "no_filter" }]
+checks = [{ check = "cwd_is", folder = "Projects" },
+          { check = "hovered_is", entry = "timeline.txt" },
+          { check = "cwd_is", folder = "Practice" }]
+solution = ["yazi:enter_folder", "yazi:next_file", "yazi:leave_folder"]
+decoy = "yazi:next_file"
+
+[[scenario]]
+id = "yazi-bottom-top"
+goal = "Jump to the bottom of the list, then to the top"
+why = "Long folders without holding down j."
+nudge = "As in vim: one letter, uppercase for the bottom, lowercase twice for the top."
+done = "Bottom and top"
+cards = ["yazi:bottom", "yazi:top"]
+fixture = "practice_tree@notes.txt"
+needs = [{ check = "in_folder", folder = "Practice" }, { check = "cursor_middle" }, { check = "no_filter" }]
+checks = [{ check = "hovered_last" }, { check = "hovered_first" }]
+solution = ["yazi:bottom", "yazi:top"]
+decoy = "yazi:top"
+
+[[scenario]]
+id = "yazi-hidden"
+goal = "Show the hidden files"
+why = "Find .env and other dotfiles."
+nudge = "Hidden files are dotfiles. The key is the one they are named after."
+done = "Hidden files are shown"
+cards = ["yazi:toggle_hidden"]
+needs = [{ check = "in_folder", folder = "Practice" }, { check = "hidden_off" }, { check = "no_filter" }]
+checks = [{ check = "hidden_shown" }]
+solution = ["yazi:toggle_hidden"]
+decoy = "yazi:next_file"
+
+[[scenario]]
+id = "yazi-filter"
+goal = "Filter the list to names with no"
+why = "Narrow a long folder down as you type."
+nudge = "The filter's key is its first letter. Type, then confirm with Enter."
+done = "The list shows only matches for no"
+cards = ["yazi:filter"]
+needs = [{ check = "in_folder", folder = "Practice" }, { check = "no_filter" }]
+checks = [{ check = "filter_is", text = "no" }]
+solution = ["yazi:filter", { type = "no" }, { press = "enter" }]
+decoy = "yazi:filter"
+typing = true
+
+[[lesson]]
+id = "yazi-select"
+order = 7
+title = "Yazi: select and move"
+tool = "yazi"
+fixture = "practice_tree@draft.txt"
+intro = "Select files, then copy or move them to another folder. The practice folder is fresh and untouched."
+pattern = "Select first, then one key says what happens: y copies, x cuts, p pastes."
+steps = ["learn:yazi-mark-one", "learn:yazi-range", "recall:yazi-mark-one", "learn:yazi-copy",
+         "recall:yazi-range", "recall:yazi-copy", "build:yazi-move-two"]
+
+[[scenario]]
+id = "yazi-mark-one"
+goal = "Select only notes.txt"
+why = "Pick exactly the file you want to work on."
+nudge = "Go to the file first. Selecting moves the cursor on afterwards."
+done = "notes.txt is selected"
+cards = ["yazi:mark_one"]
+needs = [{ check = "cursor_on", entry = "draft.txt", folder = "Practice" },
+         { check = "nothing_marked" }, { check = "no_filter" }]
+checks = [{ check = "selection_is", names = ["notes.txt"] }]
+solution = ["yazi:next_file", "yazi:mark_one"]
+decoy = "yazi:mark_one"
+
+[[scenario]]
+id = "yazi-range"
+goal = "Select the top three as one range"
+why = "Many files in a row without pressing Space on each."
+nudge = "Start a range, move down, and leave the mode. The selection stays."
+done = "Three selected at once"
+cards = ["yazi:visual", "yazi:escape"]
+fixture = "practice_tree"
+needs = [{ check = "cursor_on", entry = "Projects", folder = "Practice" }, { check = "nothing_marked" },
+         { check = "hidden_off" }, { check = "no_filter" }]
+checks = [{ check = "selection_is", names = ["Projects", "draft.txt", "notes.txt"] },
+          { check = "visual_off", mode = "hold" }]
+solution = ["yazi:visual", "yazi:next_file", "yazi:next_file", "yazi:escape"]
+decoy = "yazi:visual"
+
+[[scenario]]
+id = "yazi-copy"
+goal = "Copy notes.txt into Projects"
+why = "The most common file job: copy, go, paste."
+nudge = "Copy where the file is, go into the folder, and paste there."
+done = "notes.txt is now in both places"
+cards = ["yazi:yank", "yazi:paste"]
+fixture = "practice_tree@notes.txt"
+needs = [{ check = "cursor_on", entry = "notes.txt", folder = "Practice" }, { check = "nothing_marked" },
+         { check = "clipboard_empty" }, { check = "fresh_tree" }, { check = "no_filter" }]
+checks = [{ check = "file_in", file = "notes.txt", folder = "Projects" },
+          { check = "file_in", file = "notes.txt", folder = "Practice", mode = "hold" }]
+solution = ["yazi:yank", "yazi:top", "yazi:enter_folder", "yazi:paste"]
+decoy = "yazi:paste"
+
+[[scenario]]
+id = "yazi-move-two"
+goal = "Move draft.txt and notes.txt into Projects"
+why = "Tidy two files away at once."
+nudge = "Select both, cut instead of copying, and paste into Projects."
+done = "Both files moved"
+cards = ["yazi:mark_one", "yazi:cut", "yazi:paste"]
+fixture = "practice_tree@draft.txt"
+needs = [{ check = "cursor_on", entry = "draft.txt", folder = "Practice" }, { check = "nothing_marked" },
+         { check = "clipboard_empty" }, { check = "fresh_tree" }, { check = "no_filter" }]
+checks = [{ check = "file_in", file = "draft.txt", folder = "Projects", mode = "hold" },
+          { check = "file_in", file = "notes.txt", folder = "Projects", mode = "hold" },
+          { check = "file_gone", file = "draft.txt", folder = "Practice", mode = "hold" },
+          { check = "file_gone", file = "notes.txt", folder = "Practice", mode = "hold" }]
+solution = ["yazi:mark_one", "yazi:mark_one", "yazi:cut", "yazi:top", "yazi:enter_folder", "yazi:paste"]
+decoy = "yazi:paste"
