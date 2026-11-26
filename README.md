@@ -21,7 +21,7 @@ It needs Python 3.11+ (Omarchy has it) and `herdr`; `yazi` and `strata` are need
 lessons. Standard library only, nothing to install with pip.
 
 The private Yazi can only write inside its own temporary folder (Linux Landlock, which Omarchy's
-kernel has); on a kernel without it the Yazi lessons do not start.
+kernel has); without it, or before Linux 6.2, the Yazi lessons do not start.
 
 **Your own keys.** At every launch the trainer reads the shortcuts you actually have: herdr's
 config (`~/.config/herdr/config.toml`) plus herdr's defaults for what it leaves alone, Yazi's

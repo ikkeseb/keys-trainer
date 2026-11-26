@@ -1,8 +1,9 @@
 """Linux Landlock write jail for the private Yazi process (stdlib ctypes only).
 
 Restricts filesystem write-type operations to the private temp root (plus write/truncate on
-`/dev` for the tty and `/dev/null`). Reading and executing stay unrestricted. Fails closed:
-if Landlock is unavailable or any syscall fails, the target command is never executed.
+`/dev/tty` and `/dev/null`). Reading and executing stay unrestricted. Fails closed: if Landlock
+is unavailable or too old to block truncation (before Linux 6.2), or any syscall fails, the target
+command is never executed.
 """
 
 from __future__ import annotations
@@ -20,6 +21,7 @@ SYS_LANDLOCK_ADD_RULE = 445
 SYS_LANDLOCK_RESTRICT_SELF = 446
 LANDLOCK_CREATE_RULESET_VERSION = 1
 LANDLOCK_RULE_PATH_BENEATH = 1
+MIN_ABI = 3  # the first that handles truncate (Linux 6.2)
 
 # Filesystem write-type access rights (linux/landlock.h); read and execute stay unhandled.
 FS_WRITE_FILE = 1 << 1
@@ -63,7 +65,7 @@ def _libc():
 
 
 def abi_version() -> int:
-    """Return the kernel's Landlock ABI version (>= 1), or raise OSError if unavailable."""
+    """Return the kernel's Landlock ABI version (>= MIN_ABI), or raise OSError."""
     libc = _libc()
     version = libc.syscall(
         ctypes.c_long(SYS_LANDLOCK_CREATE_RULESET),
@@ -74,8 +76,8 @@ def abi_version() -> int:
     if version < 0:
         err = ctypes.get_errno() or errno.ENOSYS
         raise OSError(err, f"Landlock unavailable: {os.strerror(err)}")
-    if version < 1:
-        raise OSError(errno.EOPNOTSUPP, "Landlock unavailable")
+    if version < MIN_ABI:
+        raise OSError(errno.EOPNOTSUPP, "Landlock here cannot block truncating files: Linux 6.2 or newer is needed")
     return int(version)
 
 
@@ -109,12 +111,12 @@ def _add_path_rule(libc, ruleset_fd: int, path: str | os.PathLike, allowed: int)
         os.close(fd)
 
 
-def restrict_writes(root: str | os.PathLike, *, extra_rw: Iterable[str | os.PathLike] = ("/dev",)) -> int:
+def restrict_writes(root: str | os.PathLike, *, extra_rw: Iterable[str | os.PathLike] = ("/dev/tty", "/dev/null")) -> int:
     """Confine this process (and its children) so filesystem writes are only allowed beneath `root`
-    (plus write/truncate on `extra_rw`, default `/dev` for the tty). Returns the Landlock ABI."""
+    (plus write/truncate on the `extra_rw` files: the tty and `/dev/null`). Returns the Landlock ABI."""
     abi = abi_version()
     handled = write_rights(abi)
-    dev_rights = FS_WRITE_FILE | (FS_TRUNCATE if abi >= 3 else 0)
+    dev_rights = FS_WRITE_FILE | FS_TRUNCATE
     libc = _libc()
 
     if libc.prctl(

@@ -194,6 +194,29 @@ class YaziSessionUnitTests(unittest.TestCase):
         self.assertFalse(landlock.write_rights(2) & landlock.FS_TRUNCATE)
         self.assertTrue(landlock.write_rights(3) & landlock.FS_TRUNCATE)
 
+    def test_a_kernel_that_cannot_block_truncation_fails_closed(self):
+        with patch.object(landlock, "_libc") as libc:
+            libc.return_value.syscall.return_value = 2  # Landlock ABI 2: truncate is not handled
+            with self.assertRaisesRegex(OSError, "Linux 6.2"):
+                landlock.abi_version()
+            libc.return_value.syscall.return_value = 3
+            self.assertEqual(landlock.abi_version(), 3)
+
+    def test_landlock_leaves_the_rest_of_dev_closed(self):
+        launcher = Path(__file__).with_name("landlock.py")
+        probe = "import os, sys\nos.truncate(sys.argv[1], 0)\n"
+        with tempfile.TemporaryDirectory(prefix="keys-ll-root-", dir="/tmp") as root, \
+             tempfile.NamedTemporaryFile(prefix="keys-ll-", dir="/dev/shm") as other:
+            other.write(b"keep")
+            other.flush()
+            result = subprocess.run(
+                [sys.executable, "-IS", str(launcher), "--root", root, "--",
+                 sys.executable, "-c", probe, other.name],
+                capture_output=True, text=True, timeout=10,
+            )
+            self.assertIn("PermissionError", result.stderr)
+            self.assertEqual(Path(other.name).read_bytes(), b"keep")
+
     def test_landlock_unavailable_fails_closed(self):
         with patch.object(landlock, "abi_version", side_effect=OSError(errno.ENOSYS, "Landlock unavailable")):
             with self.assertRaisesRegex(YaziUnavailable, "did not start"):
