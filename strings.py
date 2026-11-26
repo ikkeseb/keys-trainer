@@ -39,7 +39,14 @@ WORLD = {
     "yazi_hidden_off": "Hidden files are no longer shown.",
     "yazi_filter": "The filter changed.",
     "yazi_copied": "That copied {text}.",
+    "yazi_search": "Search results for “{query}”.",
+    "yazi_opened": "That opened {name} ({opener}).",
     "yazi_tabs": "You are in tab {position} of {count}.",
+    "shell_cwd": "You are now in the {name} folder.",
+    "shell_cmd": "Ran {cmd}.",
+    "shell_widget": "Used the {widget} picker.",
+    "shell_tool": "{tool} matched {count} files.",
+    "shell_opened": "That opened {name} ({opener}).",
     "pressed": "That was {key}.",
     "desktop_workspace": "You are on workspace {number}.",
     "desktop_special_on": "{name} opened.",
@@ -121,12 +128,13 @@ NOTICE = {
     "where_yazi": "To add one, put this in prepend_keymap under [mgr] in {path}:",
     "desktop": "To add one, add a bind for “{action}” to your Hyprland bindings.",
     "where_strata": "To add one, put this line under [keymap.default] in {path} (or set it in Strata's Settings → Keyboard):",
+    "where_shell": "To add one, wire it in {path} (or install the tool):",
     "taken": "{tool}'s own key for it, {chord}, is already used for {taken} here: pick a free key.",
     "placeholder": "Replace <key> with a free key.",
     "after": "The trainer reads your keys when it starts, so the step runs next time.",
     "skip": "{key}  Skip",
     "pause": "{key}  Pause",
-    "tools": {"herdr": "herdr", "yazi": "Yazi", "strata": "Strata", "desktop": "Hyprland"},
+    "tools": {"herdr": "herdr", "yazi": "Yazi", "shell": "Shell", "strata": "Strata", "desktop": "Hyprland"},
 }
 
 # BUILD next-move phrases, after “Next: ”. {where} names a pane, {text} typed text.
@@ -368,6 +376,7 @@ START = {
               "start without it. Install it with: sudo pacman -S herdr"),
     "yazi": "Yazi is missing, so {lessons} {off}. Install it with: sudo pacman -S yazi",
     "strata": "Strata is missing, so {lessons} {off}. Install it with: sudo pacman -S strata",
+    "shell": "bash is missing, so {lessons} {off}. Install it with: sudo pacman -S bash",
     "hyprland": ("Hyprland is not running, so {lessons} {off}. Start the trainer from a terminal on "
                  "your Omarchy desktop to practise it."),
     "foot": ("foot is missing. Started inside herdr, the trainer opens its own foot window, so start it "
@@ -384,7 +393,7 @@ START = {
                "and s skips them."),
     "or": " or ",
     "comma": ", ",
-    "tools": {"herdr": "herdr", "yazi": "Yazi", "strata": "Strata", "desktop": "desktop"},
+    "tools": {"herdr": "herdr", "yazi": "Yazi", "shell": "shell", "strata": "Strata", "desktop": "desktop"},
     "source": "Your keys: {source}",
     "sources": {"scan": "read from your config files", "rigpage": "from rigpage keys",
                 "file": "from the file given with --keys"},
@@ -402,6 +411,15 @@ YAZI = {
     "left_tree": "The private Yazi left the practice folder.",
     "not_started": "Start a Yazi session first.",
     "tab_label": "Files",
+}
+
+# The private bash shell (shell_backend.py).
+SHELL_BACKEND = {
+    "missing": "Install bash to practise in a private shell.",
+    "no_start": "The private shell did not start: {detail}",
+    "no_report": "The private shell did not report its prompt.",
+    "not_started": "Start a shell session first.",
+    "tab_label": "Shell",
 }
 
 # The self-test (selftest.py; `keys-trainer demo` prints its lines).

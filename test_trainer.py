@@ -210,20 +210,20 @@ class FlowTests(unittest.TestCase):
     def test_first_run_enter_enter_plays_lesson_one_then_q_ends_the_day(self):
         shell = ScriptedShell("enter", "enter", "q", "enter")
         shell.run()
-        self.assertEqual(shell.ui.headers, ["KEYS TRAINER", "LESSON 1 OF 12", "LESSON 1 COMPLETE", "DONE FOR TODAY"])
+        self.assertEqual(shell.ui.headers, ["KEYS TRAINER", "LESSON 1 OF 14", "LESSON 1 COMPLETE", "DONE FOR TODAY"])
         self.assertEqual(shell.played, [("herdr", "split", False, 7)])
         complete, end = text(shell.ui.cards[2]), text(shell.ui.cards[3])
         self.assertIn("Enter  Next: Move between panes (≈ 4 min)", complete)
         self.assertIn("Three stars", complete)
         self.assertIn("3 shortcuts · 3 without a hint · 1 lesson complete", end)
         self.assertIn("Alt + Enter  ·  Alt + Shift + Enter  ·  Alt + Esc", end)  # new today
-        self.assertIn("1 of 12 lessons", end)
+        self.assertIn("1 of 14 lessons", end)
         self.assertIn("Warm-up (3), then lesson 2 · Move between panes", end)  # all three due tomorrow
 
     def test_complete_enter_opens_the_next_intro_and_t_tests_out(self):
         shell = ScriptedShell("enter", "enter", "enter", "t", "q", "enter")
         shell.run()
-        self.assertEqual(shell.ui.headers[3], "LESSON 2 OF 12")
+        self.assertEqual(shell.ui.headers[3], "LESSON 2 OF 14")
         learn = sum(step.kind == "learn" for step in lesson.plan_lesson(shell.resolved, "panes-move").steps)
         self.assertEqual(shell.played[1], ("herdr", "panes-move", False, 9 - learn))
 
@@ -238,7 +238,7 @@ class FlowTests(unittest.TestCase):
         home = text(shell.ui.cards[0])
         self.assertIn("1  Warm-up        4 shortcuts due for review", home)
         self.assertEqual([(tool, warm) for tool, _, warm, _ in shell.played], [("herdr", True), ("yazi", True)])
-        self.assertEqual(shell.ui.headers[1], "LESSON 2 OF 12")
+        self.assertEqual(shell.ui.headers[1], "LESSON 2 OF 14")
         self.assertNotIn("Warm-up", text(shell.ui.cards[2]))  # once a session
         self.assertEqual(shell.ui.headers[-1], "DONE FOR TODAY")
 
@@ -256,14 +256,14 @@ class FlowTests(unittest.TestCase):
     def test_lesson_flag_starts_at_its_intro_and_esc_goes_home(self):
         shell = ScriptedShell("esc", "q")
         shell.run("tabs")
-        self.assertEqual(shell.ui.headers, ["LESSON 3 OF 12", "KEYS TRAINER"])
+        self.assertEqual(shell.ui.headers, ["LESSON 3 OF 14", "KEYS TRAINER"])
         self.assertEqual(shell.played, [])
 
     def test_a_session_that_cannot_start_shows_why_and_goes_home(self):
         shell = ScriptedShell("enter", "enter", "enter", "q")
         shell.play = lambda plan, tool, autoplay=None: RuntimeError("Private Herdr server did not start.")
         shell.run()
-        self.assertEqual(shell.ui.headers, ["KEYS TRAINER", "LESSON 1 OF 12", "THE SESSION DID NOT START", "KEYS TRAINER"])
+        self.assertEqual(shell.ui.headers, ["KEYS TRAINER", "LESSON 1 OF 14", "THE SESSION DID NOT START", "KEYS TRAINER"])
         self.assertIn("Private Herdr server did not start.", text(shell.ui.cards[2]))
 
     def test_error_card_puts_a_plain_headline_over_the_muted_detail(self):
@@ -512,9 +512,9 @@ class CardTests(unittest.TestCase):
         self.assertIn("Learn your shortcuts by using them", shown)
         self.assertNotIn("1  Split the screen", shown)
         # With room for the whole path nothing scrolls, as before.
-        shown = text(trainer.home_card(home, last, self.resolved, now=NOW), (80, 30))
-        for line in ("The path", "   1  Split the screen          ○○○   start here", "› 12  Strata: get around        ○○○",
-                     "Stuck? Press ? to see the keys.", "Enter  Start lesson 12", "q  Quit"):
+        shown = text(trainer.home_card(home, last, self.resolved, now=NOW), (80, 32))
+        for line in ("The path", "   1  Split the screen          ○○○   start here", "› 14  Yazi: open files          ○○○",
+                     "Stuck? Press ? to see the keys.", "Enter  Start lesson 14", "q  Quit"):
             self.assertIn(line, shown)
 
 

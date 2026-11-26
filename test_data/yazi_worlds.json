@@ -20,6 +20,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -28,7 +32,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice/Projects",
@@ -48,6 +53,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -56,7 +65,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice/Projects",
@@ -76,6 +86,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -84,7 +98,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -106,6 +121,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -114,7 +133,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-in-out:near": [
@@ -138,6 +158,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -146,7 +170,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice/Projects",
@@ -166,6 +191,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -174,7 +203,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice/Projects",
@@ -194,6 +224,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -202,7 +236,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-in-out:decoy": [
@@ -226,6 +261,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -234,7 +273,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -256,6 +296,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -264,7 +308,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-bottom-top:solution": [
@@ -288,6 +333,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -296,7 +345,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -318,6 +368,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -326,7 +380,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -348,6 +403,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -356,7 +415,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -378,6 +438,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -386,7 +450,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -408,6 +473,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -416,7 +485,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-bottom-top:near": [
@@ -440,6 +510,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -448,7 +522,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -470,6 +545,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -478,7 +557,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -500,6 +580,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -508,7 +592,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -530,6 +615,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -538,7 +627,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -560,6 +650,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -568,7 +662,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-bottom-top:decoy": [
@@ -592,6 +687,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -600,7 +699,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -622,6 +722,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -630,7 +734,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -652,6 +757,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -660,7 +769,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -682,6 +792,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -690,7 +804,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-hidden:solution": [
@@ -714,6 +829,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -722,7 +841,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -745,6 +865,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -753,7 +877,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-hidden:near": [
@@ -777,6 +902,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -785,7 +914,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -807,6 +937,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -815,7 +949,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -837,6 +972,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -845,7 +984,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -867,6 +1007,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -875,7 +1019,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-hidden:decoy": [
@@ -899,6 +1044,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -907,7 +1056,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -929,6 +1079,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -937,7 +1091,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-filter:solution": [
@@ -961,6 +1116,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -969,7 +1128,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -991,6 +1151,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -999,7 +1163,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -1018,6 +1183,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -1026,7 +1195,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -1045,6 +1215,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -1053,7 +1227,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -1072,6 +1247,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -1080,7 +1259,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-filter:near": [
@@ -1104,6 +1284,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -1112,7 +1296,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -1134,6 +1319,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -1142,7 +1331,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -1161,6 +1351,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -1169,7 +1363,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -1188,6 +1383,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -1196,7 +1395,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-filter:decoy": [
@@ -1220,6 +1420,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -1228,7 +1432,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -1250,6 +1455,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -1258,7 +1467,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-mark-one:solution": [
@@ -1282,6 +1492,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -1290,7 +1504,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -1312,6 +1527,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -1320,7 +1539,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -1344,6 +1564,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -1352,7 +1576,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -1376,6 +1601,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -1384,7 +1613,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-mark-one:near": [
@@ -1408,6 +1638,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -1416,7 +1650,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -1438,6 +1673,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -1446,7 +1685,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-mark-one:decoy": [
@@ -1470,6 +1710,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -1478,39 +1722,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
-  },
-  {
-   "cwd": "Practice",
-   "hovered": "draft.txt",
-   "entries": [
-    "Projects",
-    "draft.txt",
-    "notes.txt",
-    "report.md"
-   ],
-   "selected": [
-    "draft.txt"
-   ],
-   "show_hidden": false,
-   "filter": "",
-   "layer": "mgr",
-   "tab_count": 1,
-   "tab_index": 0,
-   "yanked": 0,
-   "cut": false,
-   "visual": false,
-   "copied": "",
-   "history": "",
-   "tree": [
-    "Practice/.env",
-    "Practice/Projects/planning.txt",
-    "Practice/Projects/timeline.txt",
-    "Practice/draft.txt",
-    "Practice/notes.txt",
-    "Practice/report.md"
-   ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -1534,6 +1747,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -1542,7 +1759,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-range:solution": [
@@ -1566,6 +1784,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -1574,7 +1796,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -1596,6 +1819,10 @@
    "visual": true,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -1604,7 +1831,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -1626,6 +1854,10 @@
    "visual": true,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -1634,7 +1866,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -1656,6 +1889,10 @@
    "visual": true,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -1664,7 +1901,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -1690,6 +1928,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -1698,7 +1940,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-range:near": [
@@ -1722,6 +1965,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -1730,7 +1977,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -1752,6 +2000,10 @@
    "visual": true,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -1760,7 +2012,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -1782,6 +2035,10 @@
    "visual": true,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -1790,7 +2047,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -1812,6 +2070,10 @@
    "visual": true,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -1820,7 +2082,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-range:decoy": [
@@ -1844,6 +2107,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -1852,7 +2119,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -1874,6 +2142,10 @@
    "visual": true,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -1882,7 +2154,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-copy:solution": [
@@ -1906,6 +2179,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -1914,7 +2191,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -1936,6 +2214,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -1944,7 +2226,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -1966,6 +2249,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -1974,7 +2261,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -1996,6 +2284,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -2004,7 +2296,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -2026,6 +2319,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -2034,7 +2331,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice/Projects",
@@ -2054,6 +2352,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -2062,7 +2364,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice/Projects",
@@ -2082,6 +2385,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/notes.txt",
@@ -2091,7 +2398,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice/Projects",
@@ -2112,6 +2420,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/notes.txt",
@@ -2121,7 +2433,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-copy:near": [
@@ -2145,6 +2458,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -2153,7 +2470,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -2175,6 +2493,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -2183,7 +2505,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -2205,6 +2528,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -2213,7 +2540,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -2235,6 +2563,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -2243,7 +2575,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -2265,6 +2598,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -2273,7 +2610,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice/Projects",
@@ -2293,6 +2631,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -2301,7 +2643,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice/Projects",
@@ -2321,6 +2664,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/notes.txt",
@@ -2329,7 +2676,8 @@
     "Practice/draft.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice/Projects",
@@ -2350,6 +2698,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/notes.txt",
@@ -2358,7 +2710,8 @@
     "Practice/draft.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-copy:decoy": [
@@ -2382,6 +2735,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -2390,7 +2747,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-move-two:solution": [
@@ -2414,6 +2772,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -2422,39 +2784,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
-  },
-  {
-   "cwd": "Practice",
-   "hovered": "draft.txt",
-   "entries": [
-    "Projects",
-    "draft.txt",
-    "notes.txt",
-    "report.md"
-   ],
-   "selected": [
-    "draft.txt"
-   ],
-   "show_hidden": false,
-   "filter": "",
-   "layer": "mgr",
-   "tab_count": 1,
-   "tab_index": 0,
-   "yanked": 0,
-   "cut": false,
-   "visual": false,
-   "copied": "",
-   "history": "",
-   "tree": [
-    "Practice/.env",
-    "Practice/Projects/planning.txt",
-    "Practice/Projects/timeline.txt",
-    "Practice/draft.txt",
-    "Practice/notes.txt",
-    "Practice/report.md"
-   ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -2478,6 +2809,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -2486,7 +2821,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -2511,6 +2847,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -2519,7 +2859,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -2544,6 +2885,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -2552,7 +2897,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -2574,6 +2920,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -2582,7 +2932,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -2604,6 +2955,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -2612,7 +2967,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -2634,6 +2990,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -2642,7 +3002,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -2664,6 +3025,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -2672,7 +3037,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice/Projects",
@@ -2692,6 +3058,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -2700,7 +3070,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice/Projects",
@@ -2720,6 +3091,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/draft.txt",
@@ -2728,7 +3103,8 @@
     "Practice/Projects/timeline.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice/Projects",
@@ -2750,6 +3126,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/draft.txt",
@@ -2758,7 +3138,8 @@
     "Practice/Projects/timeline.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-move-two:near": [
@@ -2782,6 +3163,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -2790,39 +3175,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
-  },
-  {
-   "cwd": "Practice",
-   "hovered": "draft.txt",
-   "entries": [
-    "Projects",
-    "draft.txt",
-    "notes.txt",
-    "report.md"
-   ],
-   "selected": [
-    "draft.txt"
-   ],
-   "show_hidden": false,
-   "filter": "",
-   "layer": "mgr",
-   "tab_count": 1,
-   "tab_index": 0,
-   "yanked": 0,
-   "cut": false,
-   "visual": false,
-   "copied": "",
-   "history": "",
-   "tree": [
-    "Practice/.env",
-    "Practice/Projects/planning.txt",
-    "Practice/Projects/timeline.txt",
-    "Practice/draft.txt",
-    "Practice/notes.txt",
-    "Practice/report.md"
-   ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -2846,6 +3200,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -2854,7 +3212,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -2879,6 +3238,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -2887,7 +3250,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -2912,6 +3276,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -2920,7 +3288,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -2942,6 +3311,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -2950,7 +3323,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -2972,6 +3346,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -2980,7 +3358,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -3002,6 +3381,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -3010,7 +3393,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -3032,6 +3416,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -3040,7 +3428,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice/Projects",
@@ -3060,6 +3449,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -3068,7 +3461,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice/Projects",
@@ -3088,6 +3482,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/draft.txt",
@@ -3098,7 +3496,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice/Projects",
@@ -3120,6 +3519,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/draft.txt",
@@ -3130,7 +3533,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-move-two:decoy": [
@@ -3154,6 +3558,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -3162,7 +3570,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-copy-path:solution": [
@@ -3186,6 +3595,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -3194,7 +3607,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -3216,6 +3630,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -3224,7 +3642,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -3246,6 +3665,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -3254,7 +3677,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -3276,6 +3700,10 @@
    "visual": false,
    "copied": "path:Practice/notes.txt",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -3284,7 +3712,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-copy-path:near": [
@@ -3308,6 +3737,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -3316,7 +3749,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -3338,6 +3772,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -3346,7 +3784,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -3368,6 +3807,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -3376,7 +3819,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -3398,6 +3842,10 @@
    "visual": false,
    "copied": "filename:notes.txt",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -3406,7 +3854,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-copy-path:decoy": [
@@ -3430,6 +3879,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -3438,7 +3891,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -3460,6 +3914,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -3468,7 +3926,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-copy-filename:solution": [
@@ -3492,6 +3951,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -3500,7 +3963,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -3522,6 +3986,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -3530,7 +3998,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -3552,6 +4021,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -3560,7 +4033,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -3582,6 +4056,10 @@
    "visual": false,
    "copied": "filename:report.md",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -3590,7 +4068,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-copy-filename:near": [
@@ -3614,6 +4093,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -3622,7 +4105,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -3644,6 +4128,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -3652,7 +4140,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -3674,6 +4163,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -3682,7 +4175,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -3704,6 +4198,10 @@
    "visual": false,
    "copied": "path:Practice/report.md",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -3712,7 +4210,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-copy-filename:decoy": [
@@ -3736,6 +4235,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -3744,7 +4247,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -3766,6 +4270,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -3774,7 +4282,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-copy-dirpath:solution": [
@@ -3798,6 +4307,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -3806,7 +4319,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -3828,6 +4342,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -3836,7 +4354,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -3858,6 +4377,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -3866,7 +4389,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -3888,6 +4412,10 @@
    "visual": false,
    "copied": "dirpath:Practice",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -3896,7 +4424,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-copy-dirpath:near": [
@@ -3920,6 +4449,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -3928,7 +4461,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -3950,6 +4484,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -3958,7 +4496,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -3980,6 +4519,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -3988,7 +4531,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -4010,6 +4554,10 @@
    "visual": false,
    "copied": "path:Practice/notes.txt",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -4018,7 +4566,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-copy-dirpath:decoy": [
@@ -4042,6 +4591,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -4050,7 +4603,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -4072,6 +4626,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -4080,7 +4638,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-create:solution": [
@@ -4104,6 +4663,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -4112,7 +4675,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -4134,6 +4698,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -4142,7 +4710,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -4164,6 +4733,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -4173,7 +4746,8 @@
     "Practice/report.md",
     "Practice/todo.txt"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -4196,6 +4770,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -4205,7 +4783,8 @@
     "Practice/report.md",
     "Practice/todo.txt"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-create:near": [
@@ -4229,6 +4808,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -4237,7 +4820,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -4259,6 +4843,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -4267,7 +4855,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-create:decoy": [
@@ -4291,6 +4880,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -4299,7 +4892,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -4321,6 +4915,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -4329,7 +4927,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-rename:solution": [
@@ -4353,6 +4952,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -4361,7 +4964,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -4383,6 +4987,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -4391,7 +4999,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -4413,6 +5022,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -4421,7 +5034,8 @@
     "Practice/notes-old.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -4443,6 +5057,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -4451,7 +5069,8 @@
     "Practice/notes-old.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-rename:near": [
@@ -4475,6 +5094,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -4483,7 +5106,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -4505,6 +5129,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -4513,7 +5141,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-rename:decoy": [
@@ -4537,6 +5166,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -4545,7 +5178,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -4567,6 +5201,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -4575,7 +5213,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-trash:solution": [
@@ -4599,6 +5238,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -4607,7 +5250,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -4629,6 +5273,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -4637,7 +5285,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -4659,6 +5308,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -4668,7 +5321,8 @@
    ],
    "trashed": [
     "notes.txt"
-   ]
+   ],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -4689,6 +5343,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -4698,7 +5356,8 @@
    ],
    "trashed": [
     "notes.txt"
-   ]
+   ],
+   "opened": []
   }
  ],
  "yazi-trash:near": [
@@ -4722,6 +5381,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -4730,7 +5393,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -4752,6 +5416,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -4760,7 +5428,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -4782,6 +5451,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -4790,7 +5463,8 @@
     "Practice/notes-old.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -4812,6 +5486,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -4820,7 +5498,8 @@
     "Practice/notes-old.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-trash:decoy": [
@@ -4844,6 +5523,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -4852,7 +5535,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -4874,6 +5558,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -4882,7 +5570,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-select-all:solution": [
@@ -4906,6 +5595,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -4914,7 +5607,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -4941,6 +5635,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -4949,7 +5647,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-select-all:near": [
@@ -4973,6 +5672,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -4981,7 +5684,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -5003,6 +5707,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -5011,7 +5719,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-select-all:decoy": [
@@ -5035,6 +5744,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -5043,7 +5756,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -5065,6 +5779,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -5073,7 +5791,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-history:solution": [
@@ -5097,6 +5816,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -5105,7 +5828,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice/Projects",
@@ -5125,6 +5849,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -5133,7 +5861,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice/Projects",
@@ -5153,6 +5882,10 @@
    "visual": false,
    "copied": "",
    "history": "back:Projects ",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -5161,7 +5894,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -5183,6 +5917,10 @@
    "visual": false,
    "copied": "",
    "history": "back:Projects ",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -5191,7 +5929,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -5213,6 +5952,10 @@
    "visual": false,
    "copied": "",
    "history": "back:Projects forward:Practice ",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -5221,7 +5964,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice/Projects",
@@ -5241,6 +5985,10 @@
    "visual": false,
    "copied": "",
    "history": "back:Projects forward:Practice ",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -5249,7 +5997,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-history:near": [
@@ -5273,6 +6022,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -5281,7 +6034,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice/Projects",
@@ -5301,6 +6055,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -5309,7 +6067,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -5331,6 +6090,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -5339,7 +6102,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice/Projects",
@@ -5359,6 +6123,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -5367,7 +6135,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-history:decoy": [
@@ -5391,6 +6160,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -5399,7 +6172,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice/Projects",
@@ -5419,6 +6193,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -5427,7 +6205,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-new-tab:solution": [
@@ -5451,6 +6230,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -5459,7 +6242,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -5481,6 +6265,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -5489,7 +6277,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -5511,6 +6300,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -5519,7 +6312,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -5541,6 +6335,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -5549,7 +6347,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-new-tab:near": [
@@ -5573,6 +6372,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -5581,7 +6384,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice/Projects",
@@ -5601,6 +6405,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -5609,7 +6417,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice/Projects",
@@ -5629,6 +6438,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -5637,7 +6450,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice/Projects",
@@ -5657,6 +6471,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -5665,7 +6483,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice/Projects",
@@ -5685,6 +6504,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -5693,7 +6516,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   }
  ],
  "yazi-new-tab:decoy": [
@@ -5717,6 +6541,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -5725,7 +6553,8 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
   },
   {
    "cwd": "Practice",
@@ -5747,6 +6576,10 @@
    "visual": false,
    "copied": "",
    "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
    "tree": [
     "Practice/.env",
     "Practice/Projects/planning.txt",
@@ -5755,7 +6588,2186 @@
     "Practice/notes.txt",
     "Practice/report.md"
    ],
-   "trashed": []
+   "trashed": [],
+   "opened": []
+  }
+ ],
+ "yazi-search-name:solution": [
+  {
+   "cwd": "Practice",
+   "hovered": "Archive",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  },
+  {
+   "cwd": "Practice",
+   "hovered": "Archive",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "input",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  },
+  {
+   "cwd": "Practice",
+   "hovered": "Archive",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  },
+  {
+   "cwd": "Practice",
+   "hovered": null,
+   "entries": [],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "fd",
+   "search_query": "deploy",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  },
+  {
+   "cwd": "Practice",
+   "hovered": "deploy.md",
+   "entries": [
+    "deploy.md"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "fd",
+   "search_query": "deploy",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  }
+ ],
+ "yazi-search-name:near": [
+  {
+   "cwd": "Practice",
+   "hovered": "Archive",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  },
+  {
+   "cwd": "Practice",
+   "hovered": "Archive",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "input",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  },
+  {
+   "cwd": "Practice",
+   "hovered": "Archive",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  },
+  {
+   "cwd": "Practice",
+   "hovered": null,
+   "entries": [],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "rg",
+   "search_query": "deploy",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  }
+ ],
+ "yazi-search-name:decoy": [
+  {
+   "cwd": "Practice",
+   "hovered": "Archive",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  },
+  {
+   "cwd": "Practice",
+   "hovered": "Docs",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  }
+ ],
+ "yazi-search-content:solution": [
+  {
+   "cwd": "Practice",
+   "hovered": "Archive",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  },
+  {
+   "cwd": "Practice",
+   "hovered": "Archive",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "input",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  },
+  {
+   "cwd": "Practice",
+   "hovered": "Archive",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  },
+  {
+   "cwd": "Practice",
+   "hovered": "guide.txt",
+   "entries": [
+    "guide.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "rg",
+   "search_query": "lantern",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  }
+ ],
+ "yazi-search-content:near": [
+  {
+   "cwd": "Practice",
+   "hovered": "Archive",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  },
+  {
+   "cwd": "Practice",
+   "hovered": "Archive",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "input",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  },
+  {
+   "cwd": "Practice",
+   "hovered": "Archive",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  },
+  {
+   "cwd": "Practice",
+   "hovered": null,
+   "entries": [],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "fd",
+   "search_query": "lantern",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  }
+ ],
+ "yazi-search-content:decoy": [
+  {
+   "cwd": "Practice",
+   "hovered": "Archive",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  },
+  {
+   "cwd": "Practice",
+   "hovered": "Docs",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  }
+ ],
+ "yazi-zoxide:solution": [
+  {
+   "cwd": "Practice",
+   "hovered": "Archive",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  },
+  {
+   "cwd": "Practice/Docs",
+   "hovered": "guide.txt",
+   "entries": [
+    "guide.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "zoxide",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  }
+ ],
+ "yazi-zoxide:near": [
+  {
+   "cwd": "Practice",
+   "hovered": "Archive",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  },
+  {
+   "cwd": "Practice",
+   "hovered": "Docs",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  },
+  {
+   "cwd": "Practice/Docs",
+   "hovered": "guide.txt",
+   "entries": [
+    "guide.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  }
+ ],
+ "yazi-zoxide:decoy": [
+  {
+   "cwd": "Practice",
+   "hovered": "Archive",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  },
+  {
+   "cwd": "Practice",
+   "hovered": "Docs",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  }
+ ],
+ "yazi-fzf:solution": [
+  {
+   "cwd": "Practice",
+   "hovered": "Archive",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  },
+  {
+   "cwd": "Practice/Projects",
+   "hovered": "deploy.md",
+   "entries": [
+    "deploy.md"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "fzf",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  }
+ ],
+ "yazi-fzf:near": [
+  {
+   "cwd": "Practice",
+   "hovered": "Archive",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  },
+  {
+   "cwd": "Practice/Projects",
+   "hovered": "deploy.md",
+   "entries": [
+    "deploy.md"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "zoxide",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  }
+ ],
+ "yazi-fzf:decoy": [
+  {
+   "cwd": "Practice",
+   "hovered": "Archive",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  },
+  {
+   "cwd": "Practice",
+   "hovered": "Docs",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  }
+ ],
+ "yazi-open-default:solution": [
+  {
+   "cwd": "Practice",
+   "hovered": "notes.txt",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  },
+  {
+   "cwd": "Practice",
+   "hovered": "notes.txt",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": [
+    [
+     "default",
+     false,
+     "Practice/notes.txt"
+    ]
+   ]
+  }
+ ],
+ "yazi-open-default:near": [
+  {
+   "cwd": "Practice",
+   "hovered": "notes.txt",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  },
+  {
+   "cwd": "Practice",
+   "hovered": "notes.txt",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": true,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  },
+  {
+   "cwd": "Practice",
+   "hovered": "notes.txt",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "pick",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": true,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  },
+  {
+   "cwd": "Practice",
+   "hovered": "notes.txt",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": true,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": [
+    [
+     "editor",
+     true,
+     "Practice/notes.txt"
+    ]
+   ]
+  }
+ ],
+ "yazi-open-default:decoy": [
+  {
+   "cwd": "Practice",
+   "hovered": "notes.txt",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  },
+  {
+   "cwd": "Practice",
+   "hovered": "Archive",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  }
+ ],
+ "yazi-open-with:solution": [
+  {
+   "cwd": "Practice",
+   "hovered": "notes.txt",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  },
+  {
+   "cwd": "Practice",
+   "hovered": "notes.txt",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": true,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  },
+  {
+   "cwd": "Practice",
+   "hovered": "notes.txt",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "pick",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": true,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  },
+  {
+   "cwd": "Practice",
+   "hovered": "notes.txt",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": true,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": [
+    [
+     "editor",
+     true,
+     "Practice/notes.txt"
+    ]
+   ]
+  }
+ ],
+ "yazi-open-with:near": [
+  {
+   "cwd": "Practice",
+   "hovered": "notes.txt",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  },
+  {
+   "cwd": "Practice",
+   "hovered": "notes.txt",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": true,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  },
+  {
+   "cwd": "Practice",
+   "hovered": "notes.txt",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "pick",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": true,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  },
+  {
+   "cwd": "Practice",
+   "hovered": "notes.txt",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": true,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": [
+    [
+     "default",
+     true,
+     "Practice/notes.txt"
+    ]
+   ]
+  }
+ ],
+ "yazi-open-with:decoy": [
+  {
+   "cwd": "Practice",
+   "hovered": "notes.txt",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  },
+  {
+   "cwd": "Practice",
+   "hovered": "notes.txt",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": [
+    [
+     "default",
+     false,
+     "Practice/notes.txt"
+    ]
+   ]
+  }
+ ],
+ "yazi-find-open:solution": [
+  {
+   "cwd": "Practice",
+   "hovered": "Archive",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  },
+  {
+   "cwd": "Practice",
+   "hovered": "Archive",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "input",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  },
+  {
+   "cwd": "Practice",
+   "hovered": "Archive",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  },
+  {
+   "cwd": "Practice",
+   "hovered": "guide.txt",
+   "entries": [
+    "guide.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "rg",
+   "search_query": "lantern",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  },
+  {
+   "cwd": "Practice",
+   "hovered": "guide.txt",
+   "entries": [
+    "guide.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "rg",
+   "search_query": "lantern",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": [
+    [
+     "default",
+     false,
+     "Practice/Docs/guide.txt"
+    ]
+   ]
+  }
+ ],
+ "yazi-find-open:near": [
+  {
+   "cwd": "Practice",
+   "hovered": "Archive",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  },
+  {
+   "cwd": "Practice",
+   "hovered": "Archive",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "input",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  },
+  {
+   "cwd": "Practice",
+   "hovered": "Archive",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  },
+  {
+   "cwd": "Practice",
+   "hovered": "guide.txt",
+   "entries": [
+    "guide.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "rg",
+   "search_query": "lantern",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  }
+ ],
+ "yazi-find-open:decoy": [
+  {
+   "cwd": "Practice",
+   "hovered": "Archive",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  },
+  {
+   "cwd": "Practice",
+   "hovered": "Archive",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "input",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  },
+  {
+   "cwd": "Practice",
+   "hovered": "Archive",
+   "entries": [
+    "Archive",
+    "Docs",
+    "Projects",
+    "notes.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "",
+   "search_query": "",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
+  },
+  {
+   "cwd": "Practice",
+   "hovered": "guide.txt",
+   "entries": [
+    "guide.txt"
+   ],
+   "selected": [],
+   "show_hidden": false,
+   "filter": "",
+   "layer": "mgr",
+   "tab_count": 1,
+   "tab_index": 0,
+   "yanked": 0,
+   "cut": false,
+   "visual": false,
+   "copied": "",
+   "history": "",
+   "search_via": "rg",
+   "search_query": "lantern",
+   "jump_via": "",
+   "open_interactive": false,
+   "tree": [
+    "Practice/Archive/old.txt",
+    "Practice/Docs/guide.txt",
+    "Practice/Projects/deploy.md",
+    "Practice/notes.txt"
+   ],
+   "trashed": [],
+   "opened": []
   }
  ]
 }

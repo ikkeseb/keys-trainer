@@ -9,6 +9,7 @@ import json
 import os
 import shutil
 import signal
+import subprocess
 import sys
 import tempfile
 import time
@@ -54,9 +55,16 @@ KEYMAP = {
     "back": ("tilbake til forrige mappe", "back", "plugin trainer-history back"),
     "forward": ("fram igjen", "forward", "plugin trainer-history forward"),
     "new_tab": ("ny fane i samme mappe", "tab_create --current", "tab_create --current"),
+    "search_name": ("søk etter filnavn i alle undermapper (fd)", "search --via=fd", "plugin trainer-search fd"),
+    "search_content": ("søk i innholdet i filene (ripgrep)", "search --via=rg", "plugin trainer-search rg"),
+    "jump_zoxide": ("hopp til en mappe du har vært i (zoxide)", "plugin zoxide", "plugin trainer-jump zoxide"),
+    "jump_fzf": ("finn og hopp til en fil eller mappe herfra og ned (fzf)", "plugin fzf", "plugin trainer-jump fzf"),
+    "open": ("åpne", "open", "plugin trainer-open"),
+    "open_with": ("åpne med et program du velger", "open --interactive", "plugin trainer-open interactive"),
 }
 # Bound in every session so the user can always move about, whatever the lesson teaches.
 BASE_ACTIONS = ("enter_folder", "leave_folder", "next_file", "prev_file", "escape")
+ACTION_TOOLS = {"search_name": "fd", "search_content": "rg", "jump_fzf": "fzf", "jump_zoxide": "zoxide"}
 
 STATE_EVENT = b"keys-trainer-state"
 STARTUP_TIMEOUT = 5
@@ -70,6 +78,12 @@ OBSERVE = """
 local previous = ""
 trainer_history = ""
 trainer_copied = ""
+trainer_search_via = ""
+trainer_jump_via = ""
+pending_jump_via = ""
+pending_jump_cwd = ""
+pending_jump_hovered = ""
+trainer_open_interactive = false
 ps.sub("keys-trainer-copy", function(body)
     trainer_copied = body.what .. ":" .. body.text
     ui.render()
@@ -77,6 +91,27 @@ end)
 Status:children_add(function(self)
     local tab = cx.active
     local current = tab.current
+    local cwd_str = tostring(current.cwd)
+    local hovered_name = current.hovered and current.hovered.name or ""
+    if pending_jump_via ~= "" then
+        if cwd_str ~= pending_jump_cwd or hovered_name ~= pending_jump_hovered then
+            trainer_jump_via = pending_jump_via
+            pending_jump_via = ""
+            os.remove(@TYPING_FLAG@)
+            os.remove(@JUMP_RC@)
+        else
+            local rf = io.open(@JUMP_RC@, "r")
+            if rf then
+                local rc = (rf:read("*l") or ""):match("^%s*(.-)%s*$")
+                rf:close()
+                if rc ~= "0" then
+                    pending_jump_via = ""
+                    trainer_jump_via = ""
+                    os.remove(@JUMP_RC@)
+                end
+            end
+        end
+    end
     local entries, selected = {}, {}
     for i = 1, #current.files do
         entries[#entries + 1] = current.files[i].name
@@ -86,9 +121,10 @@ Status:children_add(function(self)
     end
     table.sort(selected)
     local filter = current.files.filter
+    local is_search = current.cwd.is_search
     local state = {
-        cwd = tostring(current.cwd),
-        hovered = current.hovered and current.hovered.name or "",
+        cwd = cwd_str,
+        hovered = hovered_name,
         entries = entries,
         selected = selected,
         show_hidden = tab.pref.show_hidden,
@@ -101,11 +137,16 @@ Status:children_add(function(self)
         cut = cx.yanked.is_cut,
         visual = not tab.mode.is_normal,
         history = trainer_history,
+        search_via = is_search and trainer_search_via or "",
+        search_query = is_search and tostring(current.cwd.domain or "") or "",
+        jump_via = trainer_jump_via,
+        open_interactive = trainer_open_interactive,
     }
     local signature = table.concat({
         state.cwd, state.hovered, table.concat(entries, "|"), table.concat(selected, "|"),
         tostring(state.show_hidden), state.filter, state.layer, state.tab_count, state.tab_index,
         state.yanked, tostring(state.cut), tostring(state.visual), state.copied, state.history,
+        state.search_via, state.search_query, state.jump_via, tostring(state.open_interactive),
     }, "\\n")
     if signature ~= previous then
         previous = signature
@@ -115,19 +156,25 @@ Status:children_add(function(self)
 end, 5000, Status.LEFT)
 """
 
-# Directory moves are limited to the practice tree: in only from Practice onto
-# Projects, out only from Projects. Pasting cannot open a third level to enter.
+# Directory moves are limited to the practice tree: in only from Practice onto its known
+# subfolders, out only from a subfolder back to Practice. Pasting cannot open a third level.
 _ENTER_PLUGIN = """--- @sync entry
+local ALLOWED = { Archive = true, Docs = true, Projects = true }
 return { entry = function()
   local current = cx.active.current
-  if tostring(current.cwd) == @PRACTICE@ and current.hovered and current.hovered.name == "Projects" then
+  if tostring(current.cwd) == @PRACTICE@ and current.hovered and ALLOWED[current.hovered.name] then
+    pending_jump_via = ""
+    trainer_jump_via = ""
     ya.emit("enter", {})
   end
 end }
 """
 _LEAVE_PLUGIN = """--- @sync entry
 return { entry = function()
-  if tostring(cx.active.current.cwd) == @PROJECTS@ then
+  local cwd = tostring(cx.active.current.cwd)
+  if cwd:sub(1, #@PRACTICE@ + 1) == @PRACTICE@ .. "/" then
+    pending_jump_via = ""
+    trainer_jump_via = ""
     ya.emit("leave", {})
   end
 end }
@@ -139,8 +186,50 @@ return { entry = function(_, job)
   local dir = job.args[1]
   if dir ~= "back" and dir ~= "forward" then return end
   local from = tostring(cx.active.current.cwd):match("[^/]+$") or ""
+  pending_jump_via = ""
+  trainer_jump_via = ""
   trainer_history = trainer_history .. dir .. ":" .. from .. " "
   ya.emit(dir, {})
+  ui.render()
+end }
+"""
+# Search via fd or rg: log which tool was invoked so checks tell name search from content search.
+_SEARCH_PLUGIN = """--- @sync entry
+return { entry = function(_, job)
+  local via = job.args[1]
+  if via ~= "fd" and via ~= "rg" then return end
+  trainer_search_via = via
+  ya.emit("search", { via = via })
+  ui.render()
+end }
+"""
+# Jump via zoxide or fzf: stage the pending jump and touch typing.flag immediately; promote to
+# trainer_jump_via only once cwd or hovered actually changes after the picker closes.
+_JUMP_PLUGIN = """--- @sync entry
+return { entry = function(_, job)
+  local via = job.args[1]
+  if via ~= "zoxide" and via ~= "fzf" then return end
+  local current = cx.active.current
+  pending_jump_via = via
+  pending_jump_cwd = tostring(current.cwd)
+  pending_jump_hovered = current.hovered and current.hovered.name or ""
+  os.remove(@JUMP_RC@)
+  local f = io.open(@TYPING_FLAG@, "w")
+  if f then f:close() end
+  ya.emit("plugin", { via })
+end }
+"""
+# Open (default or interactive "open with"): persist mode for trainer-open stub before emitting.
+_OPEN_PLUGIN = """--- @sync entry
+return { entry = function(_, job)
+  local inter = job.args[1] == "interactive"
+  trainer_open_interactive = inter
+  local f = io.open(@OPEN_MODE@, "w")
+  if f then
+    f:write(inter and "1" or "0")
+    f:close()
+  end
+  ya.emit("open", inter and { interactive = true } or {})
   ui.render()
 end }
 """
@@ -204,14 +293,33 @@ _INPUT_KEYMAP = (
     ("u", "undo"),
     ("<C-r>", "redo"),
 )
+_PICK_KEYMAP = (
+    ("<Esc>", "close"),
+    ("<C-c>", "close"),
+    ("<Enter>", "close --submit"),
+    ("k", "arrow prev"),
+    ("j", "arrow next"),
+    ("<Up>", "arrow prev"),
+    ("<Down>", "arrow next"),
+)
 _YAZI_CONFIG = (
     '[mgr]\nsort_by = "alphabetical"\nsort_dir_first = true\nshow_hidden = false\nmouse_events = []\n'
     '[plugin]\npreloaders = []\npreviewers = []\nfetchers = []\n'
 )
+_YAZI_OPEN_CONFIG = (
+    '[mgr]\nsort_by = "alphabetical"\nsort_dir_first = true\nshow_hidden = false\nmouse_events = []\n'
+    '[plugin]\npreloaders = []\npreviewers = []\n'
+    'fetchers = [\n  { url = "local://*", run = "mime.local", prio = "high", group = "mime" },\n]\n'
+    '[opener]\n'
+    'open = [{ run = "@STUB@ default %s1", desc = "Default app (xdg-open)", for = "unix" }]\n'
+    'edit = [{ run = "@STUB@ editor %s1", desc = "Editor (nvim)", for = "unix", block = true }]\n'
+    '[open]\n'
+    'rules = [\n  { url = "*", use = ["open", "edit"] },\n]\n'
+)
 
 
-def _private_yazi(root: Path, keymap: str) -> tuple[dict[str, Path], Path]:
-    """Create a private home, XDG dirs and Yazi config under `root`; return (dirs, config dir)."""
+def _private_yazi(root: Path, keymap: str, *, enable_open: bool = False) -> tuple[dict[str, Path], Path]:
+    """Create a private home, XDG dirs, stub opener, fzf wrapper and Yazi config under `root`."""
     private = {
         "HOME": root / "home",
         "XDG_CONFIG_HOME": root / "config",
@@ -220,25 +328,69 @@ def _private_yazi(root: Path, keymap: str) -> tuple[dict[str, Path], Path]:
         "XDG_STATE_HOME": root / "state",
         "XDG_RUNTIME_DIR": root / "run",
         "TMPDIR": root / "tmp",
+        "_ZO_DATA_DIR": root / "zoxide",
     }
     for path in private.values():
         path.mkdir(mode=0o700)
+    bin_dir = root / "bin"
+    bin_dir.mkdir(mode=0o700)
+    opened_log = root / "opened.log"
+    open_mode = root / "open_mode"
+    typing_flag = root / "typing.flag"
+    jump_rc = root / "jump_rc"
+    stub = bin_dir / "trainer-open"
+    stub.write_text(
+        "#!/bin/sh\n"
+        "inter=0\n"
+        f"if [ -f {_sh(open_mode)} ]; then\n"
+        f'  inter="$(cat {_sh(open_mode)} 2>/dev/null || echo 0)"\n'
+        "fi\n"
+        f'printf "%s\\t%s\\t%s\\n" "$1" "$inter" "$2" >> {_sh(opened_log)}\n'
+    )
+    stub.chmod(0o700)
+    if real_fzf := shutil.which("fzf"):
+        fzf_wrap = bin_dir / "fzf"
+        fzf_wrap.write_text(
+            "#!/bin/sh\n"
+            f"FLAG={_sh(typing_flag)}\n"
+            f"RCFILE={_sh(jump_rc)}\n"
+            'touch "$FLAG"\n'
+            "rc=130\n"
+            'trap \'rm -f "$FLAG"; printf "%s\\n" "$rc" > "$RCFILE"\' EXIT INT TERM\n'
+            f"{_sh(real_fzf)} \"$@\"\n"
+            "rc=$?\n"
+            "exit $rc\n"
+        )
+        fzf_wrap.chmod(0o700)
     config = private["XDG_CONFIG_HOME"] / "yazi"
     practice = private["HOME"] / "Practice"
-    plugins = {"trainer-enter": _ENTER_PLUGIN, "trainer-leave": _LEAVE_PLUGIN,
-               "trainer-history": _HISTORY_PLUGIN, "trainer-copy": _COPY_PLUGIN}
+    plugins = {
+        "trainer-enter": _ENTER_PLUGIN,
+        "trainer-leave": _LEAVE_PLUGIN,
+        "trainer-history": _HISTORY_PLUGIN,
+        "trainer-copy": _COPY_PLUGIN,
+        "trainer-search": _SEARCH_PLUGIN,
+        "trainer-jump": _JUMP_PLUGIN,
+        "trainer-open": _OPEN_PLUGIN,
+    }
+    def _subst(text: str) -> str:
+        return (
+            text.replace("@PRACTICE@", json.dumps(str(practice)))
+            .replace("@PROJECTS@", json.dumps(str(practice / "Projects")))
+            .replace("@TYPING_FLAG@", json.dumps(str(typing_flag)))
+            .replace("@OPEN_MODE@", json.dumps(str(open_mode)))
+            .replace("@JUMP_RC@", json.dumps(str(jump_rc)))
+        )
     for name, source in plugins.items():
         plugin = config / "plugins" / f"{name}.yazi"
         plugin.mkdir(parents=True)
-        (plugin / "main.lua").write_text(
-            source.replace("@PRACTICE@", json.dumps(str(practice)))
-            .replace("@PROJECTS@", json.dumps(str(practice / "Projects")))
-        )
+        (plugin / "main.lua").write_text(_subst(source))
     (config / "keymap.toml").write_text(keymap)
     # A plugin loads on its first key unless required here, and keys typed meanwhile overtake it.
     preload = "".join(f'require("{name}")\n' for name in plugins)
-    (config / "init.lua").write_text(OBSERVE + preload)
-    (config / "yazi.toml").write_text(_YAZI_CONFIG)
+    (config / "init.lua").write_text(_subst(OBSERVE) + preload)
+    yazi_cfg = _YAZI_OPEN_CONFIG.replace("@STUB@", str(stub)) if enable_open else _YAZI_CONFIG
+    (config / "yazi.toml").write_text(yazi_cfg)
     return private, config
 
 
@@ -272,14 +424,21 @@ def _key_step(step):
     return yazi, raw
 
 
-def _bindings(rows, actions=tuple(KEYMAP)):
+def _bindings(rows, actions=tuple(KEYMAP), which=shutil.which):
     """Yield (action, rigpage chord, Yazi key specs, legacy PTY bytes) for each usable row."""
-    actions = {value: action for action, names in KEYMAP.items() if action in actions for value in names[:2]}
+    wanted = set(actions)
+    exact = {value: action for action, names in KEYMAP.items() if action in wanted for value in names[:2]}
+    prefixes = tuple((KEYMAP[action][1] + " ", action) for action in ACTION_TOOLS if action in wanted)
     taken = set()
     for row in rows:
-        action = actions.get(row.get("value"))
+        value = row.get("value")
+        action = exact.get(value)
+        if action is None and isinstance(value, str):
+            action = next((act for prefix, act in prefixes if value.startswith(prefix)), None)
         chord = row.get("name", "")
         if not action or not isinstance(chord, str) or len(chord) > 80:
+            continue
+        if action in ACTION_TOOLS and not which(ACTION_TOOLS[action]):
             continue
         steps = tuple(_key_step(step) for step in chord.split(", "))
         if not all(steps):
@@ -290,11 +449,11 @@ def _bindings(rows, actions=tuple(KEYMAP)):
             yield action, chord, keys, b"".join(encoded)
 
 
-def yazi_bindings(rows, actions=tuple(KEYMAP)):
+def yazi_bindings(rows, actions=tuple(KEYMAP), which=shutil.which):
     """Map each action of the table to (rigpage chord, legacy PTY bytes) alternatives;
     the curriculum and the router read the chords from here."""
     result = {}
-    for action, chord, _, encoded in _bindings(rows, actions):
+    for action, chord, _, encoded in _bindings(rows, actions, which=which):
         result.setdefault(action, []).append((chord, encoded))
     return result
 
@@ -313,22 +472,44 @@ PRACTICE_TREE = (
     "Practice/Projects/planning.txt", "Practice/Projects/timeline.txt",
 )
 PRACTICE_FOLDERS = ("Practice", "Practice/Projects")
+# Richer multi-folder tree with distinct file names and contents for search, jump and open lessons.
+SEARCH_TREE = {
+    "Practice/Archive/old.txt": "archived quarterly memo\n",
+    "Practice/Docs/guide.txt": "onboarding guide with lantern keyword\n",
+    "Practice/Projects/deploy.md": "release checklist: run checks before ship\n",
+    "Practice/notes.txt": "daily standup notes\n",
+}
+SEARCH_FOLDERS = ("Practice", "Practice/Archive", "Practice/Docs", "Practice/Projects")
+ALL_FOLDERS = frozenset(PRACTICE_FOLDERS) | frozenset(SEARCH_FOLDERS)
 # A start state per cursor: «practice_tree» hovers Projects, «practice_tree@NAME» hovers NAME.
-# Every fixture is a fresh tree: hidden files off, nothing marked, yanked or filtered.
-FIXTURES = ("practice_tree", "practice_tree@draft.txt", "practice_tree@notes.txt", "practice_tree@report.md")
+# «search_tree» hovers Archive, «search_tree@NAME» hovers NAME.
+FIXTURES = (
+    "practice_tree", "practice_tree@draft.txt", "practice_tree@notes.txt", "practice_tree@report.md",
+    "search_tree", "search_tree@notes.txt",
+)
 
 
 @dataclass(frozen=True)
 class YaziState(YaziWorld):
-    """YaziWorld plus the practice tree and private trash on disk, so checks can see file changes.
+    """YaziWorld plus the practice tree, private trash and stub-opened files on disk.
 
     `cwd` is relative to the private home ("Practice", "Practice/Projects").
     `tree` holds the file paths under the private home ("Practice/Projects/notes.txt").
     `trashed` holds the file names currently in the private XDG trash.
+    `opened` holds (opener, interactive, relative_path) tuples recorded by the private opener stub.
     """
 
     tree: frozenset[str] = field(default_factory=frozenset)
     trashed: frozenset[str] = field(default_factory=frozenset)
+    opened: tuple[tuple[str, bool, str], ...] = ()
+
+
+def _remove_path(path: Path) -> None:
+    """Remove a directory, file or symlink without following symlinks."""
+    if path.is_symlink() or path.is_file():
+        path.unlink()
+    elif path.exists():
+        shutil.rmtree(path)
 
 
 def _tree(home: Path) -> frozenset[str]:
@@ -341,6 +522,24 @@ def _tree(home: Path) -> frozenset[str]:
 def _trashed(data: Path | None) -> frozenset[str]:
     files = data / "Trash" / "files" if data is not None else None
     return frozenset(path.name for path in files.iterdir()) if files and files.is_dir() else frozenset()
+
+
+def _opened(log: Path | None, home: Path | None) -> tuple[tuple[str, bool, str], ...]:
+    if log is None or home is None or not log.is_file():
+        return ()
+    prefix = str(home).rstrip("/") + "/"
+    found = []
+    for line in log.read_text(encoding="utf-8", errors="replace").splitlines():
+        parts = line.split("\t", 2)
+        if len(parts) != 3:
+            continue
+        mode, inter, target = parts
+        if not mode or not target:
+            continue
+        if target.startswith(prefix):
+            target = target[len(prefix):]
+        found.append((mode, inter == "1", target))
+    return tuple(found)
 
 
 def _card_action(card: str) -> str:
@@ -364,10 +563,12 @@ def chord_keys(chord: str) -> tuple[bytes, ...] | None:
     return tuple(keys)
 
 
-def session_bindings(rows: Iterable[Mapping], actions: Iterable[str]) -> dict[str, list[tuple[str, tuple[str, ...]]]]:
+def session_bindings(
+    rows: Iterable[Mapping], actions: Iterable[str], which=shutil.which,
+) -> dict[str, list[tuple[str, tuple[str, ...]]]]:
     """Map each action to the user's (rigpage chord, Yazi key specs) pairs, first row first."""
     result = {}
-    for action, chord, keys, _ in _bindings(rows, frozenset(actions)):
+    for action, chord, keys, _ in _bindings(rows, frozenset(actions), which=which):
         if chord_keys(chord) is not None:
             result.setdefault(action, []).append((chord, keys))
     return result
@@ -382,7 +583,15 @@ def session_keymap(bindings: Mapping[str, list[tuple[str, tuple[str, ...]]]]) ->
         f'  {{ on = {json.dumps(on)}, run = {json.dumps(run)} }},'
         for on, run in _INPUT_KEYMAP
     ]
-    return "\n".join(["[mgr]", "keymap = [", *mgr, "]", "", "[input]", "keymap = [", *inp, "]", ""])
+    pick = [
+        f'  {{ on = {json.dumps(on)}, run = {json.dumps(run)} }},'
+        for on, run in _PICK_KEYMAP
+    ]
+    return "\n".join([
+        "[mgr]", "keymap = [", *mgr, "]", "",
+        "[input]", "keymap = [", *inp, "]", "",
+        "[pick]", "keymap = [", *pick, "]", "",
+    ])
 
 
 class YaziSession:
@@ -398,6 +607,7 @@ class YaziSession:
         self.herdr = HerdrBackend(herdr_rows)
         self._resources = ExitStack()
         self._root = self._home = self._data = self._config = self._env = None
+        self._zoxide = self._opened_log = self._open_mode = self._typing_flag = self._jump_rc = None
         self._bindings = {}
         self._binary = None
         self._events = None
@@ -428,12 +638,20 @@ class YaziSession:
             self._root = Path(self._resources.enter_context(
                 tempfile.TemporaryDirectory(prefix="keys-yazi-", dir="/tmp")))
             self._bindings = session_bindings(self.rows, wanted | set(BASE_ACTIONS))
-            private, self._config = _private_yazi(self._root, session_keymap(self._bindings))
+            private, self._config = _private_yazi(
+                self._root, session_keymap(self._bindings), enable_open=bool(wanted & {"open", "open_with"}),
+            )
             self._home = private["HOME"]
             self._data = private["XDG_DATA_HOME"]
+            self._zoxide = private["_ZO_DATA_DIR"]
+            self._opened_log = self._root / "opened.log"
+            self._open_mode = self._root / "open_mode"
+            self._typing_flag = self._root / "typing.flag"
+            self._jump_rc = self._root / "jump_rc"
             # No inherited YAZI ids, display sessions, shell settings or credentials.
             self._env = {name: str(path) for name, path in private.items()} | {
-                "YAZI_CONFIG_HOME": str(self._config), "PATH": os.defpath,
+                "YAZI_CONFIG_HOME": str(self._config),
+                "PATH": f"{self._root / 'bin'}:{os.defpath}",
             }
             return self.apply_fixture(fixture)
         except (OSError, HerdrUnavailable) as exc:
@@ -450,21 +668,37 @@ class YaziSession:
         if self._home is None:
             raise YaziUnavailable(TEXT["not_started"])
         practice = self._home / "Practice"
-        hovered = name.partition("@")[2] or "Projects"
+        is_search = name.startswith("search_tree")
+        default_hover = "Archive" if is_search else "Projects"
+        hovered = name.partition("@")[2] or default_hover
         try:
             self._stop_yazi()
-            shutil.rmtree(practice, ignore_errors=True)
+            _remove_path(practice)
             if self._data is not None:
-                shutil.rmtree(self._data / "Trash", ignore_errors=True)
-            for path in PRACTICE_TREE:
-                (self._home / path).parent.mkdir(parents=True, exist_ok=True)
-                (self._home / path).write_text("Practice file.\n")
+                _remove_path(self._data / "Trash")
+            if self._opened_log is not None:
+                self._opened_log.unlink(missing_ok=True)
+            if self._open_mode is not None:
+                self._open_mode.unlink(missing_ok=True)
+            if self._typing_flag is not None:
+                self._typing_flag.unlink(missing_ok=True)
+            if self._jump_rc is not None:
+                self._jump_rc.unlink(missing_ok=True)
+            if is_search:
+                for path, content in SEARCH_TREE.items():
+                    (self._home / path).parent.mkdir(parents=True, exist_ok=True)
+                    (self._home / path).write_text(content)
+                self._seed_zoxide()
+            else:
+                for path in PRACTICE_TREE:
+                    (self._home / path).parent.mkdir(parents=True, exist_ok=True)
+                    (self._home / path).write_text("Practice file.\n")
             self._generation += 1
             events = self._root / f"events-{self._generation}"
             pid = self._root / f"pid-{self._generation}"
             error = self._root / f"error-{self._generation}"
             events.touch(mode=0o600)
-            entry = practice if hovered == "Projects" else practice / hovered
+            entry = practice if hovered == default_hover else practice / hovered
             script = self._root / "yazi.sh"
             launcher = Path(__file__).with_name("landlock.py")
             exports = " ".join(f"{key}={_sh(value)}" for key, value in sorted(self._env.items()))
@@ -497,6 +731,20 @@ class YaziSession:
             raise YaziUnavailable(TEXT["no_start"].format(detail=exc)) from exc
         return self.world()
 
+    def _seed_zoxide(self) -> None:
+        if self._zoxide is None or self._home is None:
+            return
+        _remove_path(self._zoxide)
+        self._zoxide.mkdir(mode=0o700, parents=True, exist_ok=True)
+        binary = shutil.which("zoxide")
+        if not binary:
+            return
+        env = {"HOME": str(self._home), "_ZO_DATA_DIR": str(self._zoxide), "PATH": os.defpath}
+        for folder in SEARCH_FOLDERS:
+            if folder != "Practice":
+                subprocess.run([binary, "add", str(self._home / folder)], env=env,
+                               stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=5)
+
     def _wait_for(self, ready, pid_file, error_file=None):
         end = time.monotonic() + STARTUP_TIMEOUT
         while time.monotonic() < end:
@@ -525,21 +773,27 @@ class YaziSession:
         if self._state is not None:
             tree = _tree(self._home)
             trashed = _trashed(self._data)
-            if tree != self._state.tree or trashed != self._state.trashed:
-                self._state = replace(self._state, tree=tree, trashed=trashed)
+            opened = _opened(self._opened_log, self._home)
+            if tree != self._state.tree or trashed != self._state.trashed or opened != self._state.opened:
+                self._state = replace(self._state, tree=tree, trashed=trashed, opened=opened)
         return self._state
 
     def _as_state(self, body: Mapping) -> YaziState:
         home = str(self._home)
         cwd = str(body.get("cwd", ""))
+        search_query = str(body.get("search_query") or "")
+        if cwd.startswith("search://"):
+            prefix = f"search://{search_query}/"
+            cwd = cwd[len(prefix):] if cwd.startswith(prefix) else ""
         relative = cwd[len(home) + 1:] if cwd.startswith(home + "/") else ""
-        if relative not in PRACTICE_FOLDERS:
+        if relative not in ALL_FOLDERS:
             raise YaziUnavailable(TEXT["left_tree"])
         copied = str(body.get("copied", "")).replace(home + "/", "")  # paths as the practice home sees them
         world = YaziWorld.from_event({**body, "cwd": relative, "copied": copied, "entries": _names(body.get("entries", [])),
                                       "selected": _names(body.get("selected", []))})
         return YaziState(**{name: getattr(world, name) for name in world.__dataclass_fields__},
-                         tree=_tree(self._home), trashed=_trashed(self._data))
+                         tree=_tree(self._home), trashed=_trashed(self._data),
+                         opened=_opened(self._opened_log, self._home))
 
     def world(self) -> World:
         if self._home is None:
@@ -550,9 +804,11 @@ class YaziSession:
         return World(herdr=herdr, yazi=self._queue.popleft() if self._queue else latest)
 
     def typing(self) -> bool:
-        """True while a Yazi prompt (the filter, for one) takes the user's text: cx.layer is not mgr."""
+        """True while a Yazi prompt, app picker, or fzf/zoxide sub-picker takes the user's text."""
         state = self._pump()
-        return state is not None and state.layer != "mgr"
+        return (state is not None and state.layer != "mgr") or (
+            self._typing_flag is not None and self._typing_flag.exists()
+        )
 
     def chords(self, card: str) -> tuple[str, ...]:
         return tuple(chord for chord, _ in self._bindings.get(_card_action(card), ()))
@@ -629,6 +885,7 @@ class YaziSession:
         finally:
             self._resources = ExitStack()
             self._root = self._home = self._data = self._config = self._env = self._events = None
+            self._zoxide = self._opened_log = self._open_mode = self._typing_flag = self._jump_rc = None
             self._state = None
             self._queue.clear()
             self._bindings = {}

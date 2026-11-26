@@ -1,9 +1,10 @@
 # Keys Trainer
 
-A terminal trainer that teaches the shortcuts from your own setup (herdr, Yazi, Strata, Hyprland)
-as short guided lessons. herdr and Yazi are practised in private sessions that the trainer starts
-and stops itself, so your own sessions are never touched. Strata is practised as key presses in the
-trainer, and the desktop lesson only watches your real Hyprland.
+A terminal trainer that teaches the shortcuts from your own setup (herdr, Yazi, bash/fzf/zoxide,
+Strata, Hyprland) as short guided lessons. herdr, Yazi and the shell lessons are practised in
+private sessions that the trainer starts and stops itself, so your own sessions, files, shell
+history and zoxide database are never touched. Strata is practised as key presses in the trainer,
+and the desktop lesson only watches your real Hyprland.
 
 ## Get started on Omarchy
 
@@ -20,15 +21,18 @@ its own `foot` window.
 It needs Python 3.11+ (Omarchy has it) and `herdr`; `yazi` and `strata` are needed for their own
 lessons. Standard library only, nothing to install with pip.
 
-The private Yazi can only write inside its own temporary folder (Linux Landlock, which Omarchy's
-kernel has); without it, or before Linux 6.2, the Yazi lessons do not start.
+The private Yazi and private shell can only write inside their own temporary folder (Linux
+Landlock, which Omarchy's kernel has); without it, or before Linux 6.2, those lessons do not start.
+File-opening steps route `open`, `xdg-open` and `nvim` to recording stubs so no real desktop app
+launches during practice.
 
 **Your own keys.** At every launch the trainer reads the shortcuts you actually have: herdr's
 config (`~/.config/herdr/config.toml`) plus herdr's defaults for what it leaves alone, Yazi's
-keymap (`~/.config/yazi/keymap.toml`) plus Yazi's built-in one, Strata's `[keymap.default]`
-(`~/.config/strata/settings.toml`) over its default keys, and Hyprland's live binds. Change
-a binding and the next launch teaches the new one. A step whose action you have no key for shows a
-short notice with how to add one, and `s` skips it.
+keymap (`~/.config/yazi/keymap.toml`) plus Yazi's built-in one, your interactive bash bindings
+(`bind -X`/`bind -s`/`bind -p`, e.g. fzf's Ctrl-R/Ctrl-T/Alt-C) and search/open tools, Strata's
+`[keymap.default]` (`~/.config/strata/settings.toml`) over its default keys, and Hyprland's live
+binds. Change a binding and the next launch teaches the new one. A step whose action you have no
+key for shows a short notice with how to add one, and `s` (or `F3` in shell lessons) skips it.
 
 **The start check.** Before Home it checks Python, herdr, yazi, Strata, Hyprland and foot. Anything
 missing gets one line: what it means, the `pacman` command that installs it, and which lessons are
@@ -59,7 +63,9 @@ them itself.
 
    The trainer checks what actually changed in the session and moves on by itself. Press `?` once to
    see the keys. Press it again and the trainer does the step for you and moves on; that step comes
-   back later in the lesson for you to do yourself. `q` pauses (resume, skip, redo or leave).
+   back later in the lesson for you to do yourself. `q` pauses (resume, skip, redo or leave). Shell
+   lessons use `F1` (hint), `F2` (pause) and `F3` (skip) instead so typing letters always goes to
+   bash.
    **Keyboard layout.** The default is Norwegian (`--layout no`; `us` turns this off). When a
    shortcut has several chords, one that is easy to type on the layout is taught. A step whose
    taught key still needs Shift, AltGr or a dead key says so, and `s` skips it (another free key if
@@ -67,14 +73,16 @@ them itself.
 4. **Lesson complete** shows how each step went and the stars. Enter goes to the next lesson, `r`
    replays, `q` ends the session with a summary of what you practised and what comes back when.
 
-The lessons cover herdr panes, tabs and jumping around; Yazi moving, selecting, copying paths, file
-tricks and tabs; Strata navigation; and the desktop.
+The lessons cover herdr panes, tabs, workspaces and jumping around; Yazi moving, selecting, copying
+paths, file tricks, tabs, searching by name/content (`fd`/`rg`), jumping with `zoxide`/`fzf` and
+opening files; terminal searching (`Ctrl+R`, `Ctrl+T`, `fd`, `rg`), jumping (`Alt+C`, `z`) and
+opening files (`open`/`xdg-open`, `nvim`); Strata navigation; and the desktop.
 
 **Strata** is a window, so the trainer cannot look inside it: a step is done when you press your
 key for it. A terminal usually keeps Ctrl + Shift + C for itself, so Enter counts for that chord.
 With Strata's type-to-search on (its default), a plain letter such as `y` is no shortcut there.
 
-Lesson 13, “Desktop (live)”, is the exception: it runs on your real Hyprland desktop, marked
+Lesson 17, “Desktop (live)”, is the exception: it runs on your real Hyprland desktop, marked
 `LIVE`. The trainer only watches Hyprland's events there and never sends a key, so `?` shows the
 keys but cannot do the step for you. It is hidden when Hyprland is not running.
 
@@ -101,9 +109,10 @@ Lessons are data in `curriculum/*.toml`, one file per tool. A `[[lesson]]` lists
 `[[scenario]]` has the shown text (English), the cards it practises, a start state (`fixture`,
 `needs`), the `checks` that count as done, a `solution` and a `decoy`. A scenario is verified
 against the observed state of the private session, not against the keys pressed: the checks in
-`checks.py` (herdr) and `checks_yazi.py` (Yazi) are pure functions over that state. The self-test
-(`demo`) plays every solution with your real chords and requires it to pass, and plays every decoy
-and requires it to fail. Shown copy lives in the curriculum files and `strings.py`.
+`checks.py` (herdr), `checks_yazi.py` (Yazi) and `checks_shell.py` (bash) are pure functions over
+that state. The self-test (`demo`) plays every solution with your real chords and requires it to
+pass, and plays every decoy and requires it to fail. Shown copy lives in the curriculum files and
+`strings.py`.
 
 ## Checks
 

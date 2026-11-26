@@ -41,7 +41,8 @@ def router_for(plan: lesson.Plan, *, prefix: str = "", extra=()) -> Router:
     chords = [*(c for b in bindings for c in (*b.chords, *b.ambiguous)), *extra]
     direct = [step for chord in chords if not chord.startswith("prefix+") for step in chord.split(", ")]
     prompts = [chord for b in bindings if b.card.partition(":")[2] in PROMPT_CARDS for chord in b.chords]
-    return Router(prefix, direct, prompts)
+    is_shell = any(step.scenario.tool == "shell" for step in plan.steps)
+    return Router(prefix, direct, prompts, trainer_keys=("F1", "F2", "F3") if is_shell else None)
 
 
 def run_lesson(ui, session, engine: lesson.Engine, router: Router, mode, *, history=None, view=None,

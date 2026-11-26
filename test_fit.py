@@ -27,7 +27,8 @@ from screen import Text, render_card
 
 HERE = Path(__file__).resolve().parent
 SGR = re.compile(r"\x1b\[[0-9;]*m")
-ROWS = {name: json.loads((HERE / "test_data" / f"rigpage_{name}.json").read_text("utf-8")) for name in ("herdr", "yazi", "strata")}
+ROWS = {name: json.loads((HERE / "test_data" / f"rigpage_{name}.json").read_text("utf-8"))
+        for name in ("herdr", "yazi", "shell", "strata")}
 DESKTOP_ROWS = [  # as test_desktop_session's: Omarchy's bundled desktop bindings
     {"name": "super+1…0", "value": "Switch to workspace 1…10"},
     {"name": "super+ctrl+tab", "value": "Former workspace"},
@@ -161,7 +162,7 @@ class IntroFitTests(unittest.TestCase):
     def test_every_intro_shows_its_rows_whole(self):
         found = resolved()
         visible = [state for state in found.lessons if state.visible]
-        self.assertEqual(len(visible), 13)
+        self.assertEqual(len(visible), 17)
         for number, state in enumerate(visible, 1):
             plan = lesson.plan_lesson(found, state.lesson.id)
             scenarios = found.curriculum.scenarios

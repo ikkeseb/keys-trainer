@@ -31,5 +31,13 @@
   {"name": "L", "value": "forward"},
   {"name": "t, t", "value": "tab_create --current"},
   {"name": "[", "value": "tab_switch -1 --relative"},
-  {"name": "]", "value": "tab_switch 1 --relative"}
+  {"name": "]", "value": "tab_switch 1 --relative"},
+  {"name": "s", "value": "search --via=fd"},
+  {"name": "S", "value": "search --via=rg"},
+  {"name": "Z", "value": "plugin zoxide"},
+  {"name": "z", "value": "plugin fzf"},
+  {"name": "o", "value": "open"},
+  {"name": "enter", "value": "open"},
+  {"name": "O", "value": "open --interactive"},
+  {"name": "shift+enter", "value": "open --interactive"}
 ]

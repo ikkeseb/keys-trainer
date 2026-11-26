@@ -47,6 +47,9 @@ def start_check(data, resolved, env=None, which=shutil.which):
     if not which("strata") and _lessons_of(resolved, "strata"):
         lines.append(START["strata"].format(**_named(_lessons_of(resolved, "strata"))))
         off.add("strata")
+    if not which("bash") and _lessons_of(resolved, "shell"):
+        lines.append(START["shell"].format(**_named(_lessons_of(resolved, "shell"))))
+        off.add("shell")
     if _no_hyprland(resolved) and _lessons_of(resolved, "desktop"):
         lines.append(START["hyprland"].format(**_named(_lessons_of(resolved, "desktop"))))
         off.add("desktop")

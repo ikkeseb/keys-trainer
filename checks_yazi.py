@@ -12,7 +12,12 @@ from world import World, YaziWorld
 from yazi_backend import PRACTICE_TREE
 
 
-FOLDERS = {"Practice": "Practice", "Projects": "Practice/Projects"}
+FOLDERS = {
+    "Practice": "Practice",
+    "Archive": "Practice/Archive",
+    "Docs": "Practice/Docs",
+    "Projects": "Practice/Projects",
+}
 _folder = _choice(*FOLDERS)
 
 
@@ -49,8 +54,8 @@ def cwd_is(context, folder):
 @check("back_then_forward", tool="yazi", folder=_folder)
 def back_then_forward(context, folder):
     """Since the start the user went back from this folder and then forward, and is in it again."""
-    now, ref = _yazi(context.now), _yazi(context.ref)
-    used = now.history.removeprefix(ref.history).split()
+    now, start = _yazi(context.now), _yazi(context.start)
+    used = now.history.removeprefix(start.history).split()
     return (_in(now, folder) and len(used) >= 2 and used[-2] == f"back:{FOLDERS[folder].rsplit('/', 1)[-1]}"
             and used[-1].startswith("forward:"))
 
@@ -205,3 +210,50 @@ def one_tab(world, earlier):
 @need("nothing_copied", tool="yazi")
 def nothing_copied(world, earlier):
     return not _yazi(world).copied
+
+
+@check("search_is", tool="yazi", via=_choice("fd", "rg"), query=_text(), entry=_text())
+def search_is(context, via, query, entry):
+    """A Yazi search via `via` for `query` is active and lists `entry`."""
+    yazi = _yazi(context.now)
+    return (
+        yazi.layer == "mgr"
+        and yazi.search_via == via
+        and yazi.search_query.lower() == query.lower()
+        and entry in yazi.entries
+    )
+
+
+@check("jumped_to", tool="yazi", via=_choice("zoxide", "fzf"), folder=_folder, entry=_text(None))
+def jumped_to(context, via, folder, entry):
+    """Yazi jumped to `folder` via `via` (and hovers `entry` when given)."""
+    yazi = _yazi(context.now)
+    return (
+        yazi.layer == "mgr"
+        and yazi.jump_via == via
+        and _in(yazi, folder)
+        and (entry is None or yazi.hovered == entry)
+    )
+
+
+@check("opened", tool="yazi", opener=_choice("default", "editor"), file=_text(), interactive=_flag(False))
+def opened(context, opener, file, interactive):
+    """Since `start`, the private opener stub recorded `(opener, interactive, file)`."""
+    now, start = _yazi(context.now), _yazi(context.start)
+    now_opened = getattr(now, "opened", ())
+    start_opened = getattr(start, "opened", ())
+    added = now_opened[len(start_opened):]
+    return (opener, interactive, file) in added
+
+
+@need("no_search", tool="yazi")
+def no_search(world, earlier):
+    """No Yazi search view is active."""
+    yazi = _yazi(world)
+    return not yazi.search_query and not yazi.search_via
+
+
+@need("nothing_opened", tool="yazi")
+def nothing_opened(world, earlier):
+    """No file has been opened yet in this fixture."""
+    return not getattr(_yazi(world), "opened", ())

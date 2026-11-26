@@ -19,6 +19,7 @@ import tomllib
 from pathlib import Path
 
 import hypr
+import shell_backend
 import strata_keys
 
 # ── herdr ──
@@ -424,6 +425,7 @@ def scan(env=None) -> dict:
     groups = [
         {"id": "herdr", "rows": scan_herdr(env, notes, herdr_defaults_), "defaults": herdr_defaults_},
         {"id": "yazi", "rows": scan_yazi(env, notes, yazi_defaults_), "defaults": yazi_defaults_},
+        {"id": "shell", "rows": shell_backend.scan(env, notes)},
         {"id": "strata", "rows": strata_keys.scan(env, notes)},
         {"id": "desktop", "rows": scan_desktop(env, notes)},
     ]
@@ -483,6 +485,21 @@ def bind_advice(data, card: str, env=None) -> dict:
         default = next(iter(strata_keys.ACTIONS.get(action, ("", ()))[1]), "")
         advice.update(path=_home_path(strata_keys.config_path(env), env), line=f'{action} = ["<Control><Shift>c"]'
                       if action == "copy_path" else f'{action} = ["<key>"]', default=default)
+    elif tool == "shell":
+        bashrc = _home_path(Path(env.get("HOME") or Path.home()) / ".bashrc", env)
+        suggestions = {
+            "history_search": ("ctrl+r", "source /usr/share/fzf/key-bindings.bash"),
+            "file_widget": ("ctrl+t", "source /usr/share/fzf/key-bindings.bash"),
+            "cd_widget": ("alt+c", "source /usr/share/fzf/key-bindings.bash"),
+            "zoxide_jump": ("z", 'eval "$(zoxide init bash)"'),
+            "open_default": ("open", "sudo pacman -S xdg-utils"),
+            "open_editor": ("nvim", "sudo pacman -S neovim"),
+            "find_file": ("fd", "sudo pacman -S fd"),
+            "search_content": ("rg", "sudo pacman -S ripgrep"),
+        }
+        default, line = suggestions.get(action, ("", ""))
+        advice.update(action=shell_backend.ACTIONS.get(action, advice["action"]),
+                      path=bashrc, line=line, default=default)
     elif tool == "desktop":
         import desktop_session
         advice["action"] = desktop_session.ACTIONS.get(action, advice["action"])

@@ -20,6 +20,7 @@ from pathlib import Path
 import checks
 import desktop_session  # registers the desktop checks
 import herdr_backend
+import shell_backend
 import strata_keys  # registers the strata check
 from practice import Card, rows_for, shortcut_text
 from router import canonical
@@ -27,13 +28,13 @@ from strings import DESKTOP, KEYS, REPORT
 
 
 FOLDER = Path(__file__).with_name("curriculum")
-TOOLS = ("herdr", "yazi", "strata", "desktop")
-TRACKS = {"herdr": "herdr", "yazi": "Yazi", "strata": "Strata", "desktop": "Hyprland"}  # history's track names
+TOOLS = ("herdr", "yazi", "shell", "strata", "desktop")
+TRACKS = {"herdr": "herdr", "yazi": "Yazi", "shell": "Shell", "strata": "Strata", "desktop": "Hyprland"}  # history's track names
 KINDS = ("learn", "recall", "build")
 FIXTURES = {"herdr": frozenset(herdr_backend.FIXTURES), "desktop": frozenset(desktop_session.FIXTURES),
-            "strata": frozenset({"keys"})}
+            "shell": frozenset(shell_backend.FIXTURES), "strata": frozenset({"keys"})}
 # (Yazi names its own fixtures; yazi_backend.FIXTURES checks them when a session starts.)
-CARD = re.compile(r"(herdr|yazi|strata|desktop):[a-z0-9_]+")
+CARD = re.compile(r"(herdr|yazi|shell|strata|desktop):[a-z0-9_]+")
 LIMITS = {"goal": 66, "why": 70, "nudge": 80, "done": 66, "title": 40, "intro": 220, "pattern": 110,
           "checklist": 32, "builds": 24}
 LESSON_KEYS = {"id": True, "order": True, "title": True, "tool": True, "fixture": True, "intro": True,
@@ -536,8 +537,12 @@ def _strata_chords(data, action):
     return strata_keys.chords(rows_for(data, "strata"), action), ""
 
 
-RESOLVERS: dict[str, Callable] = {"herdr": _herdr_chords, "yazi": _yazi_chords, "strata": _strata_chords,
-                                  "desktop": _desktop_chords}
+def _shell_chords(data, action):
+    return shell_backend.shell_bindings(rows_for(data, "shell")).get(action, ()), ""
+
+
+RESOLVERS: dict[str, Callable] = {"herdr": _herdr_chords, "yazi": _yazi_chords, "shell": _shell_chords,
+                                  "strata": _strata_chords, "desktop": _desktop_chords}
 
 
 def _bind(data, card, ambiguous, layout):

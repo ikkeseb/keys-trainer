@@ -177,6 +177,10 @@ class YaziWorld:
     visual: bool = False
     copied: str = ""  # «what:text» of the latest copy-to-clipboard key, paths from the practice home
     history: str = ""  # the history keys used, oldest first: «back:Projects forward:Practice »
+    search_via: str = ""  # "fd" or "rg" while a Yazi search view is active, else ""
+    search_query: str = ""  # active search query (Yazi cwd domain), else ""
+    jump_via: str = ""  # "zoxide" or "fzf" after a jump key, cleared by manual enter/leave/history
+    open_interactive: bool = False  # True when the latest open key used open --interactive
 
     @classmethod
     def from_event(cls, event: Mapping) -> YaziWorld:
@@ -195,7 +199,25 @@ class YaziWorld:
             visual=bool(event.get("visual", False)),
             copied=str(event.get("copied") or ""),
             history=str(event.get("history") or ""),
+            search_via=str(event.get("search_via") or ""),
+            search_query=str(event.get("search_query") or ""),
+            jump_via=str(event.get("jump_via") or ""),
+            open_interactive=bool(event.get("open_interactive", False)),
         )
+
+
+@dataclass(frozen=True)
+class ShellWorld:
+    """The private bash shell's state from its prompt/widget hooks and stub wrappers."""
+
+    cwd: str = ""
+    last_cmd: str = ""
+    last_status: int | None = None
+    widgets: tuple[tuple[str, str], ...] = ()
+    zoxide: tuple[tuple[str, str], ...] = ()
+    opened: tuple[tuple[str, str], ...] = ()
+    tools: tuple[tuple[str, tuple[str, ...], tuple[str, ...]], ...] = ()
+    seq: int = 0
 
 
 @dataclass(frozen=True)
@@ -225,6 +247,7 @@ class DesktopWorld:
 class World:
     herdr: HerdrWorld | None = None
     yazi: YaziWorld | None = None
+    shell: ShellWorld | None = None
     desktop: DesktopWorld | None = None
     strata: tuple[str, ...] | None = None  # a key-press practice: actions done, or keys that did none
 
@@ -282,6 +305,8 @@ def describe(before: World, after: World) -> str | None:
             return text
     if before.yazi and after.yazi:
         return _describe_yazi(before.yazi, after.yazi)
+    if before.shell and after.shell:
+        return _describe_shell(before.shell, after.shell)
     if before.strata is not None and after.strata and len(after.strata) > len(before.strata):
         return TEXT["pressed"].format(key=after.strata[-1].replace("_", " "))
     if before.desktop and after.desktop:
@@ -341,8 +366,15 @@ def _describe_herdr(before: HerdrWorld, after: HerdrWorld) -> str | None:
 
 
 def _describe_yazi(before: YaziWorld, after: YaziWorld) -> str | None:
+    before_opened = getattr(before, "opened", ())
+    after_opened = getattr(after, "opened", ())
+    if len(after_opened) > len(before_opened):
+        opener, _interactive, path = after_opened[-1]
+        return TEXT["yazi_opened"].format(name=path.rsplit("/", 1)[-1], opener=opener)
     if after.copied != before.copied and after.copied:
         return TEXT["yazi_copied"].format(text=after.copied.partition(":")[2])
+    if after.search_query != before.search_query and after.search_query:
+        return TEXT["yazi_search"].format(query=after.search_query)
     if after.tab_count != before.tab_count or after.tab_index != before.tab_index:
         return TEXT["yazi_tabs"].format(position=after.tab_index + 1, count=after.tab_count)
     if after.cwd != before.cwd:
@@ -355,6 +387,23 @@ def _describe_yazi(before: YaziWorld, after: YaziWorld) -> str | None:
         return TEXT["yazi_selected"]
     if after.hovered != before.hovered and after.hovered:
         return TEXT["yazi_hover"].format(name=after.hovered)
+    return None
+
+
+def _describe_shell(before: ShellWorld, after: ShellWorld) -> str | None:
+    if len(after.opened) > len(before.opened):
+        opener, path = after.opened[-1]
+        return TEXT["shell_opened"].format(name=path.rsplit("/", 1)[-1], opener=opener)
+    if len(after.tools) > len(before.tools):
+        tool, _args, matches = after.tools[-1]
+        return TEXT["shell_tool"].format(tool=tool, count=len(matches))
+    if after.cwd != before.cwd and after.cwd:
+        return TEXT["shell_cwd"].format(name=after.cwd.rstrip("/").rsplit("/", 1)[-1] or after.cwd)
+    if len(after.widgets) > len(before.widgets):
+        widget, _ = after.widgets[-1]
+        return TEXT["shell_widget"].format(widget=widget)
+    if after.seq > before.seq and after.last_cmd:
+        return TEXT["shell_cmd"].format(cmd=after.last_cmd)
     return None
 
 

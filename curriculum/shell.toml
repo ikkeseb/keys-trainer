@@ -1,0 +1,135 @@
+# Lessons 15 and 16: Terminal (bash) search, jump and file opening in a private, jailed shell.
+# Fixtures (shell_backend.FIXTURES) start a private bash with a seeded HISTFILE, private
+# _ZO_DATA_DIR and the practice tree Practice/{Archive/old.txt, Docs/guide.txt,
+# Projects/deploy.md, notes.txt}. Recording stubs stand in for open/xdg-open and nvim/n.
+
+[[lesson]]
+id = "shell-search"
+order = 15
+title = "Terminal: search"
+tool = "shell"
+fixture = "shell_tree"
+intro = "Search command history, pick files onto your command line, and search names or contents in bash. Everything runs in a private shell with its own history."
+pattern = "Ctrl + r searches history, Ctrl + t picks a file. fd finds names, rg searches inside files."
+steps = ["learn:shell-history", "learn:shell-file-widget", "recall:shell-history", "learn:shell-fd",
+         "recall:shell-file-widget", "learn:shell-rg", "recall:shell-fd", "recall:shell-rg"]
+
+[[scenario]]
+id = "shell-history"
+goal = "Find and run ship-42 from history"
+why = "Reuse an earlier command without retyping or tapping Up."
+nudge = "Press Ctrl + r, type ship, Enter to pick it, Enter again to run it."
+done = "Ran echo ship-42 from history"
+cards = ["shell:history_search"]
+needs = [{ check = "shell_cwd_is", folder = "Practice" }, { check = "shell_clean" }]
+checks = [{ check = "widget_used", widget = "history", contains = "ship-42" },
+          { check = "command_ran", contains = "ship-42" }]
+solution = ["shell:history_search", { type = "ship" }, { press = "enter" }, { press = "enter" }]
+decoy = [{ type = "echo ship-42" }, { press = "enter" }]
+typing = true
+
+[[scenario]]
+id = "shell-file-widget"
+goal = "Insert deploy.md onto the command line with fzf"
+why = "Pull any file path into the command you are typing."
+nudge = "Press Ctrl + t, type deploy, and press Enter."
+done = "Inserted Projects/deploy.md"
+cards = ["shell:file_widget"]
+needs = [{ check = "shell_cwd_is", folder = "Practice" }, { check = "shell_clean" }]
+checks = [{ check = "widget_used", widget = "file", contains = "deploy.md" }]
+solution = ["shell:file_widget", { type = "deploy" }, { press = "enter" }]
+decoy = ["shell:file_widget", { press = "esc" }]
+typing = true
+
+[[scenario]]
+id = "shell-fd"
+goal = "Find deploy.md from the terminal with fd"
+why = "Fast recursive file search by name across subfolders."
+nudge = "Run fd deploy and press Enter."
+done = "fd found Projects/deploy.md"
+cards = ["shell:find_file"]
+needs = [{ check = "shell_cwd_is", folder = "Practice" }, { check = "shell_clean" }]
+checks = [{ check = "tool_matched", program = "fd", file = "Practice/Projects/deploy.md", query = "deploy" }]
+solution = ["shell:find_file", { press = "space" }, { type = "deploy" }, { press = "enter" }]
+decoy = [{ type = "ls" }, { press = "enter" }]
+typing = true
+
+[[scenario]]
+id = "shell-rg"
+goal = "Search inside files for lantern with rg"
+why = "Find matching lines across all subfolders in milliseconds."
+nudge = "Run rg lantern and press Enter."
+done = "rg found lantern in guide.txt"
+cards = ["shell:search_content"]
+needs = [{ check = "shell_cwd_is", folder = "Practice" }, { check = "shell_clean" }]
+checks = [{ check = "tool_matched", program = "rg", file = "Practice/Docs/guide.txt", query = "lantern" }]
+solution = ["shell:search_content", { press = "space" }, { type = "lantern" }, { press = "enter" }]
+decoy = ["shell:find_file", { press = "space" }, { type = "lantern" }, { press = "enter" }]
+typing = true
+
+[[lesson]]
+id = "shell-jump-open"
+order = 16
+title = "Terminal: jump and open"
+tool = "shell"
+fixture = "shell_tree"
+intro = "Jump straight to subfolders or visited folders, and open files from the terminal. Recording stubs stand in, so no real app launches."
+pattern = "Alt + c picks a subfolder, z jumps to visited folders. open launches the default app, nvim opens the editor."
+steps = ["learn:shell-cd-widget", "learn:shell-zoxide", "recall:shell-cd-widget", "learn:shell-open-default",
+         "recall:shell-zoxide", "learn:shell-open-editor", "recall:shell-open-default", "recall:shell-open-editor"]
+
+[[scenario]]
+id = "shell-cd-widget"
+goal = "Jump into Docs using fzf cd"
+why = "Pick any subfolder below here without typing its path."
+nudge = "Press Alt + c, type Docs, and press Enter."
+done = "Jumped to Docs"
+cards = ["shell:cd_widget"]
+fixture = "shell_tree"
+needs = [{ check = "shell_cwd_is", folder = "Practice" }, { check = "shell_clean" }]
+checks = [{ check = "widget_used", widget = "cd", contains = "Docs" }, { check = "shell_cwd_is", folder = "Docs", mode = "hold" }]
+solution = ["shell:cd_widget", { type = "Docs" }, { press = "enter" }]
+decoy = [{ type = "cd Docs" }, { press = "enter" }]
+typing = true
+
+[[scenario]]
+id = "shell-zoxide"
+goal = "Jump from Docs to Projects with zoxide"
+why = "Type z and part of any folder name you have visited before."
+nudge = "Run z Projects and press Enter."
+done = "Jumped to Projects"
+cards = ["shell:zoxide_jump"]
+fixture = "shell_tree@Docs"
+needs = [{ check = "shell_cwd_is", folder = "Docs" }, { check = "shell_clean" }]
+checks = [{ check = "zoxide_jumped", folder = "Projects" }]
+solution = ["shell:zoxide_jump", { press = "space" }, { type = "Projects" }, { press = "enter" }]
+decoy = [{ type = "cd .." }, { press = "enter" }]
+typing = true
+
+[[scenario]]
+id = "shell-open-default"
+goal = "Open notes.txt with the default app"
+why = "Launch the desktop default app for a file from the terminal."
+nudge = "Run open notes.txt (or xdg-open notes.txt) and press Enter."
+done = "Opened notes.txt"
+cards = ["shell:open_default"]
+fixture = "shell_tree"
+needs = [{ check = "shell_cwd_is", folder = "Practice" }, { check = "shell_clean" }]
+checks = [{ check = "shell_opened", opener = "default", file = "Practice/notes.txt" }]
+solution = ["shell:open_default", { press = "space" }, { type = "notes.txt" }, { press = "enter" }]
+decoy = ["shell:open_editor", { press = "space" }, { type = "notes.txt" }, { press = "enter" }]
+typing = true
+
+[[scenario]]
+id = "shell-open-editor"
+goal = "Open notes.txt in your editor"
+why = "Edit a file directly from the terminal."
+nudge = "Run nvim notes.txt (or n notes.txt) and press Enter."
+done = "Opened notes.txt in the editor"
+cards = ["shell:open_editor"]
+fixture = "shell_tree"
+needs = [{ check = "shell_cwd_is", folder = "Practice" }, { check = "shell_clean" }]
+checks = [{ check = "shell_opened", opener = "editor", file = "Practice/notes.txt" }]
+solution = ["shell:open_editor", { press = "space" }, { type = "notes.txt" }, { press = "enter" }]
+decoy = ["shell:open_default", { press = "space" }, { type = "notes.txt" }, { press = "enter" }]
+typing = true

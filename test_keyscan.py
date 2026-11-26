@@ -200,7 +200,7 @@ class ScanTest(unittest.TestCase):
     def test_default_configs_and_no_hyprland(self):
         payload = keyscan.scan(self.env)
         self.assertEqual(payload["source"], "scan")
-        self.assertEqual([group["id"] for group in payload["groups"]], ["herdr", "yazi", "strata", "desktop"])
+        self.assertEqual([group["id"] for group in payload["groups"]], ["herdr", "yazi", "shell", "strata", "desktop"])
         groups = {group["id"]: group["rows"] for group in payload["groups"]}
         self.assertIn(("prefix+minus", "split horizontal"), pairs(groups["herdr"]))
         self.assertIn(("j", "arrow next"), pairs(groups["yazi"]))

@@ -76,6 +76,8 @@ class YaziSessionUnitTests(unittest.TestCase):
             "escape": ["esc"], "yank": ["y"], "cut": ["x"], "paste": ["p"],
             "copy_path": ["c, c"], "copy_filename": ["c, f"], "copy_dirpath": ["c, d"], "select_all": ["ctrl+a"],
             "create": ["a"], "rename": ["r"], "trash": ["d"], "back": ["H"], "forward": ["L"], "new_tab": ["t, t"],
+            "search_name": ["s"], "search_content": ["S"], "jump_zoxide": ["Z"], "jump_fzf": ["z"],
+            "open": ["o", "enter"], "open_with": ["O", "shift+enter"],
         })
         self.assertEqual(bindings["top"][0], ("g, g", ("g", "g")))
         self.assertEqual(bindings["mark_one"][0], ("space", ("<Space>",)))
@@ -88,6 +90,49 @@ class YaziSessionUnitTests(unittest.TestCase):
         self.assertEqual(bindings["top"], [("ctrl+t", ("<C-t>",))])
         # Only the session's actions are bound, even when the export has more.
         self.assertEqual(set(session_bindings(rows, ["top"])), {"top"})
+
+    def test_tool_backed_actions_require_their_binary_on_path(self):
+        no_tools = lambda _name: None
+        bindings = yazi_bindings(YAZI_ROWS, which=no_tools)
+        sess = session_bindings(YAZI_ROWS, KEYMAP, which=no_tools)
+        for action in ("search_name", "search_content", "jump_fzf", "jump_zoxide"):
+            self.assertNotIn(action, bindings)
+            self.assertNotIn(action, sess)
+        self.assertIn("enter_folder", bindings)
+        self.assertIn("open", sess)
+        only_fd = lambda name: "/usr/bin/fd" if name == "fd" else None
+        fd_bindings = session_bindings(YAZI_ROWS, KEYMAP, which=only_fd)
+        self.assertIn("search_name", fd_bindings)
+        self.assertNotIn("search_content", fd_bindings)
+        self.assertNotIn("jump_fzf", fd_bindings)
+        self.assertNotIn("jump_zoxide", fd_bindings)
+
+    def test_rebound_search_and_jump_commands_with_extra_args_resolve(self):
+        rows = [
+            {"name": "ctrl+f", "value": "search --via=fd --args='--hidden'"},
+            {"name": "ctrl+g", "value": "search --via=rg --args='--smart-case'"},
+            {"name": "ctrl+z", "value": "plugin zoxide --extra"},
+            {"name": "ctrl+p", "value": "plugin fzf --extra"},
+        ]
+        all_tools = lambda name: f"/usr/bin/{name}"
+        bindings = session_bindings(rows, KEYMAP, which=all_tools)
+        self.assertEqual(bindings["search_name"], [("ctrl+f", ("<C-f>",))])
+        self.assertEqual(bindings["search_content"], [("ctrl+g", ("<C-g>",))])
+        self.assertEqual(bindings["jump_zoxide"], [("ctrl+z", ("<C-z>",))])
+        self.assertEqual(bindings["jump_fzf"], [("ctrl+p", ("<C-p>",))])
+
+    def test_remove_path_unlinks_symlink_without_touching_target(self):
+        import yazi_backend
+        with tempfile.TemporaryDirectory(prefix="keys-yz-root-", dir="/tmp") as root_str, \
+             tempfile.TemporaryDirectory(prefix="keys-yz-out-", dir="/tmp") as outside_str:
+            outside = Path(outside_str)
+            keep = outside / "keep.txt"
+            keep.write_text("safe", encoding="utf-8")
+            link = Path(root_str) / "Practice"
+            link.symlink_to(outside)
+            yazi_backend._remove_path(link)
+            self.assertFalse(link.exists() or link.is_symlink())
+            self.assertEqual(keep.read_text(encoding="utf-8"), "safe")
 
     def test_private_keymap_runs_only_table_commands(self):
         keymap = tomllib.loads(session_keymap(session_bindings(YAZI_ROWS, KEYMAP)))["mgr"]["keymap"]
@@ -119,9 +164,17 @@ class YaziSessionUnitTests(unittest.TestCase):
         self.assertEqual((state.cwd, state.hovered, state.entries, state.selected), ("Practice/Projects", None, (), frozenset()))
         self.assertEqual((state.show_hidden, state.filter, state.layer, state.yanked, state.cut),
                          (True, "no", "input", 2, True))
-        for cwd in ("/tmp/private/home", "/tmp/private/home/Practice/Projects/deeper", "/tmp/elsewhere/Practice"):
+        for cwd in ("/tmp/private/home", "/tmp/private/home/Practice/Projects/deeper", "/tmp/elsewhere/Practice",
+                    "search://q//tmp/elsewhere/Practice"):
             with self.assertRaises(YaziUnavailable):
-                session._as_state({**body, "cwd": cwd})
+                session._as_state({**body, "cwd": cwd, "search_query": "q"})
+        # A search cwd inside Practice stays allowed and reports search_via/search_query.
+        search_state = session._as_state({
+            **body, "cwd": "search://deploy//tmp/private/home/Practice",
+            "search_via": "fd", "search_query": "deploy",
+        })
+        self.assertEqual((search_state.cwd, search_state.search_via, search_state.search_query),
+                         ("Practice", "fd", "deploy"))
         line = b"keys-trainer-state,1,1," + json.dumps(body).encode()
         self.assertEqual(_session_event(line), body)
         self.assertIsNone(_session_event(b"keys-trainer-state,1,2," + json.dumps(body).encode()))

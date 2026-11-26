@@ -9,6 +9,7 @@ import checks
 from curriculum import Resolved
 from practice import rows_for
 from session import HerdrSession, perform
+from shell_backend import ShellSession
 from strata_keys import KeysSession
 from strings import SELFTEST as TEXT
 from world import describe
@@ -39,6 +40,8 @@ def _session(tool, rows):
         return KeysSession(rows_for(rows, "strata"))
     if tool == "yazi":
         return YaziSession(rows_for(rows, "yazi"), herdr)
+    if tool == "shell":
+        return ShellSession(rows_for(rows, "shell"), herdr)
     return HerdrSession(herdr)
 
 
@@ -133,7 +136,7 @@ def solve_all(resolved: Resolved, rows) -> list[Result]:
     tested = set()
     for state in resolved.lessons:
         lesson = state.lesson
-        if lesson.tool not in ("herdr", "yazi", "strata") or not state.steps:
+        if lesson.tool not in ("herdr", "yazi", "shell", "strata") or not state.steps:
             continue
         for step in state.steps:
             if step.scenario in tested:

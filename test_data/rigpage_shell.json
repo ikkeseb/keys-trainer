@@ -1,0 +1,12 @@
+[
+  {"name": "ctrl+r", "value": "history_search"},
+  {"name": "ctrl+t", "value": "file_widget"},
+  {"name": "alt+c", "value": "cd_widget"},
+  {"name": "z", "value": "zoxide_jump"},
+  {"name": "open", "value": "open_default"},
+  {"name": "xdg-open", "value": "open_default"},
+  {"name": "nvim", "value": "open_editor"},
+  {"name": "n", "value": "open_editor"},
+  {"name": "fd", "value": "find_file"},
+  {"name": "rg", "value": "search_content"}
+]

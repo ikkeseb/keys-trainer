@@ -12,7 +12,7 @@
 
 [[lesson]]
 id = "desktop"
-order = 13
+order = 17
 title = "Desktop (live)"
 tool = "desktop"
 fixture = "live"

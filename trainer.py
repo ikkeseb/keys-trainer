@@ -37,8 +37,8 @@ from strings import DESKTOP, LESSON, START, SHELL as TEXT
 
 LAUNCHER = Path(__file__).resolve().with_name("keys-trainer")
 MODES = ("layouts", "check", "demo")
-EXECUTABLES = {"herdr": ("herdr",), "yazi": ("herdr", "yazi"), "strata": ("strata",)}  # what a lesson's tool needs on PATH
-WARMUP_TOOLS = ("herdr", "yazi", "strata", "desktop")  # one session each, in this order: the live desktop last
+EXECUTABLES = {"herdr": ("herdr",), "yazi": ("herdr", "yazi"), "shell": ("herdr", "bash"), "strata": ("strata",)}  # what a lesson's tool needs on PATH
+WARMUP_TOOLS = ("herdr", "yazi", "shell", "strata", "desktop")  # one session each, in this order: the live desktop last
 ROUND_CAP = 8  # «Today's round»: due cards, then the weakest, up to this many
 INTRO_KEYS = 30  # the intro's keys column, at most
 DEMO_PRESS = 1.2  # seconds of «the user's turn» before the demo presses the hint key
@@ -111,7 +111,7 @@ def check_lines(lessons, data, answer, env=None, *, layout=curriculum.DEFAULT_LA
     resolved = curriculum.resolve(lessons, data, ambiguous, desktop=desktop, layout=layout)
     lines = [TEXT["check_terminal"], *("  " + line for line in doctor.terminal_report(answer, env)), "",
              TEXT["check_tools"]]
-    for tool in ("herdr", "yazi", "strata", "foot"):
+    for tool in ("herdr", "yazi", "bash", "fzf", "zoxide", "fd", "rg", "strata", "foot"):
         path = shutil.which(tool)
         if path:
             lines.append(TEXT["check_tool"].format(tool=tool, path=path))
@@ -379,7 +379,7 @@ def home_card(home, cursor, resolved, *, now, hint_key="?", inside_herdr=False, 
         mark = ("› ", BOLD) if here else ("✓ ", MINT) if row.stars else ("  ", "")
         note, note_style = "", MUTED
         if not row.ready:
-            note = TEXT["note_tool"].format(tool=row.tool.capitalize() if row.tool in ("yazi", "strata") else row.tool)
+            note = TEXT["note_tool"].format(tool=row.tool.capitalize() if row.tool in ("yazi", "strata", "shell") else row.tool)
         elif index == home.recommended:
             note, note_style = TEXT["note_start" if home.first_run else "note_next"], MINT
         elif row.stars == 2:
@@ -618,6 +618,9 @@ def open_session(tool, data):
     if tool == "yazi":
         from yazi_backend import YaziSession
         return YaziSession(rows_for(data, "yazi"), rows_for(data, "herdr"))
+    if tool == "shell":
+        from shell_backend import ShellSession
+        return ShellSession(rows_for(data, "shell"), rows_for(data, "herdr"))
     if tool == "strata":
         from strata_keys import KeysSession
         return KeysSession(rows_for(data, "strata"))

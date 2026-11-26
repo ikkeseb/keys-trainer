@@ -165,14 +165,17 @@ class Router:
     Enter or Esc.
     """
 
-    def __init__(self, prefix="", direct=(), prompt_chords=()):
+    def __init__(self, prefix="", direct=(), prompt_chords=(), *, trainer_keys=None):
         self.prefix = canonical(prefix) or None
-        taken = {canonical(chord) for chord in direct} - {""}
-        self.hint_key = next(c for c in "?" + _FALLBACKS if canonical(c) not in taken)
-        self.pause_key = next(c for c in "q" + _FALLBACKS
-                              if canonical(c) not in taken and c != self.hint_key)
-        self.skip_key = next(c for c in "s" + _FALLBACKS
-                             if canonical(c) not in taken and c not in (self.hint_key, self.pause_key))
+        if trainer_keys is not None:
+            self.hint_key, self.pause_key, self.skip_key = trainer_keys
+        else:
+            taken = {canonical(chord) for chord in direct} - {""}
+            self.hint_key = next(c for c in "?" + _FALLBACKS if canonical(c) not in taken)
+            self.pause_key = next(c for c in "q" + _FALLBACKS
+                                  if canonical(c) not in taken and c != self.hint_key)
+            self.skip_key = next(c for c in "s" + _FALLBACKS
+                                 if canonical(c) not in taken and c not in (self.hint_key, self.pause_key))
         self.skippable = False  # the step is awkward on the keyboard layout: the skip key is the trainer's
         self.prompt_chords = frozenset(canonical(chord) for chord in prompt_chords) - {""}
         self.typing = False

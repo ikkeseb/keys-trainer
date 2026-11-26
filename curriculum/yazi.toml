@@ -270,7 +270,7 @@ nudge = "Back and forward are the uppercase versions of the left and right keys.
 done = "Back and forward"
 cards = ["yazi:back", "yazi:forward"]
 needs = [{ check = "cursor_on", entry = "Projects", folder = "Practice" }, { check = "one_tab" }]
-checks = [{ check = "cwd_is", folder = "Projects" }, { check = "back_then_forward", folder = "Projects" }]
+checks = [{ check = "cwd_is", folder = "Projects" }, { check = "back_then_forward", folder = "Projects", mode = "hold" }]
 solution = ["yazi:enter_folder", "yazi:back", "yazi:forward"]
 decoy = "yazi:enter_folder"
 
@@ -285,3 +285,122 @@ needs = [{ check = "in_folder", folder = "Practice" }, { check = "one_tab" }]
 checks = [{ check = "tabs", count = 2, position = 2, folder = "Practice" }]
 solution = ["yazi:new_tab"]
 decoy = "yazi:next_file"
+
+[[lesson]]
+id = "yazi-search"
+order = 13
+title = "Yazi: search and jump"
+tool = "yazi"
+fixture = "search_tree"
+intro = "Find files in subfolders by name or content, or jump straight to a folder with zoxide and fzf. Everything stays inside the practice folder."
+pattern = "s searches file names, S searches inside files. z jumps via fzf, Z jumps to visited folders via zoxide."
+steps = ["learn:yazi-search-name", "learn:yazi-search-content", "recall:yazi-search-name", "learn:yazi-zoxide",
+         "recall:yazi-search-content", "learn:yazi-fzf", "recall:yazi-zoxide", "recall:yazi-fzf"]
+
+[[scenario]]
+id = "yazi-search-name"
+goal = "Search subfolders for files named deploy"
+why = "Find a file anywhere under here without opening every folder."
+nudge = "Lowercase s searches file names with fd. Type deploy, then Enter."
+done = "Found deploy.md by name"
+cards = ["yazi:search_name"]
+fixture = "search_tree"
+needs = [{ check = "in_folder", folder = "Practice" }, { check = "no_search" }, { check = "no_filter" }]
+checks = [{ check = "search_is", via = "fd", query = "deploy", entry = "deploy.md" }]
+solution = ["yazi:search_name", { type = "deploy" }, { press = "enter" }]
+decoy = "yazi:next_file"
+typing = true
+
+[[scenario]]
+id = "yazi-search-content"
+goal = "Search inside files for lantern"
+why = "Find which file mentions a word, even deep in a subfolder."
+nudge = "Uppercase S searches inside files with ripgrep. Type lantern, Enter."
+done = "Found guide.txt by content"
+cards = ["yazi:search_content"]
+fixture = "search_tree"
+needs = [{ check = "in_folder", folder = "Practice" }, { check = "no_search" }, { check = "no_filter" }]
+checks = [{ check = "search_is", via = "rg", query = "lantern", entry = "guide.txt" }]
+solution = ["yazi:search_content", { type = "lantern" }, { press = "enter" }]
+decoy = "yazi:next_file"
+typing = true
+
+[[scenario]]
+id = "yazi-zoxide"
+goal = "Jump straight to Docs with zoxide"
+why = "Go to a folder you have visited before without browsing."
+nudge = "Uppercase Z opens zoxide. Type Docs and press Enter."
+done = "Jumped to Docs"
+cards = ["yazi:jump_zoxide"]
+fixture = "search_tree"
+needs = [{ check = "in_folder", folder = "Practice" }, { check = "no_search" }, { check = "no_filter" }]
+checks = [{ check = "jumped_to", via = "zoxide", folder = "Docs" }]
+solution = ["yazi:jump_zoxide", { type = "Docs" }, { press = "enter" }]
+decoy = "yazi:next_file"
+typing = true
+
+[[scenario]]
+id = "yazi-fzf"
+goal = "Jump to deploy.md with fzf"
+why = "Fuzzy-find any file or folder below here and land right on it."
+nudge = "Lowercase z opens fzf. Type deploy and press Enter."
+done = "Landed on deploy.md"
+cards = ["yazi:jump_fzf"]
+fixture = "search_tree"
+needs = [{ check = "in_folder", folder = "Practice" }, { check = "no_search" }, { check = "no_filter" }]
+checks = [{ check = "jumped_to", via = "fzf", folder = "Projects", entry = "deploy.md" }]
+solution = ["yazi:jump_fzf", { type = "deploy" }, { press = "enter" }]
+decoy = "yazi:next_file"
+typing = true
+
+[[lesson]]
+id = "yazi-open"
+order = 14
+title = "Yazi: open files"
+tool = "yazi"
+fixture = "search_tree@notes.txt"
+intro = "Open files straight from Yazi with the default app or choose another app. Here a recording stub stands in, so no real app launches."
+pattern = "o or Enter opens with the default app. O lets you pick another app, such as your editor."
+steps = ["learn:yazi-open-default", "learn:yazi-open-with", "recall:yazi-open-default", "recall:yazi-open-with",
+         "build:yazi-find-open"]
+
+[[scenario]]
+id = "yazi-open-default"
+goal = "Open notes.txt with the default app"
+why = "Open the hovered file without leaving Yazi."
+nudge = "Press o (or Enter) on notes.txt."
+done = "Opened notes.txt"
+cards = ["yazi:open"]
+fixture = "search_tree@notes.txt"
+needs = [{ check = "cursor_on", entry = "notes.txt", folder = "Practice" }, { check = "nothing_opened" }]
+checks = [{ check = "opened", opener = "default", file = "Practice/notes.txt" }]
+solution = ["yazi:open"]
+decoy = "yazi:next_file"
+
+[[scenario]]
+id = "yazi-open-with"
+goal = "Open notes.txt in the editor with “open with”"
+why = "Pick another app instead of the default, such as your editor."
+nudge = "Uppercase O opens the app picker. Move down to Editor, then Enter."
+done = "Opened notes.txt in the editor"
+cards = ["yazi:open_with"]
+fixture = "search_tree@notes.txt"
+needs = [{ check = "cursor_on", entry = "notes.txt", folder = "Practice" }, { check = "nothing_opened" }]
+checks = [{ check = "opened", opener = "editor", file = "Practice/notes.txt", interactive = true }]
+solution = ["yazi:open_with", { press = "down" }, { press = "enter" }]
+decoy = "yazi:open"
+
+[[scenario]]
+id = "yazi-find-open"
+goal = "Search inside files for lantern and open guide.txt"
+why = "The real workflow: find the file by content, then open it."
+nudge = "Press S, type lantern and Enter, then press o to open guide.txt."
+done = "Found and opened guide.txt"
+cards = ["yazi:search_content", "yazi:open"]
+fixture = "search_tree"
+needs = [{ check = "in_folder", folder = "Practice" }, { check = "no_search" }, { check = "nothing_opened" }]
+checks = [{ check = "search_is", via = "rg", query = "lantern", entry = "guide.txt", checklist = "Search for lantern" },
+          { check = "opened", opener = "default", file = "Practice/Docs/guide.txt", mode = "hold", checklist = "Open guide.txt" }]
+solution = ["yazi:search_content", { type = "lantern" }, { press = "enter" }, "yazi:open"]
+decoy = ["yazi:search_content", { type = "lantern" }, { press = "enter" }]
+typing = true

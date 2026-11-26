@@ -51,6 +51,13 @@ NEAR_MISSES = {
     "yazi-select-all": ["yazi:next_file"],                              # nothing selected
     "yazi-history": ["yazi:enter_folder", "yazi:leave_folder", "yazi:enter_folder"],  # plain leave/enter
     "yazi-new-tab": ["yazi:enter_folder", "yazi:new_tab"],              # tab opened in Projects, not Practice
+    "yazi-search-name": ["yazi:search_content", {"type": "deploy"}, {"press": "enter"}],   # rg instead of fd
+    "yazi-search-content": ["yazi:search_name", {"type": "lantern"}, {"press": "enter"}],  # fd instead of rg
+    "yazi-zoxide": ["yazi:next_file", "yazi:enter_folder"],             # manual enter Docs, not zoxide
+    "yazi-fzf": ["yazi:jump_zoxide", {"type": "Projects"}, {"press": "enter"}],  # zoxide instead of fzf
+    "yazi-open-default": ["yazi:open_with", {"press": "down"}, {"press": "enter"}],  # editor via open-with
+    "yazi-open-with": ["yazi:open_with", {"press": "enter"}],           # picked default instead of editor
+    "yazi-find-open": ["yazi:search_content", {"type": "lantern"}, {"press": "enter"}],  # searched, never opened
 }
 
 
@@ -65,9 +72,15 @@ def fixture_of(scenario_id):
 
 def lesson_cards(lesson):
     ids = {step.split(":", 1)[1] for step in lesson["steps"]}
+    decoys = []
+    for scenario_id in ids:
+        decoy = SCENARIOS[scenario_id].get("decoy")
+        if isinstance(decoy, str):
+            decoys.append(decoy)
+        elif isinstance(decoy, list):
+            decoys.extend(item for item in decoy if isinstance(item, str))
     return sorted({card for scenario_id in ids for card in SCENARIOS[scenario_id]["cards"]}
-                  | {item for scenario_id in ids for item in (*SCENARIOS[scenario_id]["solution"],
-                                                               SCENARIOS[scenario_id].get("decoy", ""))
+                  | {item for scenario_id in ids for item in (*SCENARIOS[scenario_id]["solution"], *decoys)
                      if isinstance(item, str) and item})
 
 
@@ -116,7 +129,16 @@ def from_json(data):
     for key in ("selected", "tree", "trashed"):
         if key in data:
             data[key] = frozenset(data[key])
+    if "opened" in data:
+        data["opened"] = tuple((str(item[0]), bool(item[1]), str(item[2])) for item in data["opened"])
     return World(yazi=YaziState(**data))
+
+
+def _decoy_items(scenario):
+    decoy = scenario.get("decoy")
+    if isinstance(decoy, list):
+        return decoy
+    return [decoy] if decoy else []
 
 
 def record():
@@ -127,8 +149,8 @@ def record():
             for scenario_id in dict.fromkeys(step.split(":", 1)[1] for step in lesson["steps"]):
                 scenario = SCENARIOS[scenario_id]
                 runs = {"solution": scenario["solution"], "near": NEAR_MISSES[scenario_id]}
-                if scenario.get("decoy"):
-                    runs["decoy"] = [scenario["decoy"]]
+                if decoy := _decoy_items(scenario):
+                    runs["decoy"] = decoy
                 for kind, items in runs.items():
                     start, history = play(session, items, session.apply_fixture(fixture_of(scenario_id)))
                     cases[f"{scenario_id}:{kind}"] = [to_json(world) for world in (start, *history)]
@@ -143,7 +165,7 @@ def load_recorded():
 
 class CurriculumTests(unittest.TestCase):
     def test_lessons_scenarios_and_copy_follow_the_schema(self):
-        self.assertEqual([lesson["order"] for lesson in LESSONS.values()], [6, 7, 8, 9, 10])
+        self.assertEqual([lesson["order"] for lesson in LESSONS.values()], [6, 7, 8, 9, 10, 13, 14])
         for lesson in LESSONS.values():
             self.assertEqual(lesson["tool"], "yazi")
             self.assertIn(lesson["fixture"], FIXTURES)
@@ -153,17 +175,23 @@ class CurriculumTests(unittest.TestCase):
                 self.assertIn(scenario_id, SCENARIOS)
         for scenario_id, scenario in SCENARIOS.items():
             with self.subTest(scenario_id):
-                checks.validate(scenario["checks"], scenario["needs"])
+                plain = [{k: v for k, v in c.items() if k != "checklist"} for c in scenario["checks"]]
+                checks.validate(plain, scenario["needs"])
                 self.assertLessEqual(len(scenario["goal"]), 66)
                 self.assertLessEqual(len(scenario["why"]), 70)
                 self.assertLessEqual(len(scenario["nudge"]), 80)
                 self.assertTrue(scenario["done"])
                 self.assertIn(fixture_of(scenario_id), FIXTURES)
+                decoy_cards = [item for item in _decoy_items(scenario) if isinstance(item, str)]
                 cards = [*scenario["cards"], *(item for item in scenario["solution"] if isinstance(item, str)),
-                         scenario.get("decoy", "yazi:top")]
+                         *decoy_cards]
                 for card in cards:
                     self.assertIn(card.removeprefix("yazi:"), KEYMAP)
-        self.assertEqual([scenario_id for scenario_id, s in SCENARIOS.items() if s.get("typing")], ["yazi-filter", "yazi-create", "yazi-rename"])
+        self.assertEqual(
+            [scenario_id for scenario_id, s in SCENARIOS.items() if s.get("typing")],
+            ["yazi-filter", "yazi-create", "yazi-rename",
+             "yazi-search-name", "yazi-search-content", "yazi-zoxide", "yazi-fzf", "yazi-find-open"],
+        )
 
     def test_the_export_binds_every_card_the_lessons_use(self):
         bindings = session_bindings(YAZI_ROWS, KEYMAP)
@@ -176,6 +204,10 @@ class CurriculumTests(unittest.TestCase):
         self.assertEqual(used, {name for name, entry in checks.CHECKS.items() if entry.tool == "yazi"})
         used = {item["check"] for scenario in SCENARIOS.values() for item in scenario["needs"]}
         self.assertEqual(used, {name for name, entry in checks.NEEDS.items() if entry.tool == "yazi"})
+
+
+def _plain_checks(scenario):
+    return [{k: v for k, v in c.items() if k != "checklist"} for c in scenario["checks"]]
 
 
 class RecordedYaziTests(unittest.TestCase):
@@ -195,10 +227,10 @@ class RecordedYaziTests(unittest.TestCase):
             with self.subTest(scenario_id):
                 start, *history = self.recorded[f"{scenario_id}:solution"]
                 self.assertEqual(checks.unmet(scenario["needs"], start), [])
-                progress = checks.evaluate(scenario["checks"], start, history)
+                progress = checks.evaluate(_plain_checks(scenario), start, history)
                 self.assertTrue(progress.done, progress)
                 # Never done before the last move, and never on the start alone.
-                self.assertFalse(checks.evaluate(scenario["checks"], start, []).done)
+                self.assertFalse(checks.evaluate(_plain_checks(scenario), start, []).done)
 
     def test_decoys_and_near_misses_fail(self):
         for name, (start, *history) in self.recorded.items():
@@ -207,7 +239,7 @@ class RecordedYaziTests(unittest.TestCase):
                 continue
             with self.subTest(name):
                 self.assertEqual(checks.unmet(SCENARIOS[scenario_id]["needs"], start), [])
-                self.assertFalse(checks.evaluate(SCENARIOS[scenario_id]["checks"], start, history).done)
+                self.assertFalse(checks.evaluate(_plain_checks(SCENARIOS[scenario_id]), start, history).done)
 
     def test_every_need_is_met_somewhere_and_unmet_somewhere(self):
         worlds = [world for run in self.recorded.values() for world in run]
@@ -293,6 +325,91 @@ class RecordedYaziTests(unittest.TestCase):
         self.assertFalse(checks.evaluate(trash_checks, start, [extra_file]).done)
 
 
+class SearchJumpOpenCheckTests(unittest.TestCase):
+    def _state(self, **kw):
+        defaults = dict(
+            cwd="Practice", hovered="Archive", entries=("Archive", "Docs", "Projects", "notes.txt"),
+            selected=frozenset(), show_hidden=False, filter="", layer="mgr", tab_count=1, tab_index=0,
+            yanked=0, cut=False, visual=False, copied="", history="",
+            search_via="", search_query="", jump_via="", open_interactive=False,
+            tree=frozenset(), trashed=frozenset(), opened=(),
+        )
+        defaults.update(kw)
+        return World(yazi=YaziState(**defaults))
+
+    def test_search_is_requires_matching_via_query_entry_and_mgr_layer(self):
+        start = self._state()
+        spec = [{"check": "search_is", "via": "fd", "query": "deploy", "entry": "deploy.md"}]
+        checks.validate(spec, [{"check": "no_search"}])
+        self.assertEqual(checks.unmet([{"check": "no_search"}], start), [])
+        good = self._state(search_via="fd", search_query="deploy", entries=("deploy.md",), hovered="deploy.md")
+        self.assertTrue(checks.evaluate(spec, start, [good]).done)
+        self.assertTrue(checks.unmet([{"check": "no_search"}], good))
+        # Wrong search tool (rg instead of fd) must fail.
+        wrong_via = self._state(search_via="rg", search_query="deploy", entries=("deploy.md",), hovered="deploy.md")
+        self.assertFalse(checks.evaluate(spec, start, [wrong_via]).done)
+        # Still typing in input layer must fail.
+        typing = self._state(search_via="fd", search_query="deploy", entries=("deploy.md",), layer="input")
+        self.assertFalse(checks.evaluate(spec, start, [typing]).done)
+        # Missing target entry must fail.
+        empty = self._state(search_via="fd", search_query="deploy", entries=(), hovered=None)
+        self.assertFalse(checks.evaluate(spec, start, [empty]).done)
+
+    def test_jumped_to_requires_jump_via_folder_and_optional_entry(self):
+        start = self._state()
+        zo_spec = [{"check": "jumped_to", "via": "zoxide", "folder": "Docs"}]
+        fzf_spec = [{"check": "jumped_to", "via": "fzf", "folder": "Projects", "entry": "deploy.md"}]
+        checks.validate(zo_spec + fzf_spec)
+        zo_ok = self._state(cwd="Practice/Docs", jump_via="zoxide", entries=("guide.txt",), hovered="guide.txt")
+        self.assertTrue(checks.evaluate(zo_spec, start, [zo_ok]).done)
+        # Manual enter (empty jump_via) or wrong jump tool (fzf) must fail.
+        self.assertFalse(checks.evaluate(zo_spec, start, [self._state(cwd="Practice/Docs", jump_via="")]).done)
+        self.assertFalse(checks.evaluate(zo_spec, start, [self._state(cwd="Practice/Docs", jump_via="fzf")]).done)
+        # fzf jump requires both folder and hovered entry.
+        fzf_ok = self._state(cwd="Practice/Projects", jump_via="fzf", entries=("deploy.md",), hovered="deploy.md")
+        self.assertTrue(checks.evaluate(fzf_spec, start, [fzf_ok]).done)
+        fzf_wrong_hover = self._state(cwd="Practice/Projects", jump_via="fzf", entries=("deploy.md",), hovered="other.md")
+        self.assertFalse(checks.evaluate(fzf_spec, start, [fzf_wrong_hover]).done)
+
+    def test_opened_requires_new_stub_entry_and_interactive_mode(self):
+        start = self._state(hovered="notes.txt")
+        default_spec = [{"check": "opened", "opener": "default", "file": "Practice/notes.txt"}]
+        inter_spec = [{"check": "opened", "opener": "editor", "file": "Practice/notes.txt", "interactive": True}]
+        checks.validate(default_spec + inter_spec, [{"check": "nothing_opened"}])
+        self.assertEqual(checks.unmet([{"check": "nothing_opened"}], start), [])
+        opened_default = self._state(hovered="notes.txt", opened=(("default", False, "Practice/notes.txt"),), open_interactive=False)
+        self.assertTrue(checks.evaluate(default_spec, start, [opened_default]).done)
+        self.assertTrue(checks.unmet([{"check": "nothing_opened"}], opened_default))
+        # Default open must not satisfy interactive editor open, and vice versa.
+        self.assertFalse(checks.evaluate(inter_spec, start, [opened_default]).done)
+        opened_editor = self._state(hovered="notes.txt", opened=(("editor", True, "Practice/notes.txt"),), open_interactive=True)
+        self.assertTrue(checks.evaluate(inter_spec, start, [opened_editor]).done)
+        self.assertFalse(checks.evaluate(default_spec, start, [opened_editor]).done)
+        # An editor open without interactive flag must not satisfy interactive=True.
+        non_inter = self._state(hovered="notes.txt", opened=(("editor", False, "Practice/notes.txt"),), open_interactive=False)
+        self.assertFalse(checks.evaluate(inter_spec, start, [non_inter]).done)
+        # Already opened at start must not pass without a new open event.
+        self.assertFalse(checks.evaluate(default_spec, opened_default, [opened_default]).done)
+        # An earlier (default, False, Practice/notes.txt) record is unaffected by a later open_interactive=True flag.
+        later_flag = self._state(hovered="notes.txt", opened=(("default", False, "Practice/notes.txt"),), open_interactive=True)
+        self.assertTrue(checks.evaluate(default_spec, start, [later_flag]).done)
+        self.assertFalse(checks.evaluate(inter_spec, start, [later_flag]).done)
+
+    def test_yazi_find_open_combined_snapshot_passes_and_without_search_fails(self):
+        start = self._state()
+        find_open_checks = _plain_checks(SCENARIOS["yazi-find-open"])
+        combined = self._state(
+            search_via="rg", search_query="lantern", entries=("guide.txt",), hovered="guide.txt",
+            opened=(("default", False, "Practice/Docs/guide.txt"),),
+        )
+        self.assertTrue(checks.evaluate(find_open_checks, start, [combined]).done)
+        opened_without_search = self._state(
+            cwd="Practice/Docs", entries=("guide.txt",), hovered="guide.txt",
+            opened=(("default", False, "Practice/Docs/guide.txt"),),
+        )
+        self.assertFalse(checks.evaluate(find_open_checks, start, [opened_without_search]).done)
+
+
 LIVE = (os.environ.get("KEYS_TRAINER_TEST_YAZI") == "1" and os.environ.get("KEYS_TRAINER_TEST_HERDR") == "1"
         and shutil.which("yazi") and shutil.which("herdr"))
 
@@ -306,13 +423,13 @@ class LiveYaziLessonTests(unittest.TestCase):
                 for scenario_id in dict.fromkeys(step.split(":", 1)[1] for step in lesson["steps"]):
                     scenario = SCENARIOS[scenario_id]
                     runs = {"solution": scenario["solution"], "near": NEAR_MISSES[scenario_id],
-                            "decoy": [scenario["decoy"]]}
+                            "decoy": _decoy_items(scenario)}
                     for kind, items in runs.items():
                         with self.subTest(f"{scenario_id}:{kind}"):
                             start = session.apply_fixture(fixture_of(scenario_id))
                             self.assertEqual(checks.unmet(scenario["needs"], start), [])
                             start, history = play(session, items, start)
-                            done = checks.evaluate(scenario["checks"], start, history).done
+                            done = checks.evaluate(_plain_checks(scenario), start, history).done
                             self.assertEqual(done, kind == "solution")
 
     def test_typing_in_the_filter_prompt_is_reported(self):
@@ -345,7 +462,7 @@ class LiveYaziLessonTests(unittest.TestCase):
                         world = session.apply_fixture(fixture_of(scenario_id))
                     self.assertEqual(checks.unmet(scenario["needs"], world), [], step)
                     start, history = play(session, scenario["solution"], world)
-                    self.assertTrue(checks.evaluate(scenario["checks"], start, history).done, step)
+                    self.assertTrue(checks.evaluate(_plain_checks(scenario), start, history).done, step)
                     world = history[-1]
 
 

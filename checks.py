@@ -516,3 +516,4 @@ def has_focus_history(world, earlier):
     herdr = _herdr(world)
     return herdr.tab is not None and _previous_focus(earlier, herdr.tab) is not None
 import checks_yazi  # noqa: E402,F401  (registers the Yazi checks)
+import checks_shell  # noqa: E402,F401  (registers the Shell checks)

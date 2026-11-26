@@ -38,6 +38,15 @@ def read_keys(path=None):
             raise ValueError("rigpage keys failed. Run it in your terminal to check its config.")
         data = json.loads(run.stdout)
         source = "rigpage"
+        import shell_backend
+
+        shell_group = next((g for g in data.get("groups", ()) if g.get("id") == "shell"), None)
+        if shell_group is None or not shell_backend.shell_bindings(shell_group.get("rows", ())):
+            extra = shell_backend.scan()
+            if shell_group is not None:
+                shell_group["rows"] = [*shell_group["rows"], *extra]
+            elif extra:
+                data["groups"].append({"id": "shell", "rows": extra})
     else:
         import keyscan
 
