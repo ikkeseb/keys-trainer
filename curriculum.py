@@ -22,7 +22,7 @@ import desktop_session  # registers the desktop checks
 import herdr_backend
 from practice import Card, rows_for, shortcut_text
 from router import canonical
-from strings import KEYS, REPORT
+from strings import DESKTOP, KEYS, REPORT
 
 
 FOLDER = Path(__file__).with_name("curriculum")
@@ -551,6 +551,18 @@ def _bind(data, card, ambiguous, layout):
     return Binding(card, ordered, prefix, practice, tuple(c for c in chords if c not in usable), hard), ""
 
 
+def _select_quake(curriculum, data):
+    """Keep the user's Quake terminal when bound, otherwise teach Omarchy's console."""
+    quake = curriculum.scenarios.get("desktop-quake")
+    if quake is None or desktop_session.desktop_chords(data, "toggle_quake"):
+        return curriculum
+    card = "desktop:toggle_qconsole"
+    console = replace(quake, goal=DESKTOP["console_goal"], cards=(card,),
+                      checks=tuple({**check, "special": "qconsole"} for check in quake.checks),
+                      solution=tuple(replace(move, card=card) for move in quake.solution))
+    return replace(curriculum, scenarios={**curriculum.scenarios, quake.id: console})
+
+
 def resolve(curriculum: Curriculum, data: Mapping, ambiguous: Callable[[str], bool] | None = None, *,
             desktop: bool = False, layout: str = DEFAULT_LAYOUT) -> Resolved:
     """Bind every card to the user's chords in a keys payload (`practice.read_keys`, `keyscan.scan`).
@@ -564,6 +576,7 @@ def resolve(curriculum: Curriculum, data: Mapping, ambiguous: Callable[[str], bo
     A scenario whose cards include one with no key at all is a notice (`ScenarioState.notice`):
     the lesson shows how to add that key, and a lesson counts its notices toward being shown.
     """
+    curriculum = _select_quake(curriculum, data)
     ambiguous = ambiguous or (lambda chord: False)
     bindings, unbound, nokey = {}, {}, set()
     for scenario in curriculum.scenarios.values():

@@ -41,8 +41,8 @@ HOME = 7  # the workspace the trainer's window is on
 class Live:
     """The engine over a DesktopSession fed by a HyprFixture, with a hand-held clock."""
 
-    def __init__(self, test, events=None, plan=None, seed=3):
-        self.resolved = curriculum.resolve(LESSONS, DATA, desktop=True)
+    def __init__(self, test, events=None, plan=None, seed=3, data=DATA):
+        self.resolved = curriculum.resolve(LESSONS, data, desktop=True)
         if events is None:
             self.fixture = test.enterContext(HyprFixture())
             self.fixture.go(HOME)  # before the session: stale, never a move
@@ -163,6 +163,32 @@ class DesktopLessonTests(unittest.TestCase):
         live.quake(False)
         live.wait(0.3)
         self.assertEqual(live.engine.state, BEAT)
+
+    def test_quake_teaches_and_observes_the_selected_workspace(self):
+        console_only = [row for row in DESKTOP_ROWS if row["value"] != "Toggle Quake terminal"]
+        for rows, name, chord, workspace, other in (
+            (DESKTOP_ROWS, "terminal", "Super + |", "quake", "qconsole"),
+            (console_only, "console", "Super + `", "qconsole", "quake"),
+        ):
+            with self.subTest(name=name):
+                live = Live(self, data={"groups": [{"id": "desktop", "rows": rows}]})
+                for _ in range(2):
+                    live.go(live.target(), HOME, pause=0.3)
+                    live.wait(1.0)
+                self.assertEqual(live.engine.bar().goal, f"Open the Quake {name}, then close it again")
+                self.assertEqual(live.engine.bar().chord, f"{chord} ×2")
+                for target, expected in ((other, RUNNING), (workspace, BEAT)):
+                    live.fixture.emit(f"activespecial>>special:{target},DP-1")
+                    live.wait(0.3)
+                    live.fixture.emit("activespecial>>,DP-1")
+                    live.wait(0.3)
+                    self.assertEqual(live.engine.state, expected)
+
+    def test_quake_without_either_bind_shows_a_missing_console_key_notice(self):
+        rows = [row for row in DESKTOP_ROWS if "Quake" not in row["value"]]
+        data = {"groups": [{"id": "desktop", "rows": rows}]}
+        plan = plan_lesson(curriculum.resolve(LESSONS, data, desktop=True), "desktop")
+        self.assertEqual(plan.steps[-1].missing[0]["action"], "Toggle Quake console")
 
     def test_a_wrong_special_workspace_is_named_on_return(self):
         live = Live(self)

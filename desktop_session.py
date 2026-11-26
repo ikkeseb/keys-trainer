@@ -167,7 +167,8 @@ def special_hidden(context, special):
 
 # The user's desktop chords, from the `desktop` rows of `rigpage keys` (curriculum's resolver).
 
-ACTIONS = {"former_workspace": "Former workspace", "toggle_quake": "Toggle Quake terminal"}
+ACTIONS = {"former_workspace": "Former workspace", "toggle_quake": "Toggle Quake terminal",
+           "toggle_qconsole": "Toggle Quake console"}
 
 
 def desktop_chords(rows_payload, action: str) -> tuple[str, ...]:

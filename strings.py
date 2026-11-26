@@ -322,6 +322,7 @@ COACH = {
 
 # The live desktop (desktop_session.py, hypr.py) and its card under the bar (runner.py).
 DESKTOP = {
+    "console_goal": "Open the Quake console, then close it again",
     "no_workspace": "Could not tell which workspace you are on.",
     "no_keys": "The trainer never presses your keys on the real desktop.",
     "no_session": "No Hyprland session found (XDG_RUNTIME_DIR and HYPRLAND_INSTANCE_SIGNATURE are missing).",

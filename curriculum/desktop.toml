@@ -8,7 +8,7 @@
 #
 # Cards: desktop:switch_workspace (the export's «Switch to workspace 1…10» row, as super+1..9),
 # desktop:former_workspace («Former workspace»), desktop:toggle_quake («Toggle Quake
-# terminal», special workspace «quake»). Checks: desktop_session.py.
+# terminal», workspace «quake») or Omarchy’s Quake console («qconsole»). Checks: desktop_session.py.
 
 [[lesson]]
 id = "desktop"
@@ -16,7 +16,7 @@ order = 8
 title = "Desktop (live)"
 tool = "desktop"
 fixture = "live"
-intro = "The desktop's own shortcuts: switch workspace and bring up the Quake terminal. Each task is a round trip, so you end up back here."
+intro = "The desktop's own shortcuts: switch workspaces and open a drop-down terminal. Each task is a round trip, so you end up back here."
 pattern = "Super runs the desktop. Super + number goes to a workspace, and the way back brings you here."
 steps = ["learn:desktop-workspace", "recall:desktop-workspace", "learn:desktop-quake", "recall:desktop-quake"]
 
@@ -34,7 +34,7 @@ solution = [{ card = "desktop:switch_workspace", number = 4 }, "desktop:former_w
 id = "desktop-quake"
 goal = "Open the Quake terminal, then close it again"
 why = "A quick command without leaving what you are doing."
-nudge = "One key opens and closes it: where the console key sat in Quake, with Super."
+nudge = "Use the same shortcut to open it and bring yourself back here."
 done = "Opened and closed"
 cards = ["desktop:toggle_quake"]
 checks = [{ check = "special_shown", special = "quake" }, { check = "special_hidden", special = "quake" }]
