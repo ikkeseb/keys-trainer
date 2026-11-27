@@ -67,7 +67,7 @@ solution = ["strata:preview"]
 [[scenario]]
 id = "strata-copy-path"
 goal = "Copy the path of the selected file"
-why = "A terminal may keep this key: press Enter here if nothing happens."
+why = "Paste it into a terminal or a chat."
 nudge = "Like copy in a terminal."
 done = "Copy path"
 cards = ["strata:copy_path"]

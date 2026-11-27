@@ -442,11 +442,18 @@ class Engine:
             line, kind = self._line or warning or (self._live_line(), "reason")
         else:
             line, kind = self._line or warning or self._checklist() or (scenario.why, "reason")
+            if self._enter_stands_in():  # a standing instruction: no miss or hint may hide it
+                line = TEXT["enter_fallback"].format(line=line, gap=" " if line.endswith((".", "?")) else " · ")
         # Yazi's menu of next keys («which») waits for a key, not for text.
         waiting = self._seen is not None and self._seen.yazi is not None and self._seen.yazi.layer == "which"
         controls = TEXT["typing"] if (typing or self._typing) and not waiting else ""
         return Bar(tag, scenario.goal, chord=chord, line=line, kind=kind, hint=self._hint_label(),
                    controls=controls, skip_key=self.skip_key if layout else "", **common)
+
+    def _enter_stands_in(self) -> bool:
+        """The session counts Enter for this step's key (Strata, for a chord a terminal may keep)."""
+        counts = getattr(self.session, "enter_stands_in", None)
+        return bool(counts) and any(counts(card) for card in self.step.scenario.cards)
 
     def pause_controls(self) -> str:
         """The pause menu, as the shell maps its keys: Enter, s, r and the pause key."""

@@ -86,6 +86,7 @@ LESSON = {
     "miss_rebuild": "{what} I'll set it up again, then you try.",
     "miss_build": "{what} That won't reach the target. Setting it up again.",
     "miss_unknown": "Something else happened.",
+    "enter_fallback": "{line}{gap}Nothing happens? Press Enter.",  # a key the terminal may keep (Strata)
     "or": " or ",
     "then": ", then ",
     "list": ", ",

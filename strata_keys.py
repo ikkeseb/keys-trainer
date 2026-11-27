@@ -31,6 +31,13 @@ ACTIONS = {
 # Chords foot, Alacritty, kitty and Ghostty take for their own clipboard: they never arrive
 # here, so Enter counts for them.
 TERMINAL_KEEPS = frozenset({"ctrl+shift+c", "ctrl+shift+v"})
+
+
+def enter_stands_in(found) -> bool:
+    """Enter counts for an action bound to a chord the terminal may keep."""
+    return bool({canonical(chord) for chord in found} & TERMINAL_KEEPS)
+
+
 _MODIFIERS = {"control": "ctrl", "primary": "ctrl", "alt": "alt", "shift": "shift", "super": "super"}
 _NAMES = {"return": "enter", "escape": "esc", "period": ".", "comma": ",", "slash": "/", "backslash": "\\",
           "page_up": "pageup", "page_down": "pagedown"}
@@ -121,6 +128,10 @@ class KeysSession:
     def chords(self, card: str) -> tuple[str, ...]:
         return self._bindings.get(card.partition(":")[2], ())
 
+    def enter_stands_in(self, card: str) -> bool:
+        """Enter counts for this card too: the lesson says so (`lesson.Engine.bar`)."""
+        return enter_stands_in(self.chords(card))
+
     def play(self, card: str, *, index: int = 0, number: int | None = None) -> str:
         chord = self.chords(card)[index]
         self._pressed += (card.partition(":")[2],)
@@ -140,8 +151,7 @@ class KeysSession:
     def _receive(self, name):
         """Record the action the key does, else the key itself."""
         for action, found in self._bindings.items():
-            names = {canonical(chord) for chord in found}
-            if name in names or (name == "enter" and names & TERMINAL_KEEPS):
+            if name in {canonical(chord) for chord in found} or (name == "enter" and enter_stands_in(found)):
                 self._pressed += (action,)
                 return
         self._pressed += (name,)

@@ -9,6 +9,7 @@ import lesson
 from herdr_backend import kitty_keys
 from lesson import BEAT, DONE, PAUSED, RUNNING, SHOWING, Engine, plan_lesson, plan_warmup
 from router import canonical, key_name
+from strata_keys import KeysSession, rows as strata_rows
 from strings import LESSON as TEXT
 from yazi_backend import PRACTICE_TREE, YaziState
 from world import HerdrWorld, PaneState, Rect, TabState, World, WorkspaceState
@@ -1043,6 +1044,63 @@ class NoticeTest(unittest.TestCase):
         self.assertTrue(plan.steps)
         self.assertFalse([step for step in plan.steps if step.missing])
         self.assertNotIn("split-cols", [step.scenario.id for step in plan.steps])
+
+
+STRATA = curriculum.loads({"strata.toml": curriculum.FOLDER.joinpath("strata.toml").read_text("utf-8")})
+
+
+class EnterFallbackTest(unittest.TestCase):
+    """Strata counts Enter for a chord a terminal may keep (Ctrl+Shift+C): the bar keeps saying
+    so after a wrong key, since a confused user presses one exactly when the chord did nothing."""
+
+    def engine(self, scenario_id, copy_path="<Shift><Control>c"):
+        found = strata_rows({"keymap": {"default": {"copy_path": [copy_path]}}})
+        resolved = curriculum.resolve(STRATA, {"groups": [{"id": "strata", "rows": found}]})
+        engine = Engine(only("strata", scenario_id)(resolved), KeysSession(found), sleep=lambda seconds: None)
+        engine.begin(100.0)
+        return engine
+
+    def wrong_key(self, engine):
+        engine.forwarded(b"x")
+        for i in range(1, 6):
+            engine.tick(100.0 + 0.1 * i)
+
+    def test_a_wrong_key_keeps_the_enter_fallback_beside_the_miss(self):
+        engine = self.engine("strata-copy-path")
+        self.assertIn("Enter", engine.bar().line)
+        self.wrong_key(engine)
+        line = engine.bar().line
+        self.assertIn(TEXT["miss_here"].format(what="That was x."), line)
+        self.assertIn("Enter", line)
+        engine.forwarded(b"\r")
+        for i in range(6, 9):
+            engine.tick(100.0 + 0.1 * i)
+        self.assertEqual(engine.state, BEAT)
+
+    def test_a_warm_up_nudge_keeps_the_enter_fallback(self):
+        found = strata_rows({"keymap": {"default": {"copy_path": ["<Shift><Control>c"]}}})
+        resolved = curriculum.resolve(STRATA, {"groups": [{"id": "strata", "rows": found}]})
+        plan = plan_warmup(resolved, ["strata:copy_path"], tool="strata")
+        engine = Engine(plan, KeysSession(found), sleep=lambda seconds: None)
+        engine.begin(100.0)
+        self.assertEqual(engine.step.kind, "recall")
+        self.wrong_key(engine)
+        self.wrong_key(engine)
+        line = engine.bar().line
+        self.assertIn("Like copy in a terminal.", line)
+        self.assertIn("Enter", line)
+
+    def test_a_chord_the_terminal_sends_gets_no_enter_fallback(self):
+        engine = self.engine("strata-copy-path", copy_path="<Control>y")
+        self.assertNotIn("Enter", engine.bar().line)
+        self.wrong_key(engine)
+        self.assertEqual(engine.bar().line, TEXT["miss_here"].format(what="That was x."))
+
+    def test_a_step_without_a_fallback_shows_the_miss_alone(self):
+        engine = self.engine("strata-search")
+        self.assertEqual(engine.bar().line, engine.step.scenario.why)
+        self.wrong_key(engine)
+        self.assertEqual(engine.bar().line, TEXT["miss_here"].format(what="That was x."))
 
 
 if __name__ == "__main__":
